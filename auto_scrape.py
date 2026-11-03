@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-사회복지 & 소셜임팩트 3대 영역(복지관·NGO·CSR) 채용공고 자동 수집기
-- 대상: 서울사협(복지관), KCOC(국제구호/NGO), 사람인(기업 사회공헌 CSR)
+사회복지 & 소셜임팩트 6대 분야(서울·경기 특화) 채용공고 자동 수집기
+- 대상 분야:
+  1) 🏢 종합/전문복지관 (서울사협 + 사람인 서울/경기)
+  2) 🌍 국제구호/NGO (KCOC + 사람인 NGO)
+  3) 💼 기업 사회공헌 CSR (사람인 서울/경기 CSR)
+  4) 🌿 공익/복지재단 (사람인 서울/경기 복지재단)
+  5) 🏥 의료/정신건강 (대한의료사회복지사협회 + 한국정신건강사회복지사협회 + 사람인)
+  6) 🏛️ 공기업/공공기관 (사람인 서울/경기 사회복지 공기업/재단)
+- 각 분야별 최대 24개 공고 수집 및 동기화
+- 지역: 서울특별시 & 경기도 (경기남부 포함)
 - 저장: Firebase Firestore (jobs 컬렉션)
 - 중복 방지: 고유 URL 및 공고 식별 키 대조
 """
@@ -31,6 +39,8 @@ HEADERS = {
     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
 }
 
+LIMIT_PER_CATEGORY = 24
+
 def get_firebase_token():
     """Firebase 익명 인증 토큰 획득"""
     req = urllib.request.Request(
@@ -45,7 +55,7 @@ def get_firebase_token():
 def get_existing_job_keys(id_token):
     """현재 Firestore에 등록된 공고들의 고유 키(URL 또는 제목+기관) 목록 조회 (중복 방지용)"""
     existing = set()
-    url = f"{FIRESTORE_URL}?pageSize=300"
+    url = f"{FIRESTORE_URL}?pageSize=500"
     req = urllib.request.Request(url, headers={"Authorization": f"Bearer {id_token}"})
     try:
         with urllib.request.urlopen(req) as resp:
@@ -76,7 +86,7 @@ def save_job_to_firestore(job, id_token):
             "url": {"stringValue": job.get("url", "")},
             "memo": {"stringValue": job.get("memo", "")},
             "authorId": {"stringValue": "auto-bot"},
-            "createdAt": {"stringValue": job.get("createdAt", datetime.datetime.utcnow().isoformat() + "Z")}
+            "createdAt": {"stringValue": datetime.datetime.now(datetime.timezone.utc).isoformat()}
         }
     }
     req = urllib.request.Request(
@@ -90,28 +100,78 @@ def save_job_to_firestore(job, id_token):
     with urllib.request.urlopen(req) as resp:
         return resp.status == 200
 
-# =========================================================================
-# 1. 복지관 수집기 (서울시사회복지사협회 sasw.or.kr)
-# =========================================================================
-def scrape_sasw():
+def parse_saramin_search(search_keyword, category_name, max_count=20):
+    """사람인 서울/경기(loc_mcd=101000,102000) 채용 검색 공통 파서"""
     jobs = []
-    url = "https://sasw.or.kr/recruit"
+    encoded_kw = urllib.parse.quote(search_keyword)
+    url = f"https://www.saramin.co.kr/zf_user/search?search_area=main&search_done=y&search_optional_100=n&loc_mcd=101000%2C102000&searchword={encoded_kw}"
     ctx = ssl._create_unverified_context()
+    today = datetime.date.today()
     try:
         req = urllib.request.Request(url, headers=HEADERS)
         with urllib.request.urlopen(req, context=ctx, timeout=10) as r:
             soup = BeautifulSoup(r.read().decode('utf-8', errors='ignore'), 'html.parser')
-            rows = soup.select('table tbody tr')
-            for row in rows[:8]: # 최근 8건
-                a = row.find('a', href=True)
-                if not a:
+            items = soup.select('.item_recruit')
+            for item in items[:max_count]:
+                corp_el = item.select_one('.corp_name a')
+                job_el = item.select_one('.job_tit a')
+                date_el = item.select_one('.job_date .date')
+                loc_el = item.select_one('.job_condition span')
+
+                if not corp_el or not job_el:
                     continue
+                company = corp_el.get_text().strip()
+                role = job_el.get_text().strip()
+                href = job_el['href']
+                full_url = f"https://www.saramin.co.kr{href}" if href.startswith('/') else href
+
+                # 마감일 파싱 (~ MM/DD)
+                deadline = ""
+                if date_el:
+                    date_txt = date_el.get_text().strip()
+                    m = re.search(r'(\d{1,2})/(\d{1,2})', date_txt)
+                    if m:
+                        month, day = int(m.group(1)), int(m.group(2))
+                        year = today.year
+                        if today.month >= 11 and month < 3:
+                            year += 1
+                        deadline = f"{year}-{month:02d}-{day:02d}"
+
+                loc_text = loc_el.get_text().strip() if loc_el else "서울/경기"
+
+                jobs.append({
+                    "category": category_name,
+                    "company": company,
+                    "role": role,
+                    "deadline": deadline,
+                    "url": full_url,
+                    "memo": f"[자동수집] 서울/경기 {category_name} 공고 ({loc_text})"
+                })
+    except Exception as e:
+        print(f"[오류] 사람인 '{search_keyword}' 검색 파싱 실패: {e}")
+    return jobs
+
+# =========================================================================
+# 1. 종합/전문복지관 수집기 (서울사협 + 사람인 서울/경기)
+# =========================================================================
+def scrape_welfare():
+    jobs = []
+    ctx = ssl._create_unverified_context()
+    
+    # 1-1. 서울시사회복지사협회 (sasw.or.kr)
+    try:
+        req = urllib.request.Request("https://sasw.or.kr/recruit", headers=HEADERS)
+        with urllib.request.urlopen(req, context=ctx, timeout=10) as r:
+            soup = BeautifulSoup(r.read().decode('utf-8', errors='ignore'), 'html.parser')
+            rows = soup.select('table tbody tr')
+            for row in rows[:15]:
+                a = row.find('a', href=True)
+                if not a: continue
                 title = a.get_text().strip()
                 href = a['href']
                 full_url = f"https://sasw.or.kr{href}" if href.startswith('/') else href
 
-                # 기관명 추출 (대괄호 [기관명] 또는 복지관 명칭 분석)
-                company = "복지시설"
+                company = "복지관"
                 bracket_match = re.search(r'\[(.*?)\]', title)
                 if bracket_match:
                     company = bracket_match.group(1).replace("긴급", "").replace("끌어올림", "").replace("채용", "").strip()
@@ -121,63 +181,48 @@ def scrape_sasw():
                         if any(k in w for k in ['복지관', '센터', '원', '요양원', '협회', '쉼터']):
                             company = w
                             break
-                    if company == "복지시설" and len(words) > 0:
+                    if company == "복지관" and words:
                         company = words[0]
-
-                # 상세 페이지에서 마감일 추출 시도
-                deadline = ""
-                try:
-                    detail_req = urllib.request.Request(full_url, headers=HEADERS)
-                    with urllib.request.urlopen(detail_req, context=ctx, timeout=5) as dr:
-                        dsoup = BeautifulSoup(dr.read().decode('utf-8', errors='ignore'), 'html.parser')
-                        for tr in dsoup.select('table tr'):
-                            txt = tr.get_text()
-                            if '접수기간' in txt or '마감' in txt:
-                                date_matches = re.findall(r'(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})', txt)
-                                if date_matches:
-                                    last_d = date_matches[-1]
-                                    deadline = f"{last_d[0]}-{int(last_d[1]):02d}-{int(last_d[2]):02d}"
-                                    break
-                except Exception:
-                    pass
 
                 jobs.append({
                     "category": "종합/전문복지관",
                     "company": company,
                     "role": title,
-                    "deadline": deadline,
+                    "deadline": "",
                     "url": full_url,
-                    "memo": "[자동수집] 서울시사회복지사협회 공고"
+                    "memo": "[자동수집] 서울시사회복지사협회 실시간 공고"
                 })
     except Exception as e:
         print(f"[오류] 서울사협 수집 실패: {e}")
-    return jobs
+
+    # 1-2. 사람인 종합사회복지관 (서울/경기)
+    saramin_jobs = parse_saramin_search("종합사회복지관", "종합/전문복지관", max_count=15)
+    jobs.extend(saramin_jobs)
+    return jobs[:LIMIT_PER_CATEGORY]
 
 # =========================================================================
-# 2. 국제구호/NGO 수집기 (KCOC ngokcoc.or.kr)
+# 2. 국제구호/NGO 수집기 (KCOC + 사람인 NGO)
 # =========================================================================
-def scrape_kcoc():
+def scrape_ngo():
     jobs = []
-    url = "https://www.ngokcoc.or.kr/bbs/board.php?bo_table=news07"
     ctx = ssl._create_unverified_context()
+    today = datetime.date.today()
+
+    # 2-1. KCOC (ngokcoc.or.kr)
     try:
-        req = urllib.request.Request(url, headers=HEADERS)
+        req = urllib.request.Request("https://www.ngokcoc.or.kr/bbs/board.php?bo_table=news07", headers=HEADERS)
         with urllib.request.urlopen(req, context=ctx, timeout=10) as r:
             soup = BeautifulSoup(r.read().decode('utf-8', errors='ignore'), 'html.parser')
             rows = soup.select('table tbody tr') or soup.select('tbody tr')
-            today = datetime.date.today()
-            for row in rows[:8]: # 최근 8건
+            for row in rows[:15]:
                 tds = row.find_all('td')
-                if len(tds) < 3:
-                    continue
+                if len(tds) < 3: continue
                 a = row.find('a', href=True)
-                if not a:
-                    continue
+                if not a: continue
                 company = tds[1].get_text().strip()
                 title = a.get_text().strip()
                 full_url = a['href']
                 
-                # D-Day 파싱
                 deadline = ""
                 dday_td = tds[3].get_text().strip() if len(tds) > 3 else ""
                 dday_match = re.search(r'D-(\d+)', dday_td)
@@ -192,66 +237,114 @@ def scrape_kcoc():
                     "role": title,
                     "deadline": deadline,
                     "url": full_url,
-                    "memo": f"[자동수집] KCOC 국제개발협력민간협의회 공고 ({dday_td})"
+                    "memo": f"[자동수집] KCOC 국제개발협력민간협의회 ({dday_td})"
                 })
     except Exception as e:
         print(f"[오류] KCOC 수집 실패: {e}")
-    return jobs
+
+    # 2-2. 사람인 NGO 서울/경기
+    saramin_jobs = parse_saramin_search("NGO", "국제구호/NGO", max_count=15)
+    jobs.extend(saramin_jobs)
+    return jobs[:LIMIT_PER_CATEGORY]
 
 # =========================================================================
-# 3. 기업 사회공헌 CSR 수집기 (사람인 Saramin)
+# 3. 기업 사회공헌(CSR) 수집기 (사람인 서울/경기)
 # =========================================================================
-def scrape_saramin_csr():
+def scrape_csr():
+    return parse_saramin_search("사회공헌", "기업 사회공헌(CSR)", max_count=LIMIT_PER_CATEGORY)
+
+# =========================================================================
+# 4. 공익/복지재단 수집기 (사람인 서울/경기)
+# =========================================================================
+def scrape_foundations():
+    return parse_saramin_search("복지재단", "공익/복지재단", max_count=LIMIT_PER_CATEGORY)
+
+# =========================================================================
+# 5. 의료/정신건강 수집기 (대한의료사협 + 정신건강사협 + 사람인)
+# =========================================================================
+def scrape_medical_mental():
     jobs = []
-    url = "https://www.saramin.co.kr/zf_user/search?search_area=main&search_done=y&search_optional_100=n&searchword=%EC%82%AC%ED%9A%8C%EA%B3%B5%ED%97%8C"
     ctx = ssl._create_unverified_context()
-    try:
-        req = urllib.request.Request(url, headers=HEADERS)
-        with urllib.request.urlopen(req, context=ctx, timeout=10) as r:
-            soup = BeautifulSoup(r.read().decode('utf-8', errors='ignore'), 'html.parser')
-            items = soup.select('.item_recruit')
-            today = datetime.date.today()
-            for item in items[:8]: # 최근 8건
-                corp_el = item.select_one('.corp_name a')
-                job_el = item.select_one('.job_tit a')
-                date_el = item.select_one('.job_date .date')
-                if not corp_el or not job_el:
-                    continue
-                company = corp_el.get_text().strip()
-                role = job_el.get_text().strip()
-                href = job_el['href']
-                full_url = f"https://www.saramin.co.kr{href}" if href.startswith('/') else href
 
-                # 마감일 파싱 (~ 11/30(월) 형식)
-                deadline = ""
-                if date_el:
-                    date_txt = date_el.get_text().strip()
-                    m = re.search(r'(\d{1,2})/(\d{1,2})', date_txt)
-                    if m:
-                        month, day = int(m.group(1)), int(m.group(2))
-                        year = today.year
-                        # 1월로 넘어가는 케이스
-                        if today.month >= 11 and month < 3:
-                            year += 1
-                        deadline = f"{year}-{month:02d}-{day:02d}"
+    # 5-1. 대한의료사회복지사협회 (kamsw.or.kr)
+    try:
+        req = urllib.request.Request("https://www.kamsw.or.kr/recruit1", headers=HEADERS)
+        with urllib.request.urlopen(req, context=ctx, timeout=8) as r:
+            soup = BeautifulSoup(r.read().decode('utf-8', errors='ignore'), 'html.parser')
+            rows = soup.select('table tbody tr') or soup.select('tr')
+            for row in rows[:10]:
+                tds = [td.get_text().strip() for td in row.find_all('td')]
+                a = row.find('a', href=True)
+                if not a: continue
+                title = a.get_text().strip()
+                href = a['href']
+                full_url = f"https://www.kamsw.or.kr{href}" if href.startswith('/') else href
+
+                company = "의료기관"
+                bracket = re.search(r'\[(.*?)\]', title)
+                if bracket:
+                    company = bracket.group(1).strip()
+                elif len(tds) > 2:
+                    company = tds[1]
 
                 jobs.append({
-                    "category": "기업 사회공헌(CSR)",
+                    "category": "의료/정신건강",
                     "company": company,
-                    "role": role,
-                    "deadline": deadline,
+                    "role": title,
+                    "deadline": "",
                     "url": full_url,
-                    "memo": "[자동수집] 사람인 기업 사회공헌(CSR) 채용정보"
+                    "memo": "[자동수집] 대한의료사회복지사협회 공고"
                 })
     except Exception as e:
-        print(f"[오류] 사람인 CSR 수집 실패: {e}")
-    return jobs
+        print(f"[오류] 대한의료사협 수집 실패: {e}")
+
+    # 5-2. 한국정신건강사회복지사협회 (kamhsw.or.kr) - 서울/경기 필터링
+    try:
+        req = urllib.request.Request("https://www.kamhsw.or.kr/recruit1", headers=HEADERS)
+        with urllib.request.urlopen(req, context=ctx, timeout=8) as r:
+            soup = BeautifulSoup(r.read().decode('utf-8', errors='ignore'), 'html.parser')
+            rows = soup.select('table tbody tr') or soup.select('tr')
+            for row in rows[:15]:
+                tds = [td.get_text().strip() for td in row.find_all('td')]
+                a = row.find('a', href=True)
+                if not a: continue
+                title = a.get_text().strip()
+                href = a['href']
+                full_url = f"https://www.kamhsw.or.kr{href}" if href.startswith('/') else href
+                
+                # 지역 확인 (tds[1]이 지역)
+                region = tds[1] if len(tds) > 1 else ""
+                if region and not any(r in region for r in ['서울', '경기', '인천', '수도권']):
+                    continue
+
+                jobs.append({
+                    "category": "의료/정신건강",
+                    "company": title.split()[0] if title.split() else "정신건강복지센터",
+                    "role": title,
+                    "deadline": "",
+                    "url": full_url,
+                    "memo": f"[자동수집] 한국정신건강사회복지사협회 ({region or '수도권'})"
+                })
+    except Exception as e:
+        print(f"[오류] 정신건강사협 수집 실패: {e}")
+
+    # 5-3. 사람인 의료사회복지사 (서울/경기)
+    saramin_jobs = parse_saramin_search("의료사회복지사", "의료/정신건강", max_count=10)
+    jobs.extend(saramin_jobs)
+    return jobs[:LIMIT_PER_CATEGORY]
+
+# =========================================================================
+# 6. 공기업/공공기관 수집기 (사람인 서울/경기 사회복지 공기업)
+# =========================================================================
+def scrape_public_corp():
+    return parse_saramin_search("사회복지 공기업", "공기업/공공기관", max_count=LIMIT_PER_CATEGORY)
 
 def main():
-    print("=" * 60)
-    print("🚀 사회복지 & 소셜임팩트 3대 영역 채용공고 자동 수집기 가동")
+    print("=" * 65)
+    print("🚀 사회복지 & 소셜임팩트 6대 분야(서울·경기) 채용공고 자동 수집기 가동")
     print(f"⏰ 실행 시각: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("=" * 60)
+    print(f"🎯 수집 기준: 각 분야별 최대 {LIMIT_PER_CATEGORY}개 (서울/경기 타겟)")
+    print("=" * 65)
 
     # 1. Firebase 인증 및 기존 데이터 조회
     print("\n[1/4] Firebase 인증 및 기존 등록 공고 조회 중...")
@@ -263,29 +356,31 @@ def main():
         print(f"❌ Firebase 인증 실패: {e}")
         return
 
-    # 2. 3대 영역 공고 크롤링
-    print("\n[2/4] 3대 영역 채용공고 수집 시작...")
+    # 2. 6대 분야별 공고 수집
+    print("\n[2/4] 6대 분야별 공고 수집 시작...")
+    categories = [
+        ("🏢 종합/전문복지관", scrape_welfare),
+        ("🌍 국제구호/NGO", scrape_ngo),
+        ("💼 기업 사회공헌(CSR)", scrape_csr),
+        ("🌿 공익/복지재단", scrape_foundations),
+        ("🏥 의료/정신건강", scrape_medical_mental),
+        ("🏛️ 공기업/공공기관", scrape_public_corp)
+    ]
+
     all_scraped = []
+    for label, scraper_fn in categories:
+        print(f"- [{label}] 수집 중...")
+        try:
+            items = scraper_fn()
+            print(f"  -> {len(items)}건 확보 완료")
+            all_scraped.extend(items)
+        except Exception as e:
+            print(f"  ❌ [{label}] 수집 에러: {e}")
 
-    print("- [🏢 복지관] 서울시사회복지사협회 수집 중...")
-    sasw_jobs = scrape_sasw()
-    print(f"  -> {len(sasw_jobs)}건 수집 완료")
-    all_scraped.extend(sasw_jobs)
-
-    print("- [🌍 NGO] KCOC 국제개발협력민간협의회 수집 중...")
-    kcoc_jobs = scrape_kcoc()
-    print(f"  -> {len(kcoc_jobs)}건 수집 완료")
-    all_scraped.extend(kcoc_jobs)
-
-    print("- [💼 CSR] 사람인 사회공헌 채용 수집 중...")
-    saramin_jobs = scrape_saramin_csr()
-    print(f"  -> {len(saramin_jobs)}건 수집 완료")
-    all_scraped.extend(saramin_jobs)
-
-    print(f"\n총 {len(all_scraped)}건의 최신 공고를 수집했습니다.")
+    print(f"\n총 {len(all_scraped)}건의 후보 공고를 확보했습니다.")
 
     # 3. 중복 필터링 및 신규 공고 저장
-    print("\n[3/4] 중복 검사 및 Firestore 동기화 진행 중...")
+    print("\n[3/4] 중복 검사 및 Firestore 실시간 동기화 진행 중...")
     added_count = 0
     skipped_count = 0
 
@@ -293,27 +388,26 @@ def main():
         job_url = job.get("url", "").strip()
         comp_role_key = f"{job.get('company', '').strip()}___{job.get('role', '').strip()}"
 
-        if job_url in existing_keys or comp_role_key in existing_keys:
+        if (job_url and job_url in existing_keys) or (comp_role_key in existing_keys):
             skipped_count += 1
             continue
 
         try:
-            job["createdAt"] = datetime.datetime.utcnow().isoformat() + "Z"
             success = save_job_to_firestore(job, id_token)
             if success:
                 added_count += 1
-                existing_keys.add(job_url)
+                if job_url: existing_keys.add(job_url)
                 existing_keys.add(comp_role_key)
-                print(f"  ➕ [신규 등록] [{job['category']}] {job['company']} - {job['role'][:25]}... (마감: {job['deadline'] or '미정'})")
+                print(f"  ➕ [신규 등록] [{job['category']}] {job['company']} - {job['role'][:28]}... (마감: {job['deadline'] or '미정'})")
         except Exception as e:
             print(f"  ❌ 저장 실패 ({job['company']}): {e}")
 
     # 4. 결과 보고
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 65)
     print(f"🎉 수집 및 동기화 완료!")
     print(f"  - 신규 등록된 공고: {added_count}건")
     print(f"  - 이미 존재하는 공고(중복 제외): {skipped_count}건")
-    print("=" * 60)
+    print("=" * 65)
 
 if __name__ == "__main__":
     main()
