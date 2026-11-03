@@ -194,26 +194,55 @@
             </div>
         </section>
 
-        <!-- ==================== 5. JOBS VIEW (채용공고 관리 탭) ==================== -->
+        <!-- ==================== 5. JOBS VIEW (사회복지 채용 & 기관 탐색 탭) ==================== -->
         <section id="view-jobs" class="view-section hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6">
-                <div class="text-center mb-8">
-                    <span class="text-4xl mb-3 block">💼</span>
-                    <h2 class="text-3xl font-bold text-camping-text mb-2">채용공고 & 지원 현황</h2>
-                    <p class="text-camping-subtext">관심 있는 기업과 지원 중인 포지션을 체계적으로 정리하고 일정을 관리합니다.</p>
-                    <button onclick="openJobModal()" class="px-6 py-2.5 mt-5 bg-camping-green text-white font-bold rounded-full hover:bg-[#3f5a3b] shadow-md transition flex items-center gap-2 mx-auto">
-                        <span>➕</span> 새 공고 등록하기
+                <div class="text-center mb-6">
+                    <span class="text-4xl mb-3 block">🤝</span>
+                    <h2 class="text-3xl font-bold text-camping-text mb-2">사회복지 채용 & 기관 탐색</h2>
+                    <p class="text-camping-subtext">한국사회복지사협회, 복지넷 등 주요 공고를 모아보고 지원 기관의 시설평가 및 신뢰도를 검증합니다.</p>
+                </div>
+
+                <!-- 주요 사회복지 채용처 & 기관검증 퀵 바로가기 허브 -->
+                <div class="bg-white p-5 rounded-3xl border border-camping-beige shadow-sm mb-8">
+                    <div class="text-xs font-bold text-camping-subtext mb-3 flex items-center gap-1.5">
+                        <span>🔍</span> 주요 사회복지 채용처 & 기관 정보 공식 사이트 바로가기
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <a href="https://www.welfare.net/data/recruitment/job-offer/offer-list" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 한국사회복지사협회</a>
+                        <a href="https://www.sasw.or.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 서울시사협</a>
+                        <a href="https://www.ggsw.or.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 경기도사협</a>
+                        <a href="https://www.bokji.net" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 복지넷(중앙협의회)</a>
+                        <a href="http://eval.w4c.go.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-amber-50 text-amber-800 font-bold rounded-xl border border-amber-200 hover:bg-amber-600 hover:text-white transition shadow-sm">🏛️ 사회복지시설평가(A~F)</a>
+                        <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-blue-50 text-blue-800 font-bold rounded-xl border border-blue-200 hover:bg-blue-600 hover:text-white transition shadow-sm">📋 복지로 복지시설검색</a>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+                    <!-- 분야별 필터 -->
+                    <div class="flex flex-wrap gap-1.5" id="job-category-filters">
+                        <button onclick="setJobCategoryFilter('전체')" class="job-cat-btn px-3 py-1.5 bg-camping-green text-white font-bold rounded-full text-xs shadow-sm transition">전체 분야</button>
+                        <button onclick="setJobCategoryFilter('종합복지관')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">종합복지관</button>
+                        <button onclick="setJobCategoryFilter('노인복지')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">노인복지</button>
+                        <button onclick="setJobCategoryFilter('장애인복지')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">장애인복지</button>
+                        <button onclick="setJobCategoryFilter('아동/청소년')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">아동/청소년</button>
+                        <button onclick="setJobCategoryFilter('의료/정신건강')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">의료/정신</button>
+                        <button onclick="setJobCategoryFilter('사회공헌/재단')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">사회공헌/재단</button>
+                    </div>
+
+                    <button onclick="openJobModal()" class="px-5 py-2 bg-camping-green text-white font-bold rounded-full hover:bg-[#3f5a3b] shadow-md transition flex items-center gap-1.5 text-sm whitespace-nowrap">
+                        <span>➕</span> 공고 등록
                     </button>
                 </div>
 
-                <!-- 상태 필터 버튼 -->
-                <div class="flex flex-wrap justify-center gap-2 mb-8" id="job-status-filters">
-                    <button onclick="setJobFilter('전체')" class="job-filter-btn px-4 py-1.5 bg-camping-green text-white font-bold rounded-full text-sm shadow-sm transition">전체</button>
-                    <button onclick="setJobFilter('관심')" class="job-filter-btn px-4 py-1.5 bg-white text-camping-text border font-bold rounded-full text-sm hover:bg-gray-50 transition">👀 관심</button>
-                    <button onclick="setJobFilter('서류준비')" class="job-filter-btn px-4 py-1.5 bg-white text-camping-text border font-bold rounded-full text-sm hover:bg-gray-50 transition">📝 서류준비</button>
-                    <button onclick="setJobFilter('서류제출')" class="job-filter-btn px-4 py-1.5 bg-white text-camping-text border font-bold rounded-full text-sm hover:bg-gray-50 transition">📤 서류제출</button>
-                    <button onclick="setJobFilter('면접')" class="job-filter-btn px-4 py-1.5 bg-white text-camping-text border font-bold rounded-full text-sm hover:bg-gray-50 transition">🎤 면접</button>
-                    <button onclick="setJobFilter('합격')" class="job-filter-btn px-4 py-1.5 bg-white text-camping-text border font-bold rounded-full text-sm hover:bg-gray-50 transition">🎉 합격</button>
+                <!-- 전형 상태 필터 버튼 -->
+                <div class="flex flex-wrap gap-2 mb-8" id="job-status-filters">
+                    <button onclick="setJobStatusFilter('전체')" class="job-status-btn px-3.5 py-1 bg-camping-text text-white font-bold rounded-full text-xs shadow-sm transition">전체 상태</button>
+                    <button onclick="setJobStatusFilter('관심')" class="job-status-btn px-3.5 py-1 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">👀 관심</button>
+                    <button onclick="setJobStatusFilter('서류준비')" class="job-status-btn px-3.5 py-1 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">📝 서류준비</button>
+                    <button onclick="setJobStatusFilter('서류제출')" class="job-status-btn px-3.5 py-1 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">📤 서류제출</button>
+                    <button onclick="setJobStatusFilter('면접')" class="job-status-btn px-3.5 py-1 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🎤 면접</button>
+                    <button onclick="setJobStatusFilter('합격')" class="job-status-btn px-3.5 py-1 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🎉 합격</button>
                 </div>
 
                 <!-- 공고 카드 목록 컨테이너 -->
@@ -326,7 +355,7 @@
     <div id="job-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-white w-full max-w-md rounded-[2rem] p-6 shadow-2xl" id="job-modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-lg flex items-center gap-2"><span>💼</span> <span id="job-modal-title">채용공고 등록</span></h3>
+                <h3 class="font-bold text-lg flex items-center gap-2"><span>💼</span> <span id="job-modal-title">사회복지 채용공고 등록</span></h3>
                 <div>
                     <button id="btn-delete-job" class="hidden w-8 h-8 rounded-full bg-red-50 text-red-500 hover:bg-red-100 border border-red-100 mr-2 transition">🗑️</button>
                     <button onclick="closeJobModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition">✕</button>
@@ -334,15 +363,19 @@
             </div>
             <form id="job-form" class="flex flex-col gap-3">
                 <input type="hidden" id="job-id">
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">회사명</label>
-                    <input type="text" id="job-company" required placeholder="예: 토스, 네이버, 스타트업..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-bold text-sm bg-camping-bg/30">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">지원 포지션 / 직무</label>
-                    <input type="text" id="job-role" required placeholder="예: 서비스 기획자, 프론트엔드 개발자..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-camping-bg/30">
-                </div>
                 <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">복지 분야</label>
+                        <select id="job-category" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm font-bold bg-white">
+                            <option value="종합복지관">🏢 종합사회복지관</option>
+                            <option value="노인복지">👵 노인복지</option>
+                            <option value="장애인복지">♿ 장애인복지</option>
+                            <option value="아동/청소년">🧒 아동/청소년</option>
+                            <option value="의료/정신건강">🏥 의료/정신건강</option>
+                            <option value="사회공헌/재단">🌿 사회공헌/재단</option>
+                            <option value="기타 복지">🏕️ 기타 복지기관</option>
+                        </select>
+                    </div>
                     <div class="flex-1">
                         <label class="block text-xs font-bold text-gray-500 mb-1">전형 상태</label>
                         <select id="job-status" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm font-bold bg-white">
@@ -354,21 +387,31 @@
                             <option value="불합격">🌱 다음 기회에</option>
                         </select>
                     </div>
-                    <div class="flex-1">
-                        <label class="block text-xs font-bold text-gray-500 mb-1">마감일</label>
-                        <input type="date" id="job-deadline" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-white">
-                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">기관 / 시설명</label>
+                    <input type="text" id="job-company" required placeholder="예: 신사종합사회복지관, 영락노인전문요양원, 초록우산..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-bold text-sm bg-camping-bg/30">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">지원 포지션 / 팀</label>
+                    <input type="text" id="job-role" required placeholder="예: 사례관리팀 사회복지사 (정규직), 서비스제공팀..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-camping-bg/30">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">원서 접수 마감일</label>
+                    <input type="date" id="job-deadline" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-white">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-500 mb-1">공고 링크 (URL)</label>
-                    <input type="text" id="job-url" placeholder="예: wanted.co.kr/... 또는 https://..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-camping-bg/30">
+                    <input type="text" id="job-url" placeholder="예: welfare.net/... 또는 https://..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-camping-bg/30">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 mb-1">간단 메모 / 핵심 자격요건</label>
-                    <textarea id="job-memo" rows="2" placeholder="우대사항이나 메모를 자유롭게 적어주세요." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm resize-none bg-camping-bg/30"></textarea>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">핵심 자격요건 / 우대사항 메모</label>
+                    <textarea id="job-memo" rows="2" placeholder="예: 1급 필수, 1종 보통 실운전 가능자 우대, 블라인드 이력서 서식 확인" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm resize-none bg-camping-bg/30"></textarea>
                 </div>
                 <button type="submit" id="job-submit-btn" class="py-3 bg-camping-green text-white font-bold rounded-xl shadow-md hover:bg-[#3f5a3b] transition mt-2">저장하기 💼</button>
             </form>
+        </div>
+    </div>
         </div>
     </div>
 
@@ -438,7 +481,9 @@
             }
         };
 
-        // ---------------- 채용공고(Jobs) 관리 로직 ----------------
+        // ---------------- 사회복지 채용(Jobs) & 기관 관리 로직 ----------------
+        let currentJobCategoryFilter = '전체', currentJobStatusFilter = '전체';
+
         const statusBadgeMap = {
             '관심': 'bg-gray-100 text-gray-700 border-gray-200',
             '서류준비': 'bg-yellow-50 text-yellow-700 border-yellow-200',
@@ -448,13 +493,35 @@
             '불합격': 'bg-red-50 text-red-500 border-red-200'
         };
 
-        window.setJobFilter = (filter) => {
-            currentJobFilter = filter;
-            document.querySelectorAll('.job-filter-btn').forEach(btn => {
-                if (btn.innerText.includes(filter)) {
-                    btn.className = "job-filter-btn px-4 py-1.5 bg-camping-green text-white font-bold rounded-full text-sm shadow-sm transition";
+        const categoryBadgeMap = {
+            '종합복지관': 'bg-emerald-50 text-emerald-800 border-emerald-200',
+            '노인복지': 'bg-orange-50 text-orange-800 border-orange-200',
+            '장애인복지': 'bg-cyan-50 text-cyan-800 border-cyan-200',
+            '아동/청소년': 'bg-amber-50 text-amber-800 border-amber-200',
+            '의료/정신건강': 'bg-rose-50 text-rose-800 border-rose-200',
+            '사회공헌/재단': 'bg-teal-50 text-teal-800 border-teal-200',
+            '기타 복지': 'bg-gray-100 text-gray-700 border-gray-200'
+        };
+
+        window.setJobCategoryFilter = (cat) => {
+            currentJobCategoryFilter = cat;
+            document.querySelectorAll('.job-cat-btn').forEach(btn => {
+                if (btn.innerText.includes(cat) || (cat === '전체' && btn.innerText.includes('전체 분야'))) {
+                    btn.className = "job-cat-btn px-3 py-1.5 bg-camping-green text-white font-bold rounded-full text-xs shadow-sm transition";
                 } else {
-                    btn.className = "job-filter-btn px-4 py-1.5 bg-white text-camping-text border font-bold rounded-full text-sm hover:bg-gray-50 transition";
+                    btn.className = "job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition";
+                }
+            });
+            renderJobs();
+        };
+
+        window.setJobStatusFilter = (st) => {
+            currentJobStatusFilter = st;
+            document.querySelectorAll('.job-status-btn').forEach(btn => {
+                if (btn.innerText.includes(st) || (st === '전체' && btn.innerText.includes('전체 상태'))) {
+                    btn.className = "job-status-btn px-3.5 py-1 bg-camping-text text-white font-bold rounded-full text-xs shadow-sm transition";
+                } else {
+                    btn.className = "job-status-btn px-3.5 py-1 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition";
                 }
             });
             renderJobs();
@@ -462,35 +529,59 @@
 
         const renderJobs = () => {
             const container = document.getElementById('jobs-container');
-            const filtered = allJobs.filter(j => currentJobFilter === '전체' || j.status === currentJobFilter);
+            const filtered = allJobs.filter(j => {
+                const matchCat = currentJobCategoryFilter === '전체' || (j.category && j.category.includes(currentJobCategoryFilter));
+                const matchStatus = currentJobStatusFilter === '전체' || j.status === currentJobStatusFilter;
+                return matchCat && matchStatus;
+            });
+
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-16 text-gray-400 border border-dashed border-camping-beige rounded-3xl">등록된 채용공고가 없습니다.<br>관심 있는 공고와 지원 일정을 등록해보세요! 💼</div>`;
+                container.innerHTML = `<div class="col-span-full text-center py-16 text-gray-400 border border-dashed border-camping-beige rounded-3xl">조건에 일치하는 사회복지 채용공고가 없습니다.<br>새 공고를 등록하거나 상단 공식 사이트를 확인해보세요! 🤝</div>`;
                 return;
             }
+
             container.innerHTML = '';
             filtered.forEach(j => {
-                const badgeStyle = statusBadgeMap[j.status] || 'bg-gray-100 text-gray-700 border-gray-200';
+                const badgeStatus = statusBadgeMap[j.status] || 'bg-gray-100 text-gray-700 border-gray-200';
+                const badgeCat = categoryBadgeMap[j.category] || 'bg-gray-100 text-gray-700 border-gray-200';
+                
                 let ddayBadge = '';
                 if (j.deadline) {
                     const c = calculateDDay(j.deadline);
                     const bc = c.days >= 0 ? (c.days <= 3 ? 'bg-red-500 text-white' : 'bg-camping-accent text-white') : 'bg-gray-200 text-gray-500';
                     ddayBadge = `<span class="${bc} text-[11px] font-bold px-2 py-0.5 rounded-full shadow-sm">${c.text}</span>`;
                 }
-                const linkBtn = j.url ? `<a href="${j.url}" target="_blank" rel="noopener noreferrer" class="block text-center py-2 bg-camping-bg text-camping-green font-bold rounded-xl hover:bg-camping-greenlight hover:text-white transition text-xs mt-3">공고 원문 바로가기 &rarr;</a>` : '';
+
+                const encodedComp = encodeURIComponent(j.company || '');
+                const mapUrl = `https://map.naver.com/v5/search/${encodedComp}`;
+                const evalUrl = `http://eval.w4c.go.kr`;
+                const linkBtn = j.url ? `<a href="${j.url}" target="_blank" rel="noopener noreferrer" class="block text-center py-2 bg-camping-bg text-camping-green font-bold rounded-xl hover:bg-camping-greenlight hover:text-white transition text-xs mb-2">공고 원문 바로가기 &rarr;</a>` : '';
+
                 container.innerHTML += `
                     <div class="bg-white p-5 rounded-3xl border border-camping-beige shadow-sm hover:shadow-md hover:-translate-y-1 transition group relative flex flex-col h-full">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="px-2.5 py-1 text-xs font-bold rounded-full border ${badgeStyle}">${j.status}</span>
+                            <div class="flex gap-1.5 flex-wrap">
+                                ${j.category ? `<span class="px-2.5 py-0.5 text-[11px] font-bold rounded-full border ${badgeCat}">${j.category}</span>` : ''}
+                                <span class="px-2.5 py-0.5 text-[11px] font-bold rounded-full border ${badgeStatus}">${j.status}</span>
+                            </div>
                             <div class="opacity-0 group-hover:opacity-100 flex gap-1.5 transition-opacity">
                                 <button onclick="openJobModal('${j.id}')" class="w-7 h-7 rounded-full bg-gray-50 text-camping-green hover:bg-gray-100 flex items-center justify-center text-xs">✏️</button>
                                 <button onclick="deleteDocItem('${jobsPath}', '${j.id}')" class="w-7 h-7 rounded-full bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center text-xs">🗑️</button>
                             </div>
                         </div>
-                        <div class="text-xs font-bold text-camping-subtext mt-1">${j.company}</div>
-                        <h3 class="font-bold text-lg text-camping-text mb-2 line-clamp-1">${j.role}</h3>
+                        <div class="text-xs font-extrabold text-camping-green mt-1 flex items-center gap-1">🏢 ${j.company}</div>
+                        <h3 class="font-bold text-base text-camping-text mb-2 line-clamp-1">${j.role}</h3>
                         ${j.deadline ? `<div class="flex items-center gap-2 mb-3"><span class="text-xs text-gray-500">📅 마감: ${j.deadline.replace(/-/g, '.')}</span> ${ddayBadge}</div>` : '<div class="text-xs text-gray-400 mb-3">상시 채용 또는 마감일 미정</div>'}
-                        ${j.memo ? `<p class="text-xs text-gray-500 bg-camping-bg/30 p-2.5 rounded-xl line-clamp-2 whitespace-pre-wrap flex-grow">${j.memo}</p>` : '<div class="flex-grow"></div>'}
-                        ${linkBtn}
+                        ${j.memo ? `<p class="text-xs text-gray-500 bg-camping-bg/30 p-2.5 rounded-xl line-clamp-2 whitespace-pre-wrap flex-grow mb-3">${j.memo}</p>` : '<div class="flex-grow"></div>'}
+                        
+                        <!-- 기관 탐색 & 공고 링크 툴바 -->
+                        <div class="pt-2 border-t border-camping-beige/60">
+                            ${linkBtn}
+                            <div class="flex gap-1.5 text-[11px]">
+                                <a href="${evalUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-1.5 bg-amber-50 text-amber-900 rounded-lg font-bold hover:bg-amber-100 transition" title="보건복지부 시설평가 등급 검색">🏛️ 시설평가</a>
+                                <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-1.5 bg-gray-50 text-gray-700 rounded-lg font-bold hover:bg-gray-100 transition" title="네이버 지도 위치 및 주변 확인">📍 지도위치</a>
+                            </div>
+                        </div>
                     </div>
                 `;
             });
@@ -504,13 +595,14 @@
                 const j = allJobs.find(x => x.id === id);
                 if (j) {
                     document.getElementById('job-id').value = j.id;
+                    document.getElementById('job-category').value = j.category || '종합복지관';
                     document.getElementById('job-company').value = j.company || '';
                     document.getElementById('job-role').value = j.role || '';
                     document.getElementById('job-status').value = j.status || '관심';
                     document.getElementById('job-deadline').value = j.deadline || '';
                     document.getElementById('job-url').value = j.url || '';
                     document.getElementById('job-memo').value = j.memo || '';
-                    document.getElementById('job-modal-title').innerText = '채용공고 수정';
+                    document.getElementById('job-modal-title').innerText = '사회복지 채용공고 수정';
                     if (btnDel) {
                         btnDel.classList.remove('hidden');
                         btnDel.onclick = async () => { await deleteDocItem(jobsPath, j.id); closeJobModal(); };
@@ -518,7 +610,7 @@
                 }
             } else {
                 document.getElementById('job-id').value = '';
-                document.getElementById('job-modal-title').innerText = '채용공고 등록';
+                document.getElementById('job-modal-title').innerText = '사회복지 채용공고 등록';
                 if (btnDel) btnDel.classList.add('hidden');
             }
             jobModal.classList.remove('hidden');
@@ -530,6 +622,7 @@
             e.preventDefault();
             const btn = document.getElementById('job-submit-btn'); btn.disabled = true; btn.innerText = '저장 중...';
             const id = document.getElementById('job-id').value;
+            const category = document.getElementById('job-category').value;
             const company = document.getElementById('job-company').value.trim();
             const role = document.getElementById('job-role').value.trim();
             const status = document.getElementById('job-status').value;
@@ -538,7 +631,17 @@
             if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
             const memo = document.getElementById('job-memo').value.trim();
 
-            const jobData = { company, role, status, deadline, url, memo, updatedAt: new Date().toISOString() };
+            // 중복 검사 (새로 추가할 때 기관명 + 마감일 중복 체크)
+            if (!id && deadline) {
+                const isDuplicate = allJobs.some(j => (j.company || '').trim().toLowerCase() === company.toLowerCase() && j.deadline === deadline);
+                if (isDuplicate) {
+                    if (!confirm(`⚠️ [중복 등록 안내]\n'${company}'의 동일한 마감일(${deadline}) 공고가 이미 등록되어 있습니다.\n\n그래도 계속 저장하시겠습니까?`)) {
+                        btn.disabled = false; btn.innerText = '저장하기 💼'; return;
+                    }
+                }
+            }
+
+            const jobData = { category, company, role, status, deadline, url, memo, updatedAt: new Date().toISOString() };
             try {
                 if (id) {
                     await updateDoc(doc(db, jobsPath, id), jobData);
