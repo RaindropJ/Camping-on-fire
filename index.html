@@ -72,7 +72,7 @@
                     <button onclick="showView('records')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">기록</button>
                     <button onclick="showView('schedule')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">일정</button>
                     <button onclick="showView('trail')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">발자취</button>
-                    <button onclick="showView('jobs')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">채용공고</button>
+                    <button onclick="showView('jobs')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">커리어 허브</button>
                     <!-- 스크랩 탭 버튼 -->
                     <button onclick="showView('archive')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">스크랩</button>
                     <button onclick="showView('guestbook')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">방명록</button>
@@ -90,7 +90,7 @@
             <button onclick="showView('records')" class="font-medium text-camping-text">기록</button>
             <button onclick="showView('schedule')" class="font-medium text-camping-text">일정</button>
             <button onclick="showView('trail')" class="font-medium text-camping-text">발자취</button>
-            <button onclick="showView('jobs')" class="font-medium text-camping-text">채용공고</button>
+            <button onclick="showView('jobs')" class="font-medium text-camping-text">커리어 허브</button>
             <button onclick="showView('archive')" class="font-medium text-camping-text">스크랩</button>
             <button onclick="showView('guestbook')" class="font-medium text-camping-text">방명록</button>
         </div>
@@ -122,7 +122,7 @@
                             <h3 class="font-bold text-camping-text mb-4 text-left">📊 나의 캠핑장 요약</h3>
                             <div class="flex justify-between mb-5 px-1">
                                 <div class="text-center"><div class="text-xl font-extrabold text-camping-green" id="stat-posts">0</div><div class="text-[10px] text-camping-subtext font-bold mt-1">기록</div></div>
-                                <div class="text-center"><div class="text-xl font-extrabold text-amber-600" id="stat-jobs">0</div><div class="text-[10px] text-camping-subtext font-bold mt-1">채용공고</div></div>
+                                <div class="text-center"><div class="text-xl font-extrabold text-amber-600" id="stat-jobs">0</div><div class="text-[10px] text-camping-subtext font-bold mt-1">커리어</div></div>
                                 <div class="text-center"><div class="text-xl font-extrabold text-camping-accent" id="stat-ddays">0</div><div class="text-[10px] text-camping-subtext font-bold mt-1">디데이</div></div>
                                 <div class="text-center"><div class="text-xl font-extrabold text-blue-500" id="stat-trails">0</div><div class="text-[10px] text-camping-subtext font-bold mt-1">발자취</div></div>
                                 <div class="text-center"><div class="text-xl font-extrabold text-purple-500" id="stat-archives">0</div><div class="text-[10px] text-camping-subtext font-bold mt-1">스크랩</div></div>
@@ -194,27 +194,63 @@
             </div>
         </section>
 
-        <!-- ==================== 5. JOBS VIEW (사회복지 채용 & 기관 탐색 탭) ==================== -->
+        <!-- ==================== 5. JOBS VIEW (사회복지 & 소셜임팩트 3대 영역 커리어 허브) ==================== -->
         <section id="view-jobs" class="view-section hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6">
                 <div class="text-center mb-6">
-                    <span class="text-4xl mb-3 block">🤝</span>
-                    <h2 class="text-3xl font-bold text-camping-text mb-2">사회복지 채용 & 기관 탐색</h2>
-                    <p class="text-camping-subtext">한국사회복지사협회, 복지넷 등 주요 공고를 모아보고 지원 기관의 시설평가 및 신뢰도를 검증합니다.</p>
+                    <span class="text-4xl mb-3 block">🌱</span>
+                    <h2 class="text-3xl font-bold text-camping-text mb-2">사회복지 & 소셜임팩트 커리어 허브</h2>
+                    <p class="text-camping-subtext font-medium">[ 🏢 복지관 · 🌍 NGO · 💼 기업 사회공헌(CSR) · 🏛️ 기관검증 ] 3대 핵심 영역 통합 대시보드</p>
                 </div>
 
-                <!-- 주요 사회복지 채용처 & 기관검증 퀵 바로가기 허브 -->
-                <div class="bg-white p-5 rounded-3xl border border-camping-beige shadow-sm mb-8">
-                    <div class="text-xs font-bold text-camping-subtext mb-3 flex items-center gap-1.5">
-                        <span>🔍</span> 주요 사회복지 채용처 & 기관 정보 공식 사이트 바로가기
+                <!-- 3대 영역 + 기관검증 퀵 바로가기 허브 -->
+                <div class="bg-white p-5 md:p-6 rounded-3xl border border-camping-beige shadow-sm mb-8">
+                    <div class="text-xs font-bold text-camping-subtext mb-3 flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                            <span>🧭</span> 3대 영역별 핵심 채용 포털 & 기관 신뢰도 검증 퀵 링크
+                        </div>
+                        <span class="hidden sm:inline text-[11px] text-gray-400 font-normal">새 창으로 바로가기 ↗</span>
                     </div>
-                    <div class="flex flex-wrap gap-2 text-xs">
-                        <a href="https://www.welfare.net/data/recruitment/job-offer/offer-list" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 한국사회복지사협회</a>
-                        <a href="https://www.sasw.or.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 서울시사협</a>
-                        <a href="https://www.ggsw.or.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 경기도사협</a>
-                        <a href="https://www.bokji.net" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-camping-bg text-camping-green font-bold rounded-xl border border-camping-greenlight/40 hover:bg-camping-green hover:text-white transition shadow-sm">🌐 복지넷(중앙협의회)</a>
-                        <a href="http://eval.w4c.go.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-amber-50 text-amber-800 font-bold rounded-xl border border-amber-200 hover:bg-amber-600 hover:text-white transition shadow-sm">🏛️ 사회복지시설평가(A~F)</a>
-                        <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 bg-blue-50 text-blue-800 font-bold rounded-xl border border-blue-200 hover:bg-blue-600 hover:text-white transition shadow-sm">📋 복지로 복지시설검색</a>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                        <!-- 1. 복지관/생활시설 -->
+                        <div class="p-3 bg-emerald-50/60 rounded-2xl border border-emerald-100 flex flex-col gap-1.5">
+                            <div class="font-extrabold text-emerald-900 flex items-center gap-1 text-[11px] mb-1">
+                                <span>🏢</span> 복지관 · 생활시설
+                            </div>
+                            <a href="https://www.welfare.net/data/recruitment/job-offer/offer-list" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-emerald-800 font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition shadow-2xs border border-emerald-200/60 truncate">🌐 한국사회복지사협회 (한사협)</a>
+                            <a href="https://www.sasw.or.kr" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-emerald-800 font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition shadow-2xs border border-emerald-200/60 truncate">🌐 서울시사회복지사협회</a>
+                            <a href="https://www.bokji.net" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-emerald-800 font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition shadow-2xs border border-emerald-200/60 truncate">🌐 복지넷 (중앙협의회)</a>
+                            <a href="https://www.ggsw.or.kr" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-emerald-800 font-bold rounded-lg hover:bg-emerald-600 hover:text-white transition shadow-2xs border border-emerald-200/60 truncate">🌐 경기사협</a>
+                        </div>
+
+                        <!-- 2. 국제구호/시민사회 NGO -->
+                        <div class="p-3 bg-blue-50/60 rounded-2xl border border-blue-100 flex flex-col gap-1.5">
+                            <div class="font-extrabold text-blue-900 flex items-center gap-1 text-[11px] mb-1">
+                                <span>🌍</span> 국제구호 · NGO
+                            </div>
+                            <a href="https://www.ngokcoc.or.kr" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-blue-800 font-bold rounded-lg hover:bg-blue-600 hover:text-white transition shadow-2xs border border-blue-200/60 truncate">🌐 KCOC (개발협력협의회)</a>
+                            <a href="https://www.seoulpa.kr" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-blue-800 font-bold rounded-lg hover:bg-blue-600 hover:text-white transition shadow-2xs border border-blue-200/60 truncate">🌐 공익활동지원센터 채용</a>
+                            <a href="https://www.daumfoundation.org" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-blue-800 font-bold rounded-lg hover:bg-blue-600 hover:text-white transition shadow-2xs border border-blue-200/60 truncate">🌐 다음세대재단 (체인지메이커)</a>
+                        </div>
+
+                        <!-- 3. 기업 CSR / 임팩트 -->
+                        <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-100 flex flex-col gap-1.5">
+                            <div class="font-extrabold text-amber-900 flex items-center gap-1 text-[11px] mb-1">
+                                <span>💼</span> 기업 사회공헌 · CSR
+                            </div>
+                            <a href="https://impact.career" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-amber-800 font-bold rounded-lg hover:bg-amber-600 hover:text-white transition shadow-2xs border border-amber-200/60 truncate">🌐 임팩트커리어 (루트임팩트)</a>
+                            <a href="https://www.saramin.co.kr/zf_user/search?search_area=main&search_done=y&search_optional_100=n&searchword=%EC%82%AC%ED%9A%8C%EA%B3%B5%ED%97%8C" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-amber-800 font-bold rounded-lg hover:bg-amber-600 hover:text-white transition shadow-2xs border border-amber-200/60 truncate">🌐 사람인 '사회공헌' 공고</a>
+                        </div>
+
+                        <!-- 4. 기관 신뢰도 / 시설평가 검증 -->
+                        <div class="p-3 bg-purple-50/60 rounded-2xl border border-purple-100 flex flex-col gap-1.5">
+                            <div class="font-extrabold text-purple-900 flex items-center gap-1 text-[11px] mb-1">
+                                <span>🔍</span> 기관 평가 · 공신력 검증
+                            </div>
+                            <a href="http://eval.w4c.go.kr" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-purple-800 font-bold rounded-lg hover:bg-purple-600 hover:text-white transition shadow-2xs border border-purple-200/60 truncate" title="보건복지부 시설평가 A~F 등급 확인">🏛️ 사회복지시설평가(A~F)</a>
+                            <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 bg-white text-purple-800 font-bold rounded-lg hover:bg-purple-600 hover:text-white transition shadow-2xs border border-purple-200/60 truncate" title="지자체 인가 공식 복지시설 검색">📋 복지로 복지시설 검색</a>
+                        </div>
                     </div>
                 </div>
 
@@ -222,16 +258,15 @@
                     <!-- 분야별 필터 -->
                     <div class="flex flex-wrap gap-1.5" id="job-category-filters">
                         <button onclick="setJobCategoryFilter('전체')" class="job-cat-btn px-3 py-1.5 bg-camping-green text-white font-bold rounded-full text-xs shadow-sm transition">전체 분야</button>
-                        <button onclick="setJobCategoryFilter('종합복지관')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">종합복지관</button>
-                        <button onclick="setJobCategoryFilter('노인복지')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">노인복지</button>
-                        <button onclick="setJobCategoryFilter('장애인복지')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">장애인복지</button>
-                        <button onclick="setJobCategoryFilter('아동/청소년')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">아동/청소년</button>
-                        <button onclick="setJobCategoryFilter('의료/정신건강')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">의료/정신</button>
-                        <button onclick="setJobCategoryFilter('사회공헌/재단')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">사회공헌/재단</button>
+                        <button onclick="setJobCategoryFilter('복지관')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🏢 종합/전문복지관</button>
+                        <button onclick="setJobCategoryFilter('NGO')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🌍 국제구호/NGO</button>
+                        <button onclick="setJobCategoryFilter('CSR')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">💼 기업 사회공헌(CSR)</button>
+                        <button onclick="setJobCategoryFilter('재단')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🌿 공익/복지재단</button>
+                        <button onclick="setJobCategoryFilter('의료')" class="job-cat-btn px-3 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🏥 의료/정신건강</button>
                     </div>
 
                     <button onclick="openJobModal()" class="px-5 py-2 bg-camping-green text-white font-bold rounded-full hover:bg-[#3f5a3b] shadow-md transition flex items-center gap-1.5 text-sm whitespace-nowrap">
-                        <span>➕</span> 공고 등록
+                        <span>➕</span> 공고 직접 등록
                     </button>
                 </div>
 
@@ -365,15 +400,14 @@
                 <input type="hidden" id="job-id">
                 <div class="flex gap-3">
                     <div class="flex-1">
-                        <label class="block text-xs font-bold text-gray-500 mb-1">복지 분야</label>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">채용 분야 (3대 영역)</label>
                         <select id="job-category" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm font-bold bg-white">
-                            <option value="종합복지관">🏢 종합사회복지관</option>
-                            <option value="노인복지">👵 노인복지</option>
-                            <option value="장애인복지">♿ 장애인복지</option>
-                            <option value="아동/청소년">🧒 아동/청소년</option>
+                            <option value="종합/전문복지관">🏢 종합/전문복지관</option>
+                            <option value="국제구호/NGO">🌍 국제구호/NGO</option>
+                            <option value="기업 사회공헌(CSR)">💼 기업 사회공헌(CSR)</option>
+                            <option value="공익/복지재단">🌿 공익/복지재단</option>
                             <option value="의료/정신건강">🏥 의료/정신건강</option>
-                            <option value="사회공헌/재단">🌿 사회공헌/재단</option>
-                            <option value="기타 복지">🏕️ 기타 복지기관</option>
+                            <option value="기타 복지">🏕️ 기타/생활시설</option>
                         </select>
                     </div>
                     <div class="flex-1">
@@ -494,13 +528,18 @@
         };
 
         const categoryBadgeMap = {
+            '종합/전문복지관': 'bg-emerald-50 text-emerald-800 border-emerald-200',
+            '국제구호/NGO': 'bg-blue-50 text-blue-800 border-blue-200',
+            '기업 사회공헌(CSR)': 'bg-amber-50 text-amber-800 border-amber-200',
+            '공익/복지재단': 'bg-teal-50 text-teal-800 border-teal-200',
+            '의료/정신건강': 'bg-rose-50 text-rose-800 border-rose-200',
+            '기타 복지': 'bg-gray-100 text-gray-700 border-gray-200',
+            // 기존 등록 데이터 호환용
             '종합복지관': 'bg-emerald-50 text-emerald-800 border-emerald-200',
             '노인복지': 'bg-orange-50 text-orange-800 border-orange-200',
             '장애인복지': 'bg-cyan-50 text-cyan-800 border-cyan-200',
             '아동/청소년': 'bg-amber-50 text-amber-800 border-amber-200',
-            '의료/정신건강': 'bg-rose-50 text-rose-800 border-rose-200',
-            '사회공헌/재단': 'bg-teal-50 text-teal-800 border-teal-200',
-            '기타 복지': 'bg-gray-100 text-gray-700 border-gray-200'
+            '사회공헌/재단': 'bg-teal-50 text-teal-800 border-teal-200'
         };
 
         window.setJobCategoryFilter = (cat) => {
@@ -595,14 +634,14 @@
                 const j = allJobs.find(x => x.id === id);
                 if (j) {
                     document.getElementById('job-id').value = j.id;
-                    document.getElementById('job-category').value = j.category || '종합복지관';
+                    document.getElementById('job-category').value = j.category || '종합/전문복지관';
                     document.getElementById('job-company').value = j.company || '';
                     document.getElementById('job-role').value = j.role || '';
                     document.getElementById('job-status').value = j.status || '관심';
                     document.getElementById('job-deadline').value = j.deadline || '';
                     document.getElementById('job-url').value = j.url || '';
                     document.getElementById('job-memo').value = j.memo || '';
-                    document.getElementById('job-modal-title').innerText = '사회복지 채용공고 수정';
+                    document.getElementById('job-modal-title').innerText = '커리어 공고 수정 💼';
                     if (btnDel) {
                         btnDel.classList.remove('hidden');
                         btnDel.onclick = async () => { await deleteDocItem(jobsPath, j.id); closeJobModal(); };
