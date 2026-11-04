@@ -41,6 +41,7 @@ HEADERS = {
 }
 
 LIMIT_PER_CATEGORY = 24
+LIMIT_PER_NEWS_CATEGORY = 12  # 분류별 최대 12개 시사 브리핑 기사 유지
 
 def get_firebase_token():
     """Firebase 익명 인증 토큰 획득"""
@@ -386,8 +387,9 @@ def sync_welfare_news_briefing(id_token):
     except Exception as e:
         print(f"  ⚠️ 기존 뉴스 조회 예외 (신규 초기화): {e}")
 
-    # 공공 및 전문기관 최신 복지 이슈 목록 템플릿
+    # 공공 및 전문기관 최신 복지 이슈 목록 템플릿 (각 분류별 최대 12개 관리 대상)
     curated_news = [
+        # 1. 정책/제도
         {
             "category": "정책/제도",
             "source": "보건복지부",
@@ -397,6 +399,15 @@ def sync_welfare_news_briefing(id_token):
             "summary": "사회복지시설 종사자 기본급 처우 개선 및 인건비 단일화 표준 가이드라인 단계적 적용 분석."
         },
         {
+            "category": "정책/제도",
+            "source": "에이블뉴스",
+            "title": "장애인 개인예산제 전국 본사업 로드맵 분석: 서비스 코디네이터로서의 복지사 역할",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.ablenews.co.kr",
+            "summary": "공급자 중심에서 당사자 주도형 맞춤 예산 바우처로의 패러다임 전환과 복지사 전문 역량 요구."
+        },
+        # 2. 복지관/현장
+        {
             "category": "복지관/현장",
             "source": "한국사회복지관협회",
             "title": "지역사회 스마트 복지관 선도모델 구축: 디지털 취약계층 밀착 돌봄 및 AI 안부확인",
@@ -405,6 +416,66 @@ def sync_welfare_news_briefing(id_token):
             "summary": "AI 돌봄 로봇 및 사물인터넷(IoT) 센서 연계 취약계층 24시간 안전망 실천 우수사례 공유."
         },
         {
+            "category": "복지관/현장",
+            "source": "서울시사회복지사협회",
+            "title": "사회복지현장 안전보장 및 인권보호 매뉴얼 개정: 악성민원 대응과 소진(Burnout) 예방",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.sasw.or.kr",
+            "summary": "사회복지사의 안전하고 존엄한 근무환경 조성을 위한 안전요원 배치 기준 및 심리상담 바우처 지원 강화."
+        },
+        # 3. 정신건강
+        {
+            "category": "정신건강",
+            "source": "마인드포스트",
+            "title": "정신건강복지법 개정 논의: 사법입원제 도입 쟁점과 당사자 절차보조인 제도의 현장 안착",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.mindpost.or.kr",
+            "summary": "중증 정신질환자 입원 절차 사법적 판단 쟁점과 당사자 절차보조인 및 동료지원가(Peer Support) 권익 옹호."
+        },
+        {
+            "category": "정신건강",
+            "source": "한국정신건강사회복지사협회",
+            "title": "24시간 정신응급 위기개입센터 전국 확충과 정신건강사회복지사의 현장 출동 프로토콜",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.kamhsw.or.kr",
+            "summary": "경찰·소방과 공조하는 권역별 정신응급대응센터 24시간 당직 체계 가동 및 지역사회 낮병원 연계."
+        },
+        # 4. 의료사회복지
+        {
+            "category": "의료",
+            "source": "대한의료사회복지사협회",
+            "title": "의료사회복지사 법정자격 전문화 이후 병원 내 다학제 진료팀 및 환자권익 옹호 확대",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.kamsw.or.kr",
+            "summary": "병원 내 심리사회적 사정 수가 및 퇴원계획 상담 수가 제도화 진행 경과와 사전연명의료의향서 상담 지원."
+        },
+        {
+            "category": "의료",
+            "source": "청년의사",
+            "title": "급성기 퇴원환자 지역사회 연계(환자 케어플랜) 본사업 전환: 병원-복지관 핫라인 구축",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.docdocdoc.co.kr",
+            "summary": "입원 환자가 퇴원 후 지역사회에 안착하도록 병원 공공의료사업단과 지역 복지관 간 케어플랜 연계 활성화."
+        },
+        # 5. 사회·인권·노동
+        {
+            "category": "사회",
+            "source": "프레시안",
+            "title": "청년 고립·은둔 청년 국가 실태조사 발표: ‘당사자 중심의 관계 맺기와 단계별 사회복귀’",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.pressian.com",
+            "summary": "고립 청년 자립을 위한 비대면 커뮤니티부터 공동생활 셰어하우스, 완만한 일경험 인턴십 통합 프로그램."
+        },
+        {
+            "category": "사회",
+            "source": "참여연대 복지동향",
+            "title": "돌봄노동자(요양보호사·활동지원사) 처우개선 및 공공돌봄 인프라 확충 연대 성명",
+            "date": datetime.date.today().isoformat(),
+            "url": "https://www.peoplepower21.org/welfare",
+            "summary": "초고령사회 필수 돌봄노동자의 사회안전망 구축과 지자체 사회서비스원 공공성 강화 촉구."
+        },
+        # 6. NGO/국제구호
+        {
             "category": "NGO/국제구호",
             "source": "KCOC",
             "title": "국제구호 NGO의 현지 중심화(Localization)와 기후위기 대응 인도적 지원 동향",
@@ -412,6 +483,7 @@ def sync_welfare_news_briefing(id_token):
             "url": "https://www.ngokcoc.or.kr",
             "summary": "기후변화 취약국가 대상 긴급구호 체계 혁신 및 비정부기구의 지속가능한 파트너십 구축."
         },
+        # 7. 기업 사회공헌
         {
             "category": "기업CSR/사회공헌",
             "source": "한국사회복지협의회",
