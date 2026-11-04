@@ -17,8 +17,20 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
+    <!-- 다크모드 깜빡임 방지 즉시 실행 스크립트 -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { sans: ['Nunito', 'Noto Sans KR', 'sans-serif'] },
@@ -56,6 +68,157 @@
         .ql-toolbar.ql-snow { border-radius: 1rem 1rem 0 0; border-color: #EFEADD; background: rgba(245, 242, 235, 0.3); font-family: inherit; }
         .ql-container.ql-snow { border-radius: 0 0 1rem 1rem; border-color: #EFEADD; background: rgba(245, 242, 235, 0.3); font-family: inherit; font-size: 1rem; }
         .ql-editor { min-height: 200px; }
+
+        /* ==================== 🌙 아늑한 밤 캠핑 모드 (다크모드) 세부 테마 ==================== */
+        html.dark {
+            color-scheme: dark;
+        }
+        html.dark body {
+            background-color: #121612 !important;
+            color: #E2E8F0 !important;
+        }
+        html.dark ::-webkit-scrollbar-track { background: #121612; }
+        html.dark ::-webkit-scrollbar-thumb { background: #3B5338; }
+
+        html.dark nav {
+            background-color: rgba(18, 22, 18, 0.94) !important;
+            border-color: #273328 !important;
+        }
+        html.dark nav button.text-camping-text {
+            color: #E2E8F0 !important;
+        }
+        html.dark .nav-btn {
+            color: #94A3B8 !important;
+        }
+        html.dark .nav-btn:hover {
+            color: #86EFAC !important;
+        }
+        html.dark .nav-btn.text-camping-green {
+            color: #86EFAC !important;
+            border-color: #86EFAC !important;
+        }
+
+        /* 메인 카드 및 배경 컨테이너 */
+        html.dark .bg-white {
+            background-color: #1C221D !important;
+            color: #E2E8F0 !important;
+        }
+        html.dark .bg-camping-bg {
+            background-color: #141814 !important;
+        }
+        html.dark .bg-camping-bg\/30,
+        html.dark .bg-camping-bg\/60,
+        html.dark .bg-camping-bg\/70 {
+            background-color: #181E19 !important;
+        }
+        html.dark .border-camping-beige,
+        html.dark .border-camping-beige\/60,
+        html.dark .border-camping-beige\/70 {
+            border-color: #2A362B !important;
+        }
+        html.dark .border-gray-100,
+        html.dark .border-gray-200 {
+            border-color: #2A362B !important;
+        }
+        html.dark .text-camping-text {
+            color: #E5E7EB !important;
+        }
+        html.dark .text-camping-subtext {
+            color: #94A3B8 !important;
+        }
+        html.dark .text-gray-500,
+        html.dark .text-gray-600 {
+            color: #94A3B8 !important;
+        }
+        html.dark .text-gray-400 {
+            color: #64748B !important;
+        }
+        html.dark .bg-gray-50,
+        html.dark .bg-gray-50\/70,
+        html.dark .bg-gray-50\/80 {
+            background-color: #171D18 !important;
+        }
+
+        /* 모달 및 드롭다운 팝업 */
+        html.dark [id$="-modal-content"],
+        html.dark #write-modal > div > div,
+        html.dark #mobile-menu,
+        html.dark .group\/record > div > div,
+        html.dark .group\/career > div > div,
+        html.dark .group\/campfire > div > div {
+            background-color: #1C231D !important;
+            border-color: #2D3A2F !important;
+            color: #E2E8F0 !important;
+        }
+
+        /* 폼 입력창 (인풋, 텍스트에어리어, 셀렉트) */
+        html.dark input,
+        html.dark textarea,
+        html.dark select {
+            background-color: #242D25 !important;
+            color: #F1F5F9 !important;
+            border-color: #344235 !important;
+        }
+        html.dark input:focus,
+        html.dark textarea:focus,
+        html.dark select:focus {
+            border-color: #86EFAC !important;
+        }
+        html.dark input::placeholder,
+        html.dark textarea::placeholder {
+            color: #64748B !important;
+        }
+
+        /* 캘린더 일자 */
+        html.dark .calendar-day {
+            border-color: #273328 !important;
+        }
+        html.dark .calendar-day:hover {
+            background-color: #242E25 !important;
+            border-color: #3D503E !important;
+        }
+        html.dark .weekly-col:hover {
+            background-color: #1A221B !important;
+        }
+
+        /* 에디터 (Quill) 다크모드 대응 */
+        html.dark .ql-toolbar.ql-snow,
+        html.dark .ql-container.ql-snow {
+            background-color: #222B23 !important;
+            border-color: #2D3A2F !important;
+            color: #E2E8F0 !important;
+        }
+        html.dark .ql-snow .ql-stroke {
+            stroke: #94A3B8 !important;
+        }
+        html.dark .ql-snow .ql-fill {
+            fill: #94A3B8 !important;
+        }
+        html.dark .ql-snow .ql-picker {
+            color: #94A3B8 !important;
+        }
+        html.dark .ql-editor {
+            color: #E2E8F0 !important;
+        }
+
+        /* 유틸리티 및 그림자 */
+        html.dark .shadow-sm,
+        html.dark .shadow-md,
+        html.dark .shadow-xl,
+        html.dark .shadow-2xl {
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45) !important;
+        }
+
+        /* 모닥불 볼륨 팝업 슬라이더 배경 */
+        html.dark #campfire-volume,
+        html.dark #campfire-volume-m {
+            background-color: #374638 !important;
+        }
+
+        /* 로드맵 서브탭 다크 최적화 */
+        html.dark .bg-\[\#F0EDE6\] {
+            background-color: #182019 !important;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-camping-greenlight selection:text-white min-h-screen flex flex-col relative">
@@ -95,7 +258,26 @@
                     </div>
 
                     <button onclick="showView('schedule')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">일정</button>
-                    <button onclick="showView('jobs')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">커리어 허브</button>
+                    <!-- 커리어 허브 드롭다운 메뉴 (호버 시 채용공고, 시사 뉴스 브리핑 서브메뉴 노출) -->
+                    <div class="relative group/career flex items-center">
+                        <button onclick="showView('jobs')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium flex items-center gap-1 cursor-pointer py-1.5 whitespace-nowrap">
+                            <span>커리어 허브</span>
+                            <svg class="w-3.5 h-3.5 text-camping-subtext group-hover/career:text-camping-green group-hover/career:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <!-- 호버 시 아래로 부드럽게 나타나는 서브 드롭다운 -->
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover/career:opacity-100 group-hover/career:visible transition-all duration-200 z-50 pointer-events-none group-hover/career:pointer-events-auto">
+                            <div class="bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-xl border border-camping-beige min-w-[195px] flex flex-col gap-1">
+                                <button onclick="showView('jobs')" class="px-3.5 py-2.5 rounded-xl text-left text-xs font-bold text-camping-text hover:bg-camping-bg hover:text-camping-green transition flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                                    <span>💼</span> <span>채용공고 & 지원 현황</span>
+                                </button>
+                                <button onclick="showView('news')" class="px-3.5 py-2.5 rounded-xl text-left text-xs font-bold text-camping-text hover:bg-camping-bg hover:text-camping-green transition flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                                    <span>📰</span> <span>복지 뉴스 & 시사 브리핑</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <button onclick="showView('roadmap')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">로드맵</button>
                     <button onclick="showView('archive')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">스크랩</button>
                     <button onclick="showView('guestbook')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">방명록</button>
@@ -121,10 +303,19 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 밤 캠핑 다크모드 토글 버튼 -->
+                    <button id="btn-dark-mode" onclick="toggleDarkMode()" class="ml-1 px-3 py-1.5 bg-white text-camping-text border border-camping-beige hover:border-indigo-400 font-bold rounded-full shadow-xs transition-all flex items-center gap-1.5 text-xs hover:-translate-y-0.5 cursor-pointer whitespace-nowrap" title="밤 캠핑 모드 (다크모드) ON/OFF">
+                        <span id="dark-mode-icon" class="text-sm">🌙</span>
+                        <span id="dark-mode-text" class="hidden lg:inline">밤 캠핑</span>
+                    </button>
                     <!-- 글쓰기 버튼 -->
                     <button onclick="openModal('write')" class="ml-1 px-5 py-2 bg-camping-green text-white font-bold rounded-full shadow-md hover:bg-[#3f5a3b] hover:-translate-y-0.5 transition-all flex items-center gap-2">✍️ 기록하기</button>
                 </div>
-                <div class="md:hidden flex items-center gap-2">
+                <div class="md:hidden flex items-center gap-1.5">
+                    <button id="btn-dark-mode-m" onclick="toggleDarkMode()" class="w-8 h-8 bg-white text-camping-text border border-camping-beige rounded-full text-xs font-bold shadow-xs flex items-center justify-center cursor-pointer" title="밤 캠핑 모드 전환">
+                        <span id="dark-mode-icon-m">🌙</span>
+                    </button>
                     <button id="btn-campfire-m" onclick="toggleCampfire()" class="px-2.5 py-1.5 bg-white text-camping-text border border-camping-beige rounded-full text-xs font-bold shadow-xs flex items-center gap-1">
                         <span>🔥</span><span id="campfire-text-m">ASMR</span>
                     </button>
@@ -151,7 +342,16 @@
             </div>
 
             <button onclick="showView('schedule')" class="font-medium text-camping-text">일정</button>
-            <button onclick="showView('jobs')" class="font-medium text-camping-text">커리어 허브</button>
+            <!-- 모바일 커리어 하위 그룹 -->
+            <div class="bg-gray-50/80 p-2.5 rounded-2xl border border-gray-100 flex flex-col gap-2">
+                <span class="text-[11px] font-bold text-gray-400">커리어 & 시사 브리핑</span>
+                <button onclick="showView('jobs')" class="font-medium text-camping-text py-1 hover:text-camping-green flex items-center justify-center gap-1.5">
+                    <span>💼</span> 채용공고 & 지원 현황
+                </button>
+                <button onclick="showView('news')" class="font-medium text-camping-text py-1 hover:text-camping-green flex items-center justify-center gap-1.5">
+                    <span>📰</span> 복지 뉴스 & 시사 브리핑
+                </button>
+            </div>
             <button onclick="showView('roadmap')" class="font-medium text-camping-text">로드맵</button>
             <button onclick="showView('archive')" class="font-medium text-camping-text">스크랩</button>
             <button onclick="showView('guestbook')" class="font-medium text-camping-text">방명록</button>
@@ -165,6 +365,10 @@
                     <input type="range" id="campfire-volume-m" min="0" max="1" step="0.05" value="0.45" oninput="setCampfireVolume(this.value)" class="w-32 accent-amber-500 h-1.5 bg-amber-200/60 rounded-lg">
                     <span id="campfire-vol-label-m" class="font-bold text-[11px] text-amber-700 w-8 text-left">45%</span>
                 </div>
+                <!-- 모바일 다크모드 토글 -->
+                <button onclick="toggleDarkMode()" class="font-bold text-indigo-500 py-1 flex items-center justify-center gap-1.5 text-xs pt-1 border-t border-camping-beige/40">
+                    <span id="dark-mode-menu-icon">🌙</span> <span id="dark-mode-menu-text">밤 캠핑 모드로 보기</span>
+                </button>
             </div>
         </div>
     </nav>
@@ -378,6 +582,80 @@
 
                 <!-- 공고 카드 목록 컨테이너 -->
                 <div id="jobs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+        </section>
+
+        <!-- ==================== 5-1. NEWS VIEW (사회복지 & 공익 시사 뉴스 브리핑) ==================== -->
+        <section id="view-news" class="view-section hidden">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-6">
+                    <span class="text-4xl mb-3 block">📰</span>
+                    <h2 class="text-3xl font-bold text-camping-text mb-2">사회복지 & 공익 시사 브리핑</h2>
+                    <p class="text-camping-subtext font-medium">보건복지 정책 이슈, 사회복지관 현장 뉴스, NGO 및 기업 사회공헌(CSR) 동향을 모아보는 지식 서재입니다.</p>
+                </div>
+
+                <!-- 주요 복지 미디어 & 정책 브리핑 퀵 링크 허브 -->
+                <div class="bg-white p-5 rounded-3xl border border-camping-beige shadow-sm mb-8">
+                    <div class="text-xs font-bold text-camping-subtext mb-3 flex items-center justify-between">
+                        <div class="flex items-center gap-1.5">
+                            <span>🌐</span> 주요 사회복지 전문 미디어 & 정책 공식 포털 바로가기
+                        </div>
+                        <span class="hidden sm:inline text-[11px] text-gray-400 font-normal">새 창으로 원문 확인 ↗</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+                        <a href="https://www.welfarenews.net" target="_blank" rel="noopener noreferrer" class="p-2.5 bg-camping-bg/60 rounded-xl border border-camping-beige/70 font-bold text-camping-text hover:bg-camping-green hover:text-white transition text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                            <span class="text-base">📢</span>
+                            <span class="truncate w-full text-[11px]">웰페어뉴스</span>
+                        </a>
+                        <a href="https://www.ablenews.co.kr" target="_blank" rel="noopener noreferrer" class="p-2.5 bg-camping-bg/60 rounded-xl border border-camping-beige/70 font-bold text-camping-text hover:bg-camping-green hover:text-white transition text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                            <span class="text-base">♿</span>
+                            <span class="truncate w-full text-[11px]">에이블뉴스</span>
+                        </a>
+                        <a href="https://www.ibabynews.com" target="_blank" rel="noopener noreferrer" class="p-2.5 bg-camping-bg/60 rounded-xl border border-camping-beige/70 font-bold text-camping-text hover:bg-camping-green hover:text-white transition text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                            <span class="text-base">👶</span>
+                            <span class="truncate w-full text-[11px]">베이비뉴스</span>
+                        </a>
+                        <a href="https://www.bokjiro.go.kr" target="_blank" rel="noopener noreferrer" class="p-2.5 bg-camping-bg/60 rounded-xl border border-camping-beige/70 font-bold text-camping-text hover:bg-camping-green hover:text-white transition text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                            <span class="text-base">🏛️</span>
+                            <span class="truncate w-full text-[11px]">복지로 정책</span>
+                        </a>
+                        <a href="https://www.peoplepower21.org/welfare" target="_blank" rel="noopener noreferrer" class="p-2.5 bg-camping-bg/60 rounded-xl border border-camping-beige/70 font-bold text-camping-text hover:bg-camping-green hover:text-white transition text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                            <span class="text-base">📑</span>
+                            <span class="truncate w-full text-[11px]">참여연대 복지동향</span>
+                        </a>
+                        <a href="https://www.welfare.net" target="_blank" rel="noopener noreferrer" class="p-2.5 bg-camping-bg/60 rounded-xl border border-camping-beige/70 font-bold text-camping-text hover:bg-camping-green hover:text-white transition text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                            <span class="text-base">🤝</span>
+                            <span class="truncate w-full text-[11px]">한사협 정책소식</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 뉴스 필터 & 검색 & 스크랩 등록 바 -->
+                <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-6">
+                    <!-- 카테고리 필터 태그 -->
+                    <div class="flex flex-wrap gap-2 items-center" id="news-category-filters">
+                        <button onclick="setNewsCategoryFilter('전체')" class="news-cat-btn active px-3.5 py-1.5 bg-camping-green text-white font-bold rounded-full text-xs shadow-xs transition">전체</button>
+                        <button onclick="setNewsCategoryFilter('정책/제도')" class="news-cat-btn px-3.5 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🏛️ 복지정책·제도</button>
+                        <button onclick="setNewsCategoryFilter('복지관/현장')" class="news-cat-btn px-3.5 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🏢 복지관·현장</button>
+                        <button onclick="setNewsCategoryFilter('NGO/국제구호')" class="news-cat-btn px-3.5 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">🌍 NGO·국제구호</button>
+                        <button onclick="setNewsCategoryFilter('기업CSR/사회공헌')" class="news-cat-btn px-3.5 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition">💼 기업 사회공헌(CSR)</button>
+                    </div>
+
+                    <!-- 실시간 검색 및 등록 버튼 -->
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1 md:w-56">
+                            <input type="text" id="news-search-input" oninput="handleNewsSearch(this.value)" placeholder="뉴스 키워드 검색..." class="w-full pl-8 pr-3 py-1.5 rounded-full border border-camping-beige text-xs bg-white focus:outline-none focus:border-camping-green">
+                            <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs">🔍</span>
+                        </div>
+                        <button onclick="openNewsModal()" class="px-4 py-2 bg-camping-green text-white font-bold rounded-full hover:bg-[#3f5a3b] shadow-md transition flex items-center gap-1.5 text-xs whitespace-nowrap cursor-pointer">
+                            <span>➕</span> 뉴스 스크랩
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 뉴스 카드 그리드 컨테이너 -->
+                <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
         </section>
 
@@ -834,6 +1112,57 @@
         </div>
     </div>
 
+    <!-- 복지 시사 뉴스 브리핑 등록/수정 모달 -->
+    <div id="news-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-lg rounded-[2rem] p-6 shadow-2xl" id="news-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg flex items-center gap-2"><span>📰</span> <span id="news-modal-title">시사 뉴스 브리핑 스크랩</span></h3>
+                <div>
+                    <button id="btn-delete-news" class="hidden w-8 h-8 rounded-full bg-red-50 text-red-500 hover:bg-red-100 border border-red-100 mr-2 transition">🗑️</button>
+                    <button onclick="closeNewsModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition">✕</button>
+                </div>
+            </div>
+            <form id="news-form" class="flex flex-col gap-3">
+                <input type="hidden" id="news-id">
+                <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">뉴스 분류 (카테고리)</label>
+                        <select id="news-category" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm font-bold bg-white">
+                            <option value="정책/제도">🏛️ 복지정책·제도</option>
+                            <option value="복지관/현장">🏢 복지관·현장소식</option>
+                            <option value="NGO/국제구호">🌍 NGO·국제구호</option>
+                            <option value="기업CSR/사회공헌">💼 기업 사회공헌(CSR)</option>
+                            <option value="일반 시사">📰 일반 복지 시사</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">언론사 / 보도기관 출처</label>
+                        <input type="text" id="news-source" required placeholder="예: 보건복지부, 웰페어뉴스, 에이블뉴스..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-bold text-sm bg-camping-bg/30">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">기사 제목</label>
+                    <input type="text" id="news-title" required placeholder="기사 제목을 입력해주세요" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-bold text-sm bg-camping-bg/30">
+                </div>
+                <div class="flex gap-3">
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">발행일 / 보도일자</label>
+                        <input type="date" id="news-date" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-white">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">원문 링크 (URL)</label>
+                        <input type="text" id="news-url" placeholder="https://..." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm bg-camping-bg/30">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1">핵심 브리핑 요약 (나의 시사 노트)</label>
+                    <textarea id="news-summary" rows="4" required placeholder="사회복지 현장이나 면접에서 활용할 핵심 쟁점, 주요 내용, 나의 생각을 정리해보세요." class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green text-sm resize-none bg-camping-bg/30"></textarea>
+                </div>
+                <button type="submit" id="news-submit-btn" class="py-3 bg-camping-green text-white font-bold rounded-xl shadow-md hover:bg-[#3f5a3b] transition mt-2">브리핑 저장하기 📰</button>
+            </form>
+        </div>
+    </div>
+
     <!-- 로드맵 수정 모달 -->
     <div id="roadmap-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2rem] shadow-2xl p-6 sm:p-8 transform scale-95 transition-transform duration-300" id="roadmap-modal-content">
@@ -1049,9 +1378,67 @@
         const firebaseConfig = { apiKey: "AIzaSyCOsWV1nWDagEtys4Hkkwxql5eEHRqFoC8", authDomain: "dauny-camping-car.firebaseapp.com", projectId: "dauny-camping-car", storageBucket: "dauny-camping-car.firebasestorage.app", messagingSenderId: "75684789349", appId: "1:75684789349:web:b9cfd9f130d310efc99a8c" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
         
-        const postsPath = "posts", trailsPath = "trails", schedulesPath = "schedules", ddaysPath = "ddays", gbPath = "guestbook", archivesPath = "archives", jobsPath = "jobs", roadmapPath = "roadmap", mandalartPath = "mandalart", qnaPath = "qna";
-        let currentUser = null, allPosts = [], allTrails = [], allSchedules = [], allDDays = [], allGuestbooks = [], allArchives = [], allJobs = [];
-        let currentCategory = '전체', currentSearchQuery = '', currentJobFilter = '전체'; 
+        const postsPath = "posts", trailsPath = "trails", schedulesPath = "schedules", ddaysPath = "ddays", gbPath = "guestbook", archivesPath = "archives", jobsPath = "jobs", roadmapPath = "roadmap", mandalartPath = "mandalart", qnaPath = "qna", newsPath = "news";
+        let currentUser = null, allPosts = [], allTrails = [], allSchedules = [], allDDays = [], allGuestbooks = [], allArchives = [], allJobs = [], allNews = [];
+        let currentCategory = '전체', currentSearchQuery = '', currentJobFilter = '전체', currentNewsFilter = '전체', currentNewsSearch = '';
+
+        // 기본 사회복지 및 공익 시사 뉴스 브리핑 큐레이션 데이터
+        const defaultWelfareNews = [
+            {
+                id: 'news-def-1',
+                category: '정책/제도',
+                source: '보건복지부',
+                title: '2026년 사회복지시설 종사자 인건비 가이드라인 개정 및 단일임금제 추진 현황',
+                date: '2026-11-01',
+                url: 'https://www.mohw.go.kr',
+                summary: '복지시설 종사자의 기본급 인상률 반영 및 처우 개선 수당 체계 정비. 사회복지전담공무원 보수 대비 가이드라인 준수율을 지속 점검하고 수도권-지방 간 임금 격차 해소를 위한 단일임금체계 표준화 로드맵 가속화.'
+            },
+            {
+                id: 'news-def-2',
+                category: '복지관/현장',
+                source: '한국사회복지관협회',
+                title: '지역사회 스마트 복지관 선도모델 구축: 디지털 취약계층 밀착 돌봄 및 AI 안부확인',
+                date: '2026-10-28',
+                url: 'https://www.kaswc.or.kr',
+                summary: '종합사회복지관을 중심으로 독거노인·고립가구 대상 AI 안부전화 및 스마트 플러그 시스템 구축 확대. 단순 기기 보급을 넘어 사례관리자의 전문적 밀착 상담과 연계하는 스마트 휴먼서비스 모델 우수 사례 발표.'
+            },
+            {
+                id: 'news-def-3',
+                category: 'NGO/국제구호',
+                source: 'KCOC (국제개발협력민간협의회)',
+                title: '국제구호 NGO의 현지 중심화(Localization)와 기후위기 대응 인도적 지원 동향',
+                date: '2026-10-22',
+                url: 'https://www.ngokcoc.or.kr',
+                summary: '글로벌 재난 및 기후 난민 증가에 따른 현지 파트너십 강화 전략 발표. 기부금 투명성 제고를 위한 디지털 블록체인 후원 관리 솔루션 도입과 청년 국제개발협력 실무자 양성 프로그램 적극 추진.'
+            },
+            {
+                id: 'news-def-4',
+                category: '기업CSR/사회공헌',
+                source: '한국사회복지협의회',
+                title: '2026 지역사회공헌인정제(Corporate-Community Partnership) 확대 및 ESG 연계',
+                date: '2026-10-18',
+                url: 'https://www.bokji.net',
+                summary: '기업의 사회공헌 활동이 단순 일회성 후원을 넘어 복지 사각지대 발굴과 청년 자립지원 등 구체적 사회적 가치(Social Impact) 창출 중심으로 진화. 복지관-기업 간 전략적 협력 거버넌스 활성화.'
+            },
+            {
+                id: 'news-def-5',
+                category: '정책/제도',
+                source: '에이블뉴스',
+                title: '장애인 개인예산제 전국 확대 시범사업 성과 분석과 사회복지사의 새로운 역할',
+                date: '2026-10-15',
+                url: 'https://www.ablenews.co.kr',
+                summary: '공급자 중심에서 당사자 수요 중심 복지 패러다임 전환에 따른 개인예산제(Personal Budget) 적용 사례 공유. 현장 사회복지사의 서비스 코디네이터 및 자기결정권 지지자로서의 전문적 역량 강화 강조.'
+            },
+            {
+                id: 'news-def-6',
+                category: '복지관/현장',
+                source: '서울시사회복지사협회',
+                title: '사회복지현장 안전보장 및 인권보호 매뉴얼 개정: 악성민원 대응과 소진(Burnout) 예방',
+                date: '2026-10-10',
+                url: 'https://www.sasw.or.kr',
+                summary: '사회복지사의 안전하고 존엄한 근무환경 조성을 위한 안전요원 배치 기준 및 심리상담 바우처 지원 강화. 현장 실무자의 감정노동 치유와 직무 만족도 제고를 위한 힐링 연수 프로그램 확대.'
+            }
+        ]; 
 
         const defaultRoadmap = {
             vision: "따뜻한 연대와 혁신으로 사회적 사각지대를 밝히는 사회복지 실천가",
@@ -1221,10 +1608,12 @@
             document.getElementById('mobile-menu').classList.add('hidden');
             document.querySelectorAll('.nav-btn').forEach(btn => btn.className = "nav-btn text-camping-subtext hover:text-camping-green transition font-medium flex items-center gap-1 cursor-pointer py-1.5 whitespace-nowrap");
             
-            // 기록 하위 메뉴(records, trail, qna)일 경우 '기록' 네비게이션 버튼 활성화
+            // 기록 하위 메뉴(records, trail, qna)일 경우 '기록' 네비게이션 활성화, 시사 뉴스(news)일 경우 '커리어 허브' 활성화
             let targetAttr = `showView('${viewId}')`;
             if (viewId === 'trail' || viewId === 'qna') {
                 targetAttr = `showView('records')`;
+            } else if (viewId === 'news') {
+                targetAttr = `showView('jobs')`;
             }
             const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick') === targetAttr);
             if(activeBtn) activeBtn.className = "nav-btn text-camping-green font-bold border-b-2 border-camping-green pb-1 flex items-center gap-1 cursor-pointer py-1.5 whitespace-nowrap";
@@ -1236,6 +1625,7 @@
             if (viewId === 'archive') renderArchives();
             if (viewId === 'qna') renderQnA();
             if (viewId === 'jobs') renderJobs();
+            if (viewId === 'news') renderNews();
             if (viewId === 'roadmap') renderRoadmap(currentRoadmap);
                 renderTodayQuestion();
                 renderQnA();
@@ -1318,6 +1708,37 @@
             renderJobs();
         };
 
+        // 채용공고 마감일 D-Day 자동 계산 스마트 엔진
+        const calcJobDDay = (targetDateStr) => {
+            if (!targetDateStr) return { text: "🌱 상시 채용", badgeClass: "bg-teal-50 text-teal-800 border-teal-200", isExpired: false, days: 999 };
+            const trimmed = String(targetDateStr).trim();
+            if (trimmed.includes('상시') || trimmed.includes('채용시') || trimmed.includes('적격자')) {
+                return { text: "🌱 상시 채용", badgeClass: "bg-teal-50 text-teal-800 border-teal-200", isExpired: false, days: 999 };
+            }
+            let cleanDateStr = trimmed.replace(/[./]/g, '-');
+            if (/^\d{2}-\d{2}$/.test(cleanDateStr)) {
+                cleanDateStr = `${new Date().getFullYear()}-${cleanDateStr}`;
+            }
+            const target = new Date(cleanDateStr);
+            if (isNaN(target.getTime())) {
+                return { text: trimmed, badgeClass: "bg-gray-100 text-gray-600 border-gray-200", isExpired: false, days: 999 };
+            }
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            target.setHours(0, 0, 0, 0);
+            const diffDays = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays < 0) {
+                return { text: "마감됨", badgeClass: "bg-gray-100 text-gray-400 border-gray-200 line-through", isExpired: true, days: diffDays };
+            } else if (diffDays === 0) {
+                return { text: "🚨 오늘 마감", badgeClass: "bg-red-500 text-white font-black animate-pulse shadow-sm", isExpired: false, days: 0 };
+            } else if (diffDays <= 3) {
+                return { text: `🔥 D-${diffDays}`, badgeClass: "bg-rose-500 text-white font-extrabold shadow-sm", isExpired: false, days: diffDays };
+            } else {
+                return { text: `D-${diffDays}`, badgeClass: "bg-emerald-600 text-white font-bold shadow-2xs", isExpired: false, days: diffDays };
+            }
+        };
+
         const renderJobs = () => {
             const container = document.getElementById('jobs-container');
             const filtered = allJobs.filter(j => {
@@ -1348,12 +1769,9 @@
                 const badgeStatus = statusBadgeMap[j.status] || 'bg-gray-100 text-gray-700 border-gray-200';
                 const badgeCat = categoryBadgeMap[j.category] || 'bg-gray-100 text-gray-700 border-gray-200';
                 
-                let ddayBadge = '';
-                if (j.deadline) {
-                    const c = calculateDDay(j.deadline);
-                    const bc = c.days >= 0 ? (c.days <= 3 ? 'bg-red-500 text-white' : 'bg-camping-accent text-white') : 'bg-gray-200 text-gray-500';
-                    ddayBadge = `<span class="${bc} text-[11px] font-bold px-2 py-0.5 rounded-full shadow-sm">${c.text}</span>`;
-                }
+                const ddayInfo = calcJobDDay(j.deadline);
+                const ddayBadge = `<span class="${ddayInfo.badgeClass} text-[11px] px-2.5 py-0.5 rounded-full border">${ddayInfo.text}</span>`;
+                const cardStyle = ddayInfo.isExpired ? 'opacity-70 bg-gray-50/70' : 'bg-white';
 
                 const encodedComp = encodeURIComponent(j.company || '');
                 const mapUrl = `https://map.naver.com/v5/search/${encodedComp}`;
@@ -1361,7 +1779,7 @@
                 const linkBtn = j.url ? `<a href="${j.url}" target="_blank" rel="noopener noreferrer" class="block text-center py-2 bg-camping-bg text-camping-green font-bold rounded-xl hover:bg-camping-greenlight hover:text-white transition text-xs mb-2">공고 원문 바로가기 &rarr;</a>` : '';
 
                 container.innerHTML += `
-                    <div class="bg-white p-5 rounded-3xl border border-camping-beige shadow-sm hover:shadow-md hover:-translate-y-1 transition group relative flex flex-col h-full">
+                    <div class="${cardStyle} p-5 rounded-3xl border border-camping-beige shadow-sm hover:shadow-md hover:-translate-y-1 transition group relative flex flex-col h-full">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex gap-1.5 flex-wrap">
                                 ${j.category ? `<span class="px-2.5 py-0.5 text-[11px] font-bold rounded-full border ${badgeCat}">${j.category}</span>` : ''}
@@ -1374,7 +1792,7 @@
                         </div>
                         <div class="text-xs font-extrabold text-camping-green mt-1 flex items-center gap-1">🏢 ${j.company}</div>
                         <h3 class="font-bold text-base text-camping-text mb-2 line-clamp-1">${j.role}</h3>
-                        ${j.deadline ? `<div class="flex items-center gap-2 mb-3"><span class="text-xs text-gray-500">📅 마감: ${j.deadline.replace(/-/g, '.')}</span> ${ddayBadge}</div>` : '<div class="text-xs text-gray-400 mb-3">상시 채용 또는 마감일 미정</div>'}
+                        ${j.deadline ? `<div class="flex items-center gap-2 mb-3"><span class="text-xs text-gray-500">📅 마감: ${j.deadline.replace(/-/g, '.')}</span> ${ddayBadge}</div>` : `<div class="flex items-center gap-2 mb-3"><span class="text-xs text-gray-400">📅 상시/미정</span> ${ddayBadge}</div>`}
                         ${j.memo ? `<p class="text-xs text-gray-500 bg-camping-bg/30 p-2.5 rounded-xl line-clamp-2 whitespace-pre-wrap flex-grow mb-3">${j.memo}</p>` : '<div class="flex-grow"></div>'}
                         
                         <!-- 기업 리뷰 & 지도위치 & 공고 링크 툴바 -->
@@ -1463,6 +1881,199 @@
                 btn.innerText = '저장하기 💼';
             }
         });
+
+        // ==================== 사회복지 & 공익 시사 뉴스 브리핑 컨트롤러 ====================
+        const newsCategoryBadgeMap = {
+            '정책/제도': 'bg-blue-50 text-blue-700 border-blue-200',
+            '복지관/현장': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            'NGO/국제구호': 'bg-purple-50 text-purple-700 border-purple-200',
+            '기업CSR/사회공헌': 'bg-amber-50 text-amber-700 border-amber-200',
+            '일반 시사': 'bg-teal-50 text-teal-700 border-teal-200'
+        };
+
+        window.setNewsCategoryFilter = (category) => {
+            currentNewsFilter = category;
+            document.querySelectorAll('.news-cat-btn').forEach(btn => {
+                if (btn.innerText.includes(category) || (category === '전체' && btn.innerText === '전체')) {
+                    btn.className = 'news-cat-btn active px-3.5 py-1.5 bg-camping-green text-white font-bold rounded-full text-xs shadow-xs transition';
+                } else {
+                    btn.className = 'news-cat-btn px-3.5 py-1.5 bg-white text-camping-text border font-bold rounded-full text-xs hover:bg-gray-50 transition';
+                }
+            });
+            renderNews();
+        };
+
+        window.handleNewsSearch = (keyword) => {
+            currentNewsSearch = (keyword || '').trim().toLowerCase();
+            renderNews();
+        };
+
+        const renderNews = () => {
+            const container = document.getElementById('news-container');
+            if (!container) return;
+
+            // Firestore 연동 데이터 우선, 없을 경우 기본 큐레이션 데이터 활용
+            const sourceList = (allNews && allNews.length > 0) ? allNews : defaultWelfareNews;
+
+            const filtered = sourceList.filter(n => {
+                const matchesCat = currentNewsFilter === '전체' || (n.category && n.category.includes(currentNewsFilter));
+                const matchesSearch = !currentNewsSearch || 
+                    (n.title && n.title.toLowerCase().includes(currentNewsSearch)) ||
+                    (n.summary && n.summary.toLowerCase().includes(currentNewsSearch)) ||
+                    (n.source && n.source.toLowerCase().includes(currentNewsSearch));
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-16 text-gray-400 border border-dashed border-camping-beige rounded-3xl">
+                        선택하신 조건에 부합하는 시사 뉴스가 없습니다.<br>
+                        새로운 복지 시사 뉴스를 스크랩해 나만의 인사이트를 축적해보세요! 📰
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            filtered.forEach(n => {
+                const badgeCat = newsCategoryBadgeMap[n.category] || 'bg-gray-100 text-gray-700 border-gray-200';
+                const formattedDate = n.date ? n.date.replace(/-/g, '.') : '';
+                const linkHref = n.url ? (n.url.startsWith('http') ? n.url : `https://${n.url}`) : null;
+                const linkBtn = linkHref ? `
+                    <a href="${linkHref}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-bold text-camping-green hover:underline">
+                        <span>원문 기사 보러가기</span>
+                        <span>↗</span>
+                    </a>
+                ` : `<span class="text-xs text-gray-400">자체 요약 노트</span>`;
+
+                const isCustom = !String(n.id || '').startsWith('news-def-');
+                const actionButtons = isCustom ? `
+                    <div class="opacity-0 group-hover:opacity-100 flex gap-1.5 transition-opacity">
+                        <button onclick="openNewsModal('${n.id}')" class="w-7 h-7 rounded-full bg-gray-50 text-camping-green hover:bg-gray-100 flex items-center justify-center text-xs" title="수정">✏️</button>
+                        <button onclick="deleteDocItem('${newsPath}', '${n.id}')" class="w-7 h-7 rounded-full bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center text-xs" title="삭제">🗑️</button>
+                    </div>
+                ` : `
+                    <div class="opacity-0 group-hover:opacity-100 flex gap-1 transition-opacity">
+                        <span class="text-[10px] bg-camping-bg px-2 py-0.5 rounded-full text-camping-green font-bold">기본 추천</span>
+                    </div>
+                `;
+
+                container.innerHTML += `
+                    <div class="bg-white p-5 rounded-3xl border border-camping-beige shadow-sm hover:shadow-md hover:-translate-y-1 transition group relative flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-2.5">
+                            <div class="flex gap-1.5 flex-wrap items-center">
+                                <span class="px-2.5 py-0.5 text-[11px] font-bold rounded-full border ${badgeCat}">${n.category || '시사'}</span>
+                                <span class="text-[11px] font-bold text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-200">🏛️ ${n.source || '전문출처'}</span>
+                            </div>
+                            ${actionButtons}
+                        </div>
+
+                        ${formattedDate ? `<div class="text-[11px] text-gray-400 mb-1">📅 ${formattedDate}</div>` : ''}
+                        
+                        <h3 class="font-bold text-base text-camping-text mb-2.5 line-clamp-2 leading-snug group-hover:text-camping-green transition">
+                            ${linkHref ? `<a href="${linkHref}" target="_blank" rel="noopener noreferrer">${n.title}</a>` : n.title}
+                        </h3>
+
+                        <div class="bg-camping-bg/30 p-3 rounded-2xl flex-grow mb-4">
+                            <div class="text-[11px] font-extrabold text-camping-subtext mb-1 flex items-center gap-1">
+                                <span>💡</span> 핵심 브리핑 노트
+                            </div>
+                            <p class="text-xs text-gray-600 whitespace-pre-wrap leading-relaxed line-clamp-4">${n.summary || ''}</p>
+                        </div>
+
+                        <div class="pt-2 border-t border-camping-beige/60 flex items-center justify-between">
+                            ${linkBtn}
+                            <button onclick="copyNewsNote('${(n.title || '').replace(/'/g, "\\'")}', '${(n.summary || '').replace(/'/g, "\\'").replace(/\n/g, ' ')}')" class="text-[11px] text-gray-400 hover:text-camping-green transition flex items-center gap-1 cursor-pointer">
+                                <span>📋</span> 요약 복사
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+        window.copyNewsNote = (title, summary) => {
+            const text = `[사회복지 시사 브리핑]\n제목: ${title}\n핵심 요약: ${summary}`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('뉴스 브리핑 요약이 클립보드에 복사되었습니다! 📋');
+            }).catch(() => {
+                alert('복사 실패');
+            });
+        };
+
+        const newsModal = document.getElementById('news-modal'), newsModalContent = document.getElementById('news-modal-content');
+        window.openNewsModal = (id = null) => {
+            document.getElementById('news-form').reset();
+            const btnDel = document.getElementById('btn-delete-news');
+            if (id) {
+                const n = allNews.find(x => x.id === id);
+                if (n) {
+                    document.getElementById('news-id').value = n.id;
+                    document.getElementById('news-category').value = n.category || '정책/제도';
+                    document.getElementById('news-source').value = n.source || '';
+                    document.getElementById('news-title').value = n.title || '';
+                    document.getElementById('news-date').value = n.date || '';
+                    document.getElementById('news-url').value = n.url || '';
+                    document.getElementById('news-summary').value = n.summary || '';
+                    document.getElementById('news-modal-title').innerText = '시사 뉴스 브리핑 수정';
+                    btnDel.classList.remove('hidden');
+                    btnDel.onclick = () => { deleteDocItem(newsPath, n.id); closeNewsModal(); };
+                }
+            } else {
+                document.getElementById('news-id').value = '';
+                document.getElementById('news-modal-title').innerText = '시사 뉴스 브리핑 스크랩';
+                document.getElementById('news-date').value = new Date().toISOString().split('T')[0];
+                btnDel.classList.add('hidden');
+            }
+            newsModal.classList.remove('hidden');
+            setTimeout(() => { newsModal.classList.remove('opacity-0'); newsModalContent.classList.remove('scale-95'); }, 10);
+        };
+
+        window.closeNewsModal = () => {
+            newsModal.classList.add('opacity-0');
+            newsModalContent.classList.add('scale-95');
+            setTimeout(() => newsModal.classList.add('hidden'), 300);
+        };
+
+        document.getElementById('news-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('news-submit-btn');
+            btn.disabled = true; btn.innerText = '저장 중...';
+            const id = document.getElementById('news-id').value;
+            const category = document.getElementById('news-category').value;
+            const source = document.getElementById('news-source').value.trim();
+            const title = document.getElementById('news-title').value.trim();
+            const date = document.getElementById('news-date').value;
+            let url = document.getElementById('news-url').value.trim();
+            if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
+            const summary = document.getElementById('news-summary').value.trim();
+
+            const data = {
+                category, source, title, date, url, summary,
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                if (id) {
+                    await updateDoc(doc(db, newsPath, id), data);
+                } else {
+                    data.createdAt = new Date().toISOString();
+                    data.authorId = currentUser?.uid || 'guest';
+                    await addDoc(collection(db, newsPath), data);
+                }
+                closeNewsModal();
+                showView('news');
+            } catch(err) {
+                console.error("뉴스 저장 오류:", err);
+                alert("뉴스 저장 중 오류가 발생했습니다: " + (err.message || err));
+            } finally {
+                btn.disabled = false;
+                btn.innerText = '브리핑 저장하기 📰';
+            }
+        });
+
+        window.renderNews = renderNews;
+
 
         // ---------------- 아카이브(스크랩) 로직 ----------------
         const renderArchives = () => {
@@ -1733,6 +2344,40 @@
             }
         };
 
+        // ==================== 🌙 아늑한 밤 캠핑 모드 (다크모드) 컨트롤러 ====================
+        window.updateDarkModeUI = (isDark = document.documentElement.classList.contains('dark')) => {
+            const icon = document.getElementById('dark-mode-icon');
+            const text = document.getElementById('dark-mode-text');
+            const iconM = document.getElementById('dark-mode-icon-m');
+            const menuIcon = document.getElementById('dark-mode-menu-icon');
+            const menuText = document.getElementById('dark-mode-menu-text');
+
+            if (isDark) {
+                if (icon) icon.innerText = '☀️';
+                if (text) text.innerText = '낮 캠핑';
+                if (iconM) iconM.innerText = '☀️';
+                if (menuIcon) menuIcon.innerText = '☀️';
+                if (menuText) menuText.innerText = '낮 캠핑 모드로 복귀';
+            } else {
+                if (icon) icon.innerText = '🌙';
+                if (text) text.innerText = '밤 캠핑';
+                if (iconM) iconM.innerText = '🌙';
+                if (menuIcon) menuIcon.innerText = '🌙';
+                if (menuText) menuText.innerText = '밤 캠핑 모드로 보기';
+            }
+        };
+
+        window.toggleDarkMode = () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            window.updateDarkModeUI(isDark);
+        };
+
+        // 초기 다크모드 UI 버튼 상태 동기화
+        setTimeout(() => {
+            if (window.updateDarkModeUI) window.updateDarkModeUI();
+        }, 50);
+
         window.toggleCampfire = () => {
             if (!isCampfirePlaying) {
                 try {
@@ -1938,6 +2583,7 @@
             onSnapshot(collection(db, gbPath), (s) => { allGuestbooks = []; s.forEach(d => allGuestbooks.push({id: d.id, ...d.data()})); allGuestbooks.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)); if(!document.getElementById('view-guestbook').classList.contains('hidden')) renderGuestbook(); });
             onSnapshot(collection(db, archivesPath), (s) => { allArchives = []; s.forEach(d => allArchives.push({id: d.id, ...d.data()})); allArchives.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)); if(!document.getElementById('view-archive').classList.contains('hidden')) renderArchives(); renderDashboard(); });
             onSnapshot(collection(db, jobsPath), (s) => { allJobs = []; s.forEach(d => allJobs.push({id: d.id, ...d.data()})); allJobs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)); if(!document.getElementById('view-jobs').classList.contains('hidden')) renderJobs(); renderDashboard(); });
+            onSnapshot(collection(db, newsPath), (s) => { allNews = []; s.forEach(d => allNews.push({id: d.id, ...d.data()})); allNews.sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0)); if(!document.getElementById('view-news').classList.contains('hidden')) renderNews(); });
         };
         
                 // ==================== 오타니 만다라트 내추럴 파스텔 테마 및 고도화 UI ====================
