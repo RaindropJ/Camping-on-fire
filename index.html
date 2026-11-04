@@ -67,32 +67,105 @@
                 <div class="flex-shrink-0 cursor-pointer" onclick="showView('home')">
                     <span class="text-xl font-bold text-camping-text flex items-center gap-2"><span>⛺</span> MySpace.</span>
                 </div>
-                <div class="hidden md:flex items-center space-x-5">
-                    <button onclick="showView('home')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">홈</button>
-                    <button onclick="showView('records')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">기록</button>
-                    <button onclick="showView('schedule')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">일정</button>
-                    <button onclick="showView('trail')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">발자취</button>
-                    <button onclick="showView('jobs')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">커리어 허브</button>
-                    <!-- 스크랩 탭 버튼 -->
-                    <button onclick="showView('archive')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">스크랩</button>
-                    <button onclick="showView('guestbook')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium">방명록</button>
+                <div class="hidden md:flex items-center space-x-6">
+                    <button onclick="showView('home')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">홈</button>
+                    
+                    <!-- 기록 드롭다운 메뉴 (호버 시 발자취, 100문 100답 서브메뉴 노출) -->
+                    <div class="relative group/record flex items-center">
+                        <button onclick="showView('records')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium flex items-center gap-1 cursor-pointer py-1.5 whitespace-nowrap">
+                            <span>기록</span>
+                            <svg class="w-3.5 h-3.5 text-camping-subtext group-hover/record:text-camping-green group-hover/record:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <!-- 호버 시 아래로 부드럽게 나타나는 서브 드롭다운 -->
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover/record:opacity-100 group-hover/record:visible transition-all duration-200 z-50 pointer-events-none group-hover/record:pointer-events-auto">
+                            <div class="bg-white/95 backdrop-blur-md p-2 rounded-2xl shadow-xl border border-camping-beige min-w-[170px] flex flex-col gap-1">
+                                <button onclick="showView('records')" class="px-3.5 py-2.5 rounded-xl text-left text-xs font-bold text-camping-text hover:bg-camping-bg hover:text-camping-green transition flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                                    <span>📝</span> <span>생각 & 일상 기록</span>
+                                </button>
+                                <button onclick="showView('trail')" class="px-3.5 py-2.5 rounded-xl text-left text-xs font-bold text-camping-text hover:bg-camping-bg hover:text-camping-green transition flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                                    <span>🚩</span> <span>나의 발자취 (연표)</span>
+                                </button>
+                                <button onclick="showView('qna')" class="px-3.5 py-2.5 rounded-xl text-left text-xs font-bold text-camping-text hover:bg-camping-bg hover:text-camping-green transition flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                                    <span>💭</span> <span>100문 100답 서재</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="showView('schedule')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">일정</button>
+                    <button onclick="showView('jobs')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">커리어 허브</button>
+                    <button onclick="showView('roadmap')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">로드맵</button>
+                    <button onclick="showView('archive')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">스크랩</button>
+                    <button onclick="showView('guestbook')" class="nav-btn text-camping-subtext hover:text-camping-green transition font-medium whitespace-nowrap">방명록</button>
+                    <!-- 모닥불 ASMR 토글 버튼 및 마우스 호버 볼륨 조절기 -->
+                    <div class="relative group/campfire flex items-center">
+                        <button id="btn-campfire" onclick="toggleCampfire()" class="ml-1 px-3.5 py-1.5 bg-white text-camping-text border border-camping-beige hover:border-amber-400 font-bold rounded-full shadow-xs transition-all flex items-center gap-1.5 text-xs hover:-translate-y-0.5 cursor-pointer" title="타닥타닥 모닥불 백색소음 ON/OFF (마우스를 올리면 볼륨 조절 가능)">
+                            <span id="campfire-icon" class="text-sm">🔥</span>
+                            <span id="campfire-text">모닥불 ASMR</span>
+                        </button>
+                        <!-- 마우스 커서 호버 시 아래로 부드럽게 나타나는 볼륨 조절 팝업 -->
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 opacity-0 invisible group-hover/campfire:opacity-100 group-hover/campfire:visible transition-all duration-200 z-50 pointer-events-none group-hover/campfire:pointer-events-auto">
+                            <div class="bg-white/95 backdrop-blur-md px-3.5 py-2.5 rounded-2xl shadow-xl border border-amber-200/80 flex flex-col items-center gap-1.5 w-40">
+                                <div class="flex items-center justify-between w-full text-[11px] font-bold text-amber-950">
+                                    <span class="flex items-center gap-1"><span>🔊</span> 볼륨 조절</span>
+                                    <span id="campfire-vol-label" class="text-amber-600 font-extrabold text-[11px]">45%</span>
+                                </div>
+                                <input type="range" id="campfire-volume" min="0" max="1" step="0.05" value="0.45" oninput="setCampfireVolume(this.value)" class="w-full accent-amber-500 cursor-pointer h-1.5 bg-amber-100 rounded-lg">
+                                <div class="flex justify-between w-full text-[9px] text-amber-800/70 font-semibold px-0.5">
+                                    <span>은은하게</span>
+                                    <span>보통</span>
+                                    <span>생생하게</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- 글쓰기 버튼 -->
-                    <button onclick="openModal('write')" class="ml-2 px-5 py-2 bg-camping-green text-white font-bold rounded-full shadow-md hover:bg-[#3f5a3b] hover:-translate-y-0.5 transition-all flex items-center gap-2">✍️ 기록하기</button>
+                    <button onclick="openModal('write')" class="ml-1 px-5 py-2 bg-camping-green text-white font-bold rounded-full shadow-md hover:bg-[#3f5a3b] hover:-translate-y-0.5 transition-all flex items-center gap-2">✍️ 기록하기</button>
                 </div>
-                <div class="md:hidden flex items-center gap-3">
+                <div class="md:hidden flex items-center gap-2">
+                    <button id="btn-campfire-m" onclick="toggleCampfire()" class="px-2.5 py-1.5 bg-white text-camping-text border border-camping-beige rounded-full text-xs font-bold shadow-xs flex items-center gap-1">
+                        <span>🔥</span><span id="campfire-text-m">ASMR</span>
+                    </button>
                     <button onclick="openModal('write')" class="px-3 py-1.5 bg-camping-green text-white text-sm font-bold rounded-full shadow-md">✍️ 쓰기</button>
                     <button id="mobile-menu-btn" class="text-2xl">🍔</button>
                 </div>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-camping-beige absolute w-full left-0 top-[68px] shadow-lg p-4 flex flex-col gap-4 text-center z-40">
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-camping-beige absolute w-full left-0 top-[68px] shadow-lg p-4 flex flex-col gap-3 text-center z-40">
             <button onclick="showView('home')" class="font-medium text-camping-text">홈</button>
-            <button onclick="showView('records')" class="font-medium text-camping-text">기록</button>
+            
+            <!-- 모바일 기록 하위 그룹 -->
+            <div class="bg-gray-50/80 p-2.5 rounded-2xl border border-gray-100 flex flex-col gap-2">
+                <span class="text-[11px] font-bold text-gray-400">기록 및 아카이브</span>
+                <button onclick="showView('records')" class="font-medium text-camping-text py-1 hover:text-camping-green flex items-center justify-center gap-1.5">
+                    <span>📝</span> 생각 & 일상 기록
+                </button>
+                <button onclick="showView('trail')" class="font-medium text-camping-text py-1 hover:text-camping-green flex items-center justify-center gap-1.5">
+                    <span>🚩</span> 나의 발자취 (연표)
+                </button>
+                <button onclick="showView('qna')" class="font-medium text-camping-text py-1 hover:text-camping-green flex items-center justify-center gap-1.5">
+                    <span>💭</span> 100문 100답 서재
+                </button>
+            </div>
+
             <button onclick="showView('schedule')" class="font-medium text-camping-text">일정</button>
-            <button onclick="showView('trail')" class="font-medium text-camping-text">발자취</button>
             <button onclick="showView('jobs')" class="font-medium text-camping-text">커리어 허브</button>
+            <button onclick="showView('roadmap')" class="font-medium text-camping-text">로드맵</button>
             <button onclick="showView('archive')" class="font-medium text-camping-text">스크랩</button>
             <button onclick="showView('guestbook')" class="font-medium text-camping-text">방명록</button>
+            <!-- 모닥불 ASMR 및 모바일 볼륨 조절기 -->
+            <div class="pt-2 border-t border-camping-beige/60 flex flex-col gap-2 mt-1">
+                <button onclick="toggleCampfire()" class="font-bold text-amber-700 py-1 flex items-center justify-center gap-1.5 text-sm">
+                    <span>🔥</span> <span id="campfire-menu-text">모닥불 ASMR 켜기</span>
+                </button>
+                <div class="flex items-center justify-center gap-2 px-3 text-xs text-amber-900 bg-amber-50/70 py-2 rounded-xl border border-amber-200/60 mx-1">
+                    <span class="text-sm">🔊</span>
+                    <input type="range" id="campfire-volume-m" min="0" max="1" step="0.05" value="0.45" oninput="setCampfireVolume(this.value)" class="w-32 accent-amber-500 h-1.5 bg-amber-200/60 rounded-lg">
+                    <span id="campfire-vol-label-m" class="font-bold text-[11px] text-amber-700 w-8 text-left">45%</span>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -111,10 +184,38 @@
                         <h1 class="text-4xl md:text-5xl font-extrabold text-camping-text mb-6 leading-tight">캠핑처럼 편안한<br><span class="text-camping-green">나만의 공간</span></h1>
                         <p class="text-camping-subtext text-lg mb-8 leading-relaxed">따뜻한 차 한 잔을 마시며 모닥불 앞에 앉아있는 것처럼, 제 생각과 취미, 목표하는 취업 정보와 일상을 편안하게 풀어놓는 곳입니다.</p>
                         
-                        <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-10">
+                        <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-8">
                             <button onclick="showView('records')" class="px-6 py-3 bg-camping-green hover:bg-[#3f5a3b] text-white font-medium rounded-2xl transition shadow-md">기록 둘러보기</button>
                             <button onclick="showView('jobs')" class="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-2xl transition shadow-md flex items-center gap-1.5">💼 채용공고</button>
-                            <button onclick="showView('archive')" class="px-6 py-3 bg-white text-camping-green border-2 border-camping-greenlight hover:bg-camping-greenlight/10 font-medium rounded-2xl transition shadow-sm">스크랩 모아보기</button>
+                            <button onclick="showView('roadmap')" class="px-6 py-3 bg-camping-text hover:bg-black text-white font-medium rounded-2xl transition shadow-md flex items-center gap-1.5">🧭 로드맵</button>
+                            <button onclick="showView('qna')" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-2xl transition shadow-md flex items-center gap-1.5">💭 100문 100답</button>
+                        </div>
+
+                        <!-- 홈 화면: 나를 알아가는 오늘의 질문 미니 배너 -->
+                        <div class="bg-gradient-to-r from-amber-50/90 via-white to-emerald-50/80 p-5 rounded-3xl border border-amber-200/90 shadow-xs text-left mb-10">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-2.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl p-1.5 bg-white rounded-xl shadow-2xs border border-amber-200/80">💭</span>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] font-extrabold text-amber-900 tracking-wider uppercase">오늘의 나를 만나는 질문</span>
+                                            <span id="home-qna-cat" class="text-[9px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-200">🌱 나라는 사람</span>
+                                        </div>
+                                        <h4 id="home-qna-title" class="text-xs sm:text-sm font-extrabold text-camping-text mt-0.5">나를 가장 잘 표현하는 단어 세 가지는 무엇인가요?</h4>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <button onclick="shuffleTodayQuestion()" class="px-2.5 py-1 bg-white hover:bg-gray-50 text-gray-600 rounded-lg border border-gray-200 text-[11px] font-bold transition shadow-2xs flex items-center gap-1 cursor-pointer" title="다른 질문 뽑기">
+                                        <span>🎲</span> 다른 질문
+                                    </button>
+                                    <button onclick="showView('qna')" class="px-2.5 py-1 bg-camping-green hover:bg-[#3f5a3b] text-white rounded-lg text-[11px] font-bold transition shadow-2xs flex items-center gap-1 cursor-pointer">
+                                        100문 서재 ➔
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="home-qna-box" class="pt-2 border-t border-amber-200/60">
+                                <!-- Dynamic home answer box -->
+                            </div>
                         </div>
 
                         <!-- 활동 요약 (잔디 심기) -->
@@ -280,7 +381,297 @@
             </div>
         </section>
 
-        <!-- ==================== 6. ARCHIVE VIEW (별도의 스크랩 전용 탭!) ==================== -->
+        <!-- ==================== 6. ROADMAP VIEW (비전 & 커리어 로드맵 독립 탭) ==================== -->
+        <section id="view-roadmap" class="view-section hidden">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-6">
+                    <span class="text-4xl mb-2 block">🧭</span>
+                    <h2 class="text-3xl font-bold text-camping-text mb-2">나의 비전 & 커리어 로드맵</h2>
+                    <p class="text-camping-subtext">사회복지 및 소셜임팩트 분야를 향한 전략 체계도와 대학생 오타니 만다라트 실천 계획표입니다.</p>
+                </div>
+
+                <!-- 로드맵 서브 탭 전환 버튼 -->
+                <div class="flex justify-center mb-8">
+                    <div class="bg-[#F0EDE6] p-1.5 rounded-full border border-camping-beige shadow-xs flex items-center gap-1.5">
+                        <button id="subtab-btn-tree" onclick="switchRoadmapSubtab('tree')" class="px-5 py-2 rounded-full font-extrabold text-xs transition-all bg-camping-green text-white shadow-xs flex items-center gap-1.5 cursor-pointer">
+                            <span>🏛️</span> 전략 체계도
+                        </button>
+                        <button id="subtab-btn-mandalart" onclick="switchRoadmapSubtab('mandalart')" class="px-5 py-2 rounded-full font-extrabold text-xs transition-all text-camping-subtext hover:text-camping-green flex items-center gap-1.5 cursor-pointer">
+                            <span>🎯</span> 오타니 만다라트 계획표
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1. 서브 화면: 전략 체계도 (비전-사명-전략-과업 트리) -->
+                <div id="roadmap-subview-tree" class="roadmap-subview block">
+                    <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-camping-beige shadow-sm mb-12">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-camping-beige/70 pb-5 mb-8">
+                            <div>
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-camping-bg text-camping-green font-bold text-xs rounded-full border border-camping-greenlight/40 mb-1">
+                                    <span>🧭</span> Strategic Framework
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-camping-text">Career Milestone & Mission Tree</h3>
+                            </div>
+                            <button onclick="openRoadmapModal()" class="px-4 py-2 bg-camping-bg text-camping-green font-bold text-xs rounded-full border border-camping-greenlight hover:bg-camping-green hover:text-white transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                <span>✏️</span> 로드맵 수정
+                            </button>
+                        </div>
+
+                        <!-- 조직도/체계도 다이어그램 컨테이너 -->
+                        <div class="flex flex-col items-center max-w-4xl mx-auto relative">
+                            
+                            <!-- 1단: 좌측(비전-사명-전략 수직축) + 우측(핵심가치 브랜치) -->
+                            <div class="w-full grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-x-0 items-center relative">
+                                
+                                <!-- 좌/중앙 기둥: 비전, 사명, 전략 (md:col-span-7) -->
+                                <div class="md:col-span-7 flex flex-col items-center">
+                                    
+                                    <!-- 1. 비전 (Vision) -->
+                                    <div class="w-full bg-[#FAF9F5] p-4 sm:p-5 rounded-2xl border-2 border-camping-beige/90 text-center shadow-xs hover:border-camping-greenlight transition">
+                                        <span class="text-[11px] font-extrabold text-camping-subtext tracking-wider uppercase block mb-1">🧭 비전 (Vision)</span>
+                                        <h3 id="rm-vision" class="text-base sm:text-lg font-extrabold text-camping-text leading-snug"></h3>
+                                    </div>
+
+                                    <!-- 연결 수직선 1 -->
+                                    <div class="w-0.5 h-5 bg-blue-300"></div>
+
+                                    <!-- 2. 사명 (Mission) - 블루 하이라이트 박스 -->
+                                    <div class="w-full bg-[#2B6CB0] text-white p-5 rounded-2xl text-center shadow-md transform hover:scale-[1.01] transition border-2 border-[#245b95]">
+                                        <span class="text-[11px] font-bold text-blue-100 tracking-wider uppercase block mb-1">🔥 사명 (Mission)</span>
+                                        <h3 id="rm-mission" class="text-base sm:text-lg font-extrabold text-white leading-relaxed"></h3>
+                                    </div>
+
+                                    <!-- 연결 수직선 2 -->
+                                    <div class="w-0.5 h-5 bg-blue-300"></div>
+
+                                    <!-- 3. 전략 (Strategies) -->
+                                    <div class="w-full bg-white p-4 sm:p-5 rounded-2xl border-2 border-camping-beige/90 text-center shadow-xs hover:border-camping-greenlight transition">
+                                        <span class="text-[11px] font-extrabold text-camping-subtext tracking-wider uppercase block mb-2">🗺️ 전략 (Strategies)</span>
+                                        <div id="rm-strategies" class="flex flex-wrap justify-center gap-2"></div>
+                                    </div>
+                                </div>
+
+                                <!-- 데스크톱용 연결 브래킷 선 (비전/사명/전략 -> 핵심가치 연결) -->
+                                <div class="hidden md:flex md:col-span-1 h-[75%] flex-row items-center justify-center relative">
+                                    <div class="absolute left-1 top-4 bottom-4 w-4 border-r-2 border-t-2 border-b-2 border-blue-300/80 rounded-r-lg"></div>
+                                    <div class="w-full h-0.5 bg-blue-300/80 ml-5"></div>
+                                </div>
+
+                                <!-- 우측 브랜치: 핵심 가치 (Core Values) (md:col-span-4) -->
+                                <div class="md:col-span-4 h-full flex flex-col justify-center">
+                                    <div class="bg-amber-50/70 p-5 sm:p-6 rounded-2xl border-2 border-amber-200/90 shadow-xs flex flex-col justify-center">
+                                        <div class="flex items-center gap-1.5 text-xs font-extrabold text-amber-900 mb-1">
+                                            <span>⭐</span> 핵심 가치 (Core Values)
+                                        </div>
+                                        <p class="text-[11px] text-amber-800/80 mb-3.5 font-medium">실천의 기준과 의사결정의 나침반</p>
+                                        <div id="rm-values" class="flex flex-col gap-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1단(전략)에서 2단(핵심 과업)으로 내려오는 중앙 수직 연결선 -->
+                            <div class="w-0.5 h-8 bg-blue-300 my-0.5"></div>
+
+                            <!-- 2단: 물적 자원 ─── 핵심 과업 (Tasks) ─── 인적 자원 -->
+                            <div class="w-full grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-0 items-center">
+                                
+                                <!-- 물적 자원 (md:col-span-3) -->
+                                <div class="md:col-span-3 bg-blue-50/70 p-4 rounded-2xl border-2 border-blue-200/80 shadow-2xs flex flex-col justify-center text-center">
+                                    <span class="text-[11px] font-extrabold text-blue-900 block mb-1 flex items-center justify-center gap-1"><span>📦</span> 물적 자원</span>
+                                    <div id="rm-material-res" class="text-xs text-blue-800 font-medium leading-relaxed"></div>
+                                </div>
+
+                                <!-- 좌측 수평 연결선 -->
+                                <div class="hidden md:flex md:col-span-1 items-center justify-center">
+                                    <div class="w-full h-0.5 bg-blue-300"></div>
+                                </div>
+
+                                <!-- 중앙: 핵심 과업 (Key Tasks) (md:col-span-4) -->
+                                <div class="md:col-span-4 bg-[#FAF9F5] p-5 rounded-2xl border-2 border-camping-green shadow-xs flex flex-col justify-center text-center">
+                                    <span class="text-[11px] font-extrabold text-camping-green tracking-wider uppercase block mb-1">🎯 핵심 과업 (Tasks)</span>
+                                    <h4 id="rm-tasks" class="text-base sm:text-lg font-extrabold text-camping-text leading-snug"></h4>
+                                </div>
+
+                                <!-- 우측 수평 연결선 -->
+                                <div class="hidden md:flex md:col-span-1 items-center justify-center">
+                                    <div class="w-full h-0.5 bg-blue-300"></div>
+                                </div>
+
+                                <!-- 인적 자원 (md:col-span-3) -->
+                                <div class="md:col-span-3 bg-purple-50/70 p-4 rounded-2xl border-2 border-purple-200/80 shadow-2xs flex flex-col justify-center text-center">
+                                    <span class="text-[11px] font-extrabold text-purple-900 block mb-1 flex items-center justify-center gap-1"><span>🤝</span> 인적 자원</span>
+                                    <div id="rm-human-res" class="text-xs text-purple-800 font-medium leading-relaxed"></div>
+                                </div>
+                            </div>
+
+                            <!-- 2단(핵심과업)에서 3단(4개 세부과업)으로 갈라지는 조직도 분기선 -->
+                            <div class="w-full flex flex-col items-center mt-0.5">
+                                <div class="w-0.5 h-5 bg-blue-300"></div>
+                                <div class="hidden lg:block w-[75%] h-0.5 bg-blue-300 relative">
+                                    <div class="absolute -left-0.5 top-0 w-0.5 h-3 bg-blue-300"></div>
+                                    <div class="absolute left-1/3 top-0 w-0.5 h-3 bg-blue-300"></div>
+                                    <div class="absolute left-2/3 top-0 w-0.5 h-3 bg-blue-300"></div>
+                                    <div class="absolute -right-0.5 top-0 w-0.5 h-3 bg-blue-300"></div>
+                                </div>
+                            </div>
+
+                            <!-- 3단: 4대 세부 과업 카드 그리드 -->
+                            <div class="w-full mt-3">
+                                <div class="text-center mb-3">
+                                    <span class="text-[11px] font-bold text-camping-subtext uppercase tracking-widest">하부 실행 과업 (Subtasks)</span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5" id="rm-subtasks-container"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- /roadmap-subview-tree -->
+
+                <!-- 2. 서브 화면: 오타니식 대학생 만다라트 계획표 -->
+                <div id="roadmap-subview-mandalart" class="roadmap-subview hidden">
+                    <div class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-camping-beige shadow-sm mb-12">
+                        
+                        <!-- 상단 타이틀 & 툴바 -->
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-camping-beige/70 pb-5 mb-6">
+                            <div>
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 font-bold text-xs rounded-full border border-amber-200 mb-1">
+                                    <span>🎯</span> Ohtani Mandalart 9x9
+                                </div>
+                                <h3 class="text-xl sm:text-2xl font-extrabold text-camping-text flex items-center gap-2">
+                                    대학생 성장 & 커리어 만다라트
+                                </h3>
+                                <p class="text-xs text-camping-subtext mt-0.5">8대 핵심 기둥을 달성하기 위한 64가지 세부 행동수칙 체크리스트</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <div class="bg-gray-100 p-1 rounded-xl flex items-center text-xs font-bold">
+                                    <button id="mandalart-view-focus-btn" onclick="switchMandalartView('focus')" class="px-3 py-1.5 rounded-lg bg-white shadow-2xs text-camping-green transition">
+                                        🔍 3x3 핵심 뷰
+                                    </button>
+                                    <button id="mandalart-view-matrix-btn" onclick="switchMandalartView('matrix')" class="px-3 py-1.5 rounded-lg text-gray-500 hover:text-camping-text transition">
+                                        🔲 9x9 전체 격자
+                                    </button>
+                                </div>
+                                <button onclick="openMandalartEditModal()" class="px-3.5 py-1.5 bg-camping-bg text-camping-green font-bold text-xs rounded-xl border border-camping-greenlight hover:bg-camping-green hover:text-white transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                    <span>✏️</span> 만다라트 편집
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 전체 진행률 & 목표 배너 -->
+                        <div class="bg-gradient-to-r from-amber-50 via-[#FAF9F5] to-emerald-50 p-5 rounded-2xl border border-amber-200/80 mb-8 shadow-xs">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-2.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🏆</span>
+                                    <div>
+                                        <span class="text-[11px] font-bold text-amber-800 uppercase tracking-wider block">Central Grand Goal</span>
+                                        <h4 id="mandalart-core-title" class="text-base sm:text-lg font-extrabold text-camping-text"></h4>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <span id="mandalart-progress-count" class="text-xs font-extrabold text-camping-green bg-white px-3 py-1 rounded-full border border-camping-greenlight/50 shadow-2xs inline-block">
+                                        0 / 64 달성 (0%)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200/70 h-2.5 rounded-full overflow-hidden">
+                                <div id="mandalart-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 뷰 1: 3x3 핵심 포커스 뷰 (기본) -->
+                        <div id="mandalart-focus-view" class="block">
+                            <div class="text-center mb-4">
+                                <span class="text-xs text-camping-subtext font-medium bg-camping-bg px-3 py-1 rounded-full border border-camping-beige">
+                                    💡 8개 영역 카드를 클릭하면 <strong>8가지 세부 실천 수칙(체크리스트)</strong>이 열립니다.
+                                </span>
+                            </div>
+                            <div id="mandalart-3x3-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 max-w-3xl mx-auto"></div>
+                        </div>
+
+                        <!-- 뷰 2: 9x9 전체 매트릭스 뷰 -->
+                        <div id="mandalart-matrix-view" class="hidden">
+                            <div class="text-center mb-3">
+                                <span class="text-xs text-camping-subtext font-medium bg-camping-bg px-3 py-1 rounded-full border border-camping-beige">
+                                    🔲 오타니의 오리지널 9x9 (81칸) 전체 만다라트 보드입니다. (마우스로 스크롤 가능)
+                                </span>
+                            </div>
+                            <div class="overflow-x-auto pb-4">
+                                <div id="mandalart-9x9-matrix" class="min-w-[850px] grid grid-cols-3 gap-3 p-3 bg-gray-50 rounded-2xl border border-gray-200"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- /roadmap-subview-mandalart -->
+
+            </div> <!-- /max-w-5xl -->
+        </section>
+
+        <!-- ==================== 8. QNA VIEW (나를 알아가는 셀프 100문 100답 서재) ==================== -->
+        <section id="view-qna" class="view-section hidden">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                
+                <!-- 헤더 타이틀 -->
+                <div class="text-center mb-8">
+                    <span class="text-4xl mb-2 block">💭</span>
+                    <h2 class="text-3xl font-bold text-camping-text mb-2">나를 알아가는 100문 100답</h2>
+                    <p class="text-camping-subtext">하루에 하나씩, 혹은 영감이 떠오를 때마다 나라는 사람을 온전히 들여다보는 사색의 서재입니다.</p>
+                </div>
+
+                <!-- 전체 진행률 배너 -->
+                <div class="bg-gradient-to-r from-amber-50/90 via-[#FAF9F5] to-emerald-50/90 p-5 sm:p-6 rounded-3xl border border-amber-200/80 mb-8 shadow-xs">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-2.5">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">📖</span>
+                            <div>
+                                <span class="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">Self-Discovery Journal</span>
+                                <h4 class="text-base sm:text-lg font-extrabold text-camping-text">나를 탐색하는 100가지 여정</h4>
+                            </div>
+                        </div>
+                        <div>
+                            <span id="qna-progress-badge" class="text-xs font-extrabold text-camping-green bg-white px-3.5 py-1.5 rounded-full border border-camping-greenlight/50 shadow-2xs inline-block">
+                                0 / 100개 완료 (0%)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200/70 h-2.5 rounded-full overflow-hidden">
+                        <div id="qna-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- 5대 카테고리 필터 탭 -->
+                <div class="flex flex-wrap items-center justify-center gap-2 mb-8" id="qna-filter-container">
+                    <button onclick="setQnACategory('전체')" class="qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-camping-green text-white cursor-pointer" data-cat="전체">
+                        전체 (100)
+                    </button>
+                    <button onclick="setQnACategory('나라는 사람')" class="qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-white text-camping-subtext border border-camping-beige hover:border-camping-green cursor-pointer" data-cat="나라는 사람">
+                        🌱 나라는 사람 (20)
+                    </button>
+                    <button onclick="setQnACategory('취향과 일상')" class="qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-white text-camping-subtext border border-camping-beige hover:border-camping-green cursor-pointer" data-cat="취향과 일상">
+                        ☕ 취향과 일상 (20)
+                    </button>
+                    <button onclick="setQnACategory('관계와 사랑')" class="qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-white text-camping-subtext border border-camping-beige hover:border-camping-green cursor-pointer" data-cat="관계와 사랑">
+                        🤝 관계와 사랑 (20)
+                    </button>
+                    <button onclick="setQnACategory('가치관과 철학')" class="qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-white text-camping-subtext border border-camping-beige hover:border-camping-green cursor-pointer" data-cat="가치관과 철학">
+                        🧭 가치관과 철학 (20)
+                    </button>
+                    <button onclick="setQnACategory('꿈과 미래')" class="qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-white text-camping-subtext border border-camping-beige hover:border-camping-green cursor-pointer" data-cat="꿈과 미래">
+                        🌟 꿈과 미래 (20)
+                    </button>
+                    <button onclick="setQnACategory('completed')" class="qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-white text-amber-800 border border-amber-300 hover:bg-amber-50 cursor-pointer" data-cat="completed">
+                        ✅ 작성 완료만 보기
+                    </button>
+                </div>
+
+                <!-- 100개 문답 카드 그리드 -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="qna-grid-container">
+                    <!-- JS 동적 렌더링 -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== 7. ARCHIVE VIEW (별도의 스크랩 전용 탭!) ==================== -->
         <section id="view-archive" class="view-section hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6">
                 <div class="text-center mb-10">
@@ -442,6 +833,210 @@
             </form>
         </div>
     </div>
+
+    <!-- 로드맵 수정 모달 -->
+    <div id="roadmap-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2rem] shadow-2xl p-6 sm:p-8 transform scale-95 transition-transform duration-300" id="roadmap-modal-content">
+            <div class="flex justify-between items-center border-b border-camping-beige pb-4 mb-4">
+                <h3 class="text-xl font-extrabold text-camping-text flex items-center gap-2">
+                    <span>🧭</span> 나의 비전 & 커리어 로드맵 수정
+                </h3>
+                <button onclick="closeRoadmapModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition">✕</button>
+            </div>
+            <form id="roadmap-form" class="flex flex-col gap-4 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">🧭 비전 (Vision - 내가 지향하는 궁극적 모습)</label>
+                    <input type="text" id="rm-input-vision" required class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-bold text-sm bg-camping-bg/30">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">🔥 사명 (Mission - 나의 존재 이유와 사회적 가치)</label>
+                    <textarea id="rm-input-mission" rows="2" required class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-bold text-sm bg-camping-bg/30 resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">🗺️ 전략 (Strategies - 쉼표로 구분)</label>
+                    <input type="text" id="rm-input-strategies" placeholder="예: 현장 실천 역량 심화, 지역사회 다자간 연대, 데이터 기반 복지 기획" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-medium text-xs bg-white">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">⭐ 핵심 가치 (Core Values - 쉼표로 구분)</label>
+                    <input type="text" id="rm-input-values" placeholder="예: 인간존중, 진정성, 전문성, 포용적 연대" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-medium text-xs bg-white">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-camping-beige/60">
+                    <div>
+                        <label class="block font-bold text-blue-900 mb-1">📦 물적 자원 (보유 인프라/도구/환경)</label>
+                        <input type="text" id="rm-input-mat-res" placeholder="예: 1급 자격증, 연구자료, 포트폴리오 웹" class="w-full p-2.5 rounded-xl border border-blue-100 bg-blue-50/30 text-xs font-medium">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-purple-900 mb-1">🤝 인적 자원 (멘토/동료/네트워크)</label>
+                        <input type="text" id="rm-input-hum-res" placeholder="예: 교수진, 실습 수퍼바이저, 동기 연대" class="w-full p-2.5 rounded-xl border border-purple-100 bg-purple-50/30 text-xs font-medium">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-bold text-camping-green mb-1">🎯 핵심 과업 (Key Tasks - 포괄적 추진 과제)</label>
+                    <input type="text" id="rm-input-tasks" placeholder="예: 사회복지 현장 실천가로서의 통합 역량 구축" class="w-full p-3 rounded-xl border border-camping-beige outline-none focus:border-camping-green font-bold text-sm bg-camping-bg/30">
+                </div>
+
+                <!-- 4대 세부 과업 입력 -->
+                <div class="pt-2 border-t border-camping-beige/60">
+                    <label class="block font-bold text-gray-700 mb-2">🚩 4대 세부 과업 (Tasks Detail)</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="p-2.5 bg-gray-50 rounded-xl border">
+                            <span class="font-bold text-[11px] text-gray-500 block mb-1">세부과업 1 (전문 실천)</span>
+                            <input type="text" id="rm-input-sub1-title" placeholder="과업명" class="w-full p-1.5 bg-white border rounded-lg text-xs font-bold mb-1">
+                            <input type="text" id="rm-input-sub1-desc" placeholder="세부 내용/계획" class="w-full p-1.5 bg-white border rounded-lg text-[11px]">
+                        </div>
+                        <div class="p-2.5 bg-gray-50 rounded-xl border">
+                            <span class="font-bold text-[11px] text-gray-500 block mb-1">세부과업 2 (자격 및 역량)</span>
+                            <input type="text" id="rm-input-sub2-title" placeholder="과업명" class="w-full p-1.5 bg-white border rounded-lg text-xs font-bold mb-1">
+                            <input type="text" id="rm-input-sub2-desc" placeholder="세부 내용/계획" class="w-full p-1.5 bg-white border rounded-lg text-[11px]">
+                        </div>
+                        <div class="p-2.5 bg-gray-50 rounded-xl border">
+                            <span class="font-bold text-[11px] text-gray-500 block mb-1">세부과업 3 (네트워크)</span>
+                            <input type="text" id="rm-input-sub3-title" placeholder="과업명" class="w-full p-1.5 bg-white border rounded-lg text-xs font-bold mb-1">
+                            <input type="text" id="rm-input-sub3-desc" placeholder="세부 내용/계획" class="w-full p-1.5 bg-white border rounded-lg text-[11px]">
+                        </div>
+                        <div class="p-2.5 bg-gray-50 rounded-xl border">
+                            <span class="font-bold text-[11px] text-gray-500 block mb-1">세부과업 4 (기획 및 평가)</span>
+                            <input type="text" id="rm-input-sub4-title" placeholder="과업명" class="w-full p-1.5 bg-white border rounded-lg text-xs font-bold mb-1">
+                            <input type="text" id="rm-input-sub4-desc" placeholder="세부 내용/계획" class="w-full p-1.5 bg-white border rounded-lg text-[11px]">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="py-3 bg-camping-green text-white font-bold rounded-xl shadow-md hover:bg-[#3f5a3b] transition mt-2 text-sm">로드맵 저장하기 💾</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 만다라트 영역 세부 실천 수칙(체크리스트) 모달 -->
+    <div id="mandalart-detail-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-[2rem] shadow-2xl p-6 sm:p-7 transform scale-95 transition-transform duration-300" id="mandalart-detail-content">
+            <div class="flex justify-between items-start border-b border-camping-beige pb-4 mb-4">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 mb-1">
+                        <span>🎯</span> 핵심 기둥 세부 수칙
+                    </div>
+                    <h3 id="mdl-detail-title" class="text-xl font-extrabold text-camping-text flex items-center gap-2"></h3>
+                    <p id="mdl-detail-desc" class="text-xs text-camping-subtext mt-0.5"></p>
+                </div>
+                <button onclick="closePillarDetail()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center text-sm font-bold text-gray-500">✕</button>
+            </div>
+            
+            <!-- 영역 달성률 배너 -->
+            <div class="bg-camping-bg/60 p-3 rounded-xl border border-camping-beige/70 mb-4 flex items-center justify-between text-xs">
+                <span class="font-bold text-camping-text">이 영역 달성 현황</span>
+                <span id="mdl-detail-progress-badge" class="font-extrabold text-camping-green bg-white px-2.5 py-0.5 rounded-full border border-camping-greenlight/50"></span>
+            </div>
+
+            <!-- 8대 실천 수칙 체크리스트 -->
+            <div id="mdl-detail-checklist" class="flex flex-col gap-2.5"></div>
+
+            <div class="mt-6 pt-3 border-t border-camping-beige flex justify-end">
+                <button onclick="closePillarDetail()" class="px-5 py-2.5 bg-camping-green text-white font-bold text-xs rounded-xl shadow-xs hover:bg-[#3f5a3b] transition">
+                    확인 및 닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- 100문 100답 작성 및 수정 모달 -->
+    <div id="qna-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-[2rem] shadow-2xl p-6 sm:p-8 transform scale-95 transition-transform duration-300" id="qna-modal-content">
+            <div class="flex justify-between items-start border-b border-camping-beige pb-4 mb-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <span id="modal-qna-num" class="text-[11px] font-extrabold bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full border border-amber-200"></span>
+                        <span id="modal-qna-cat" class="text-[11px] font-bold text-camping-subtext"></span>
+                    </div>
+                    <h3 id="modal-qna-text" class="text-base sm:text-lg font-extrabold text-camping-text leading-snug"></h3>
+                </div>
+                <button onclick="closeQnAModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center text-sm font-bold text-gray-500">✕</button>
+            </div>
+
+            <form id="qna-form" class="flex flex-col gap-4 text-xs">
+                <input type="hidden" id="modal-qna-id">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1.5 flex items-center justify-between">
+                        <span>✍️ 나의 솔직한 생각과 기록</span>
+                        <span id="modal-qna-date" class="text-[11px] text-gray-400 font-normal"></span>
+                    </label>
+                    <textarea id="modal-qna-answer" rows="5" required placeholder="지금 머릿속에 떠오르는 솔직한 마음을 편안하게 적어보세요..." class="w-full p-4 rounded-2xl border border-camping-beige outline-none focus:border-camping-green text-sm leading-relaxed bg-[#FAF9F5] resize-none"></textarea>
+                </div>
+
+                <div class="flex gap-2 pt-2 border-t border-camping-beige">
+                    <button type="button" onclick="closeQnAModal()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition text-xs">
+                        취소
+                    </button>
+                    <button type="submit" class="flex-1 py-3 bg-camping-green text-white font-bold rounded-xl shadow-md hover:bg-[#3f5a3b] transition text-xs">
+                        기록 저장하기 💾
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 만다라트 편집 모달 -->
+    <div id="mandalart-edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-[2rem] shadow-2xl p-6 sm:p-8 transform scale-95 transition-transform duration-300" id="mandalart-edit-content">
+            <div class="flex justify-between items-center border-b border-camping-beige pb-4 mb-4">
+                <h3 class="text-xl font-extrabold text-camping-text flex items-center gap-2">
+                    <span>✏️</span> 만다라트 목표 및 실천수칙 편집
+                </h3>
+                <button onclick="closeMandalartEditModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition flex items-center justify-center text-sm font-bold">✕</button>
+            </div>
+
+            <form id="mandalart-edit-form" class="flex flex-col gap-4 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">🏆 중심 핵심 목표 (Grand Central Goal)</label>
+                    <input type="text" id="mdl-edit-core-title" required class="w-full p-3 rounded-xl border border-camping-beige font-extrabold text-sm outline-none focus:border-camping-green bg-camping-bg/30">
+                </div>
+
+                <div class="pt-2 border-t border-camping-beige/60">
+                    <label class="block font-bold text-gray-700 mb-1.5">선택된 핵심 기둥 (8대 영역)</label>
+                    <select id="mdl-edit-pillar-select" onchange="loadPillarForEdit(parseInt(this.value))" class="w-full p-2.5 rounded-xl border border-camping-beige font-bold text-xs outline-none focus:border-camping-green bg-white">
+                        <option value="0">1. 📚 전공 & 학점</option>
+                        <option value="1">2. 📜 전문 자격 & 스펙</option>
+                        <option value="2">3. 🏢 현장 실습 & 실무</option>
+                        <option value="3">4. 💡 대외활동 & 공모전</option>
+                        <option value="4">5. 💻 IT & 디지털 도구</option>
+                        <option value="5">6. 🧠 멘탈 & 자기통제</option>
+                        <option value="6">7. 🤝 인간성 & 네트워크</option>
+                        <option value="7">8. 🏃 건강 & 체력</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">기둥 명칭</label>
+                        <input type="text" id="mdl-edit-pillar-name" required class="w-full p-2.5 rounded-xl border border-camping-beige font-bold text-xs outline-none focus:border-camping-green">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">대표 아이콘 (이모지)</label>
+                        <input type="text" id="mdl-edit-pillar-icon" required class="w-full p-2.5 rounded-xl border border-camping-beige text-xs outline-none focus:border-camping-green text-center">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">기둥 간략 설명 / 목표</label>
+                    <input type="text" id="mdl-edit-pillar-desc" class="w-full p-2.5 rounded-xl border border-camping-beige text-xs outline-none focus:border-camping-green">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1.5">8가지 세부 실천 수칙</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="mdl-edit-items-container">
+                        <!-- 8 inputs -->
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2 border-t border-camping-beige">
+                    <button type="button" onclick="closeMandalartEditModal()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition text-xs">
+                        취소
+                    </button>
+                    <button type="submit" class="flex-1 py-3 bg-camping-green text-white font-bold rounded-xl shadow-md hover:bg-[#3f5a3b] transition text-xs">
+                        만다라트 저장하기 💾
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -449,14 +1044,174 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCOsWV1nWDagEtys4Hkkwxql5eEHRqFoC8", authDomain: "dauny-camping-car.firebaseapp.com", projectId: "dauny-camping-car", storageBucket: "dauny-camping-car.firebasestorage.app", messagingSenderId: "75684789349", appId: "1:75684789349:web:b9cfd9f130d310efc99a8c" };
         const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
         
-        const postsPath = "posts", trailsPath = "trails", schedulesPath = "schedules", ddaysPath = "ddays", gbPath = "guestbook", archivesPath = "archives", jobsPath = "jobs";
+        const postsPath = "posts", trailsPath = "trails", schedulesPath = "schedules", ddaysPath = "ddays", gbPath = "guestbook", archivesPath = "archives", jobsPath = "jobs", roadmapPath = "roadmap", mandalartPath = "mandalart", qnaPath = "qna";
         let currentUser = null, allPosts = [], allTrails = [], allSchedules = [], allDDays = [], allGuestbooks = [], allArchives = [], allJobs = [];
         let currentCategory = '전체', currentSearchQuery = '', currentJobFilter = '전체'; 
+
+        const defaultRoadmap = {
+            vision: "따뜻한 연대와 혁신으로 사회적 사각지대를 밝히는 사회복지 실천가",
+            mission: "현장 중심의 전문 실천과 자원 연계로 당사자의 존엄한 삶과 지역사회 변화를 이끈다",
+            strategies: ["현장 실천 역량 고도화", "지역사회 다자간 협력 네트워크", "데이터 기반의 맞춤형 복지 기획"],
+            values: ["인간존중", "진정성", "전문성", "포용적 연대"],
+            materialRes: "사회복지사 1급, 포트폴리오 웹, 현장 연구자료, 업무 매뉴얼",
+            humanRes: "복지관 실습 지도자, 학계 멘토, 동기 실천가 네트워크",
+            tasks: "사회복지 현장 실천가로서의 통합 전문 역량 구축 및 실행",
+            subtasks: [
+                { title: "사례관리 전문성 심화", desc: "당사자 강점 관점 중심의 심층 욕구 사정 및 개인별 맞춤 자원 연계" },
+                { title: "전문 자격 및 실무 역량", desc: "사회복지사 1급 지식 체계화, 1종 보통 실운전, 프로포절 공모전 실무" },
+                { title: "지역사회 자원 생태계 연계", desc: "민·관 협력 거버넌스 및 경기·서울 유관기관 복지협의체 스터디" },
+                { title: "프로그램 기획 및 성과 평가", desc: "주민조직화 사업 기획, 비영리 펀드레이징(모금) 및 기업 CSR 연계 실습" }
+            ]
+        };
+        let currentRoadmap = { ...defaultRoadmap };
+        const defaultMandalart = {
+            title: "사회적 가치를 실현하는 전문 사회복지 실천가로 성장",
+            pillars: [
+                {
+                    id: 0,
+                    name: "전공 & 학점",
+                    icon: "📚",
+                    desc: "전공 평점 4.0 및 학업 지식의 체계화",
+                    color: "blue",
+                    items: [
+                        { id: "p0_1", text: "전공 평점 4.0 이상 유지", done: false },
+                        { id: "p0_2", text: "사회복지 발달사 및 이론 심화", done: false },
+                        { id: "p0_3", text: "전공 필수 10과목 A학점 목표", done: false },
+                        { id: "p0_4", text: "교수님 연구실 논문/보고서 탐독", done: false },
+                        { id: "p0_5", text: "중간/기말 3주 전 단권화 노트 작성", done: false },
+                        { id: "p0_6", text: "사회복지 법제와 정책 최신 개정 스터디", done: false },
+                        { id: "p0_7", text: "복지 분야 학술 세미나 1회 이상 참석", done: false },
+                        { id: "p0_8", text: "우수 레포트 모음집 아카이빙", done: false }
+                    ]
+                },
+                {
+                    id: 1,
+                    name: "전문 자격 & 스펙",
+                    icon: "📜",
+                    desc: "사회복지사 1급 및 실무 필수 자격 취득",
+                    color: "emerald",
+                    items: [
+                        { id: "p1_1", text: "사회복지사 1급 시험 기출 심층 분석", done: false },
+                        { id: "p1_2", text: "1종 보통 운전면허 취득 및 실운전 연수", done: false },
+                        { id: "p1_3", text: "컴퓨터활용능력(컴활) 자격 취득", done: false },
+                        { id: "p1_4", text: "비영리 프로포절 작성 전문과정 수료", done: false },
+                        { id: "p1_5", text: "한국사능력검정시험 취득 (공공기관 대비)", done: false },
+                        { id: "p1_6", text: "사회조사분석사 및 통계 실무 공부", done: false },
+                        { id: "p1_7", text: "비영리 모금전문가 기초 과정 이수", done: false },
+                        { id: "p1_8", text: "심폐소생술(CPR) 및 안전 교육 이수", done: false }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "현장 실습 & 실무",
+                    icon: "🏢",
+                    desc: "160시간 정규 실습 및 기관 라운딩",
+                    color: "amber",
+                    items: [
+                        { id: "p2_1", text: "종합사회복지관 160시간 정규 실습 수료", done: false },
+                        { id: "p2_2", text: "실습 일지 및 수퍼비전 피드백 매일 정리", done: false },
+                        { id: "p2_3", text: "지역사회 보장협의체 현장 견학", done: false },
+                        { id: "p2_4", text: "사회복지기관 3곳 이상 인터뷰 탐방", done: false },
+                        { id: "p2_5", text: "사례관리 초기면접 시뮬레이션 연습", done: false },
+                        { id: "p2_6", text: "프로그램 기획서 직접 작성 및 모의 시연", done: false },
+                        { id: "p2_7", text: "실습 수퍼바이저와 지속적 진로 멘토링", done: false },
+                        { id: "p2_8", text: "실습 포트폴리오 제본 및 디지털화", done: false }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "대외활동 & 공모전",
+                    icon: "💡",
+                    desc: "사회혁신 공모전 및 봉사시간 200시간",
+                    color: "indigo",
+                    items: [
+                        { id: "p3_1", text: "복지/비영리 청년 서포터즈 활동 1회 이상", done: false },
+                        { id: "p3_2", text: "대학생 사회혁신 프로그램 공모전 출품", done: false },
+                        { id: "p3_3", text: "전공 학술 동아리 또는 학회 주도적 참여", done: false },
+                        { id: "p3_4", text: "사회공헌 기업 CSR 탐방 프로그램 참여", done: false },
+                        { id: "p3_5", text: "취약계층 아동/노인 정기 멘토링 6개월", done: false },
+                        { id: "p3_6", text: "청년 정책 제안대회 아이디어 제출", done: false },
+                        { id: "p3_7", text: "사회복지 학술대회 대학생 세션 방청", done: false },
+                        { id: "p3_8", text: "봉사활동 VMS/1365 200시간 이상 누적", done: false }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "IT & 디지털 도구",
+                    icon: "💻",
+                    desc: "노션 포트폴리오, 엑셀, 통계 툴 역량",
+                    color: "cyan",
+                    items: [
+                        { id: "p4_1", text: "노션(Notion) 기반 이력서/포트폴리오 구축", done: false },
+                        { id: "p4_2", text: "엑셀 실무 함수(VLOOKUP, 피벗) 마스터", done: false },
+                        { id: "p4_3", text: "미리캔버스/망고보드로 사업 홍보지 디자인", done: false },
+                        { id: "p4_4", text: "SPSS/R 기초 통계 데이터 분석 연습", done: false },
+                        { id: "p4_5", text: "Google Workspace 협업 툴 능숙 활용", done: false },
+                        { id: "p4_6", text: "생성형 AI(Gemini) 업무 보조 프롬프트 연구", done: false },
+                        { id: "p4_7", text: "내 개인 웹사이트(현재 웹) 꾸준한 관리", done: false },
+                        { id: "p4_8", text: "비영리 기관 디지털 전환(DX) 우수사례 조사", done: false }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "멘탈 & 자기통제",
+                    icon: "🧠",
+                    desc: "회복 탄력성, 일일 루틴, 마인드셋",
+                    color: "purple",
+                    items: [
+                        { id: "p5_1", text: "아침 기상 루틴 (정해진 기상 시간 엄수)", done: false },
+                        { id: "p5_2", text: "일간 투두리스트 & 주간 우선순위 수립", done: false },
+                        { id: "p5_3", text: "실패나 거절에 낙담하지 않고 교훈 기록하기", done: false },
+                        { id: "p5_4", text: "스마트폰 스크린타임 하루 2.5시간 이하 조절", done: false },
+                        { id: "p5_5", text: "주 1회 온전한 마인드풀니스 휴식 시간 확보", done: false },
+                        { id: "p5_6", text: "타인과의 비교 대신 어제의 나보다 성장하기", done: false },
+                        { id: "p5_7", text: "감정 일기 쓰기를 통한 자기 객관화", done: false },
+                        { id: "p5_8", text: "시험 및 면접 전 긍정적 자기확언(Affirmation)", done: false }
+                    ]
+                },
+                {
+                    id: 6,
+                    name: "인간성 & 네트워크",
+                    icon: "🤝",
+                    desc: "멘토링, 경청, 동기 실천가들과의 연대",
+                    color: "rose",
+                    items: [
+                        { id: "p6_1", text: "인사 잘하기와 감사 표현 습관화", done: false },
+                        { id: "p6_2", text: "사회복지 현장 선배 인터뷰 및 네트워킹", done: false },
+                        { id: "p6_3", text: "교수님 면담 정기적 진행 (학기당 최소 1회)", done: false },
+                        { id: "p6_4", text: "동기들과 상생하는 스터디 그룹 운영", done: false },
+                        { id: "p6_5", text: "타인의 의견을 끝까지 경청하는 태도 체화", done: false },
+                        { id: "p6_6", text: "도움을 받았을 때 작은 답례와 피드백 전하기", done: false },
+                        { id: "p6_7", text: "약속 시간 10분 전 도착 습관화", done: false },
+                        { id: "p6_8", text: "공감과 포용의 복지 실천 철학 정립", done: false }
+                    ]
+                },
+                {
+                    id: 7,
+                    name: "건강 & 체력",
+                    icon: "🏃",
+                    desc: "주 3회 러닝, 7시간 수면, 건강한 식습관",
+                    color: "orange",
+                    items: [
+                        { id: "p7_1", text: "주 3회 30분 이상 유산소 러닝 또는 산책", done: false },
+                        { id: "p7_2", text: "주 2회 기초 근력 운동(홈트레이닝)", done: false },
+                        { id: "p7_3", text: "하루 7시간 이상 충분한 수면 시간 확보", done: false },
+                        { id: "p7_4", text: "하루 1.5L 이상 미온수 수분 섭취", done: false },
+                        { id: "p7_5", text: "야식 및 가공식품 줄이고 균형잡힌 식사", done: false },
+                        { id: "p7_6", text: "바른 자세 유지(거북목/허리 스트레칭)", done: false },
+                        { id: "p7_7", text: "정기 건강검진 및 계절 독감 예방접종", done: false },
+                        { id: "p7_8", text: "지치지 않는 체력으로 복지 현장 누비기", done: false }
+                    ]
+                }
+            ]
+        };
+        let currentMandalart = { ...defaultMandalart };
+ 
 
         const quill = new Quill('#post-editor-container', { theme: 'snow', placeholder: '편안하게 이야기를 적어주세요...', modules: { toolbar: [ ['bold', 'italic', 'underline', 'strike'], ['blockquote', 'code-block'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], [{ 'color': [] }, { 'background': [] }], ['link'], ['clean'] ] } });
         
@@ -464,16 +1219,28 @@
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
             document.getElementById(`view-${viewId}`).classList.remove('hidden');
             document.getElementById('mobile-menu').classList.add('hidden');
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.className = "nav-btn text-camping-subtext hover:text-camping-green transition font-medium");
-            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick') === `showView('${viewId}')`);
-            if(activeBtn) activeBtn.className = "nav-btn text-camping-text font-bold hover:text-camping-green transition border-b-2 border-camping-green pb-1";
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.className = "nav-btn text-camping-subtext hover:text-camping-green transition font-medium flex items-center gap-1 cursor-pointer py-1.5 whitespace-nowrap");
+            
+            // 기록 하위 메뉴(records, trail, qna)일 경우 '기록' 네비게이션 버튼 활성화
+            let targetAttr = `showView('${viewId}')`;
+            if (viewId === 'trail' || viewId === 'qna') {
+                targetAttr = `showView('records')`;
+            }
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick') === targetAttr);
+            if(activeBtn) activeBtn.className = "nav-btn text-camping-green font-bold border-b-2 border-camping-green pb-1 flex items-center gap-1 cursor-pointer py-1.5 whitespace-nowrap";
             
             if (viewId === 'schedule') renderCalendars();
             if (viewId === 'records') renderPosts();
             if (viewId === 'guestbook') renderGuestbook();
             if (viewId === 'trail') renderTrails();
             if (viewId === 'archive') renderArchives();
+            if (viewId === 'qna') renderQnA();
             if (viewId === 'jobs') renderJobs();
+            if (viewId === 'roadmap') renderRoadmap(currentRoadmap);
+                renderTodayQuestion();
+                renderQnA();
+                renderMandalart();
+            if (viewId === 'roadmap') renderMandalart();
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
@@ -862,7 +1629,308 @@
             closeTrailModal();
         });
 
+        // ==================== 모닥불 ASMR 사운드 엔진 (Web Audio API) ====================
+        let campfireAudioCtx = null;
+        let isCampfirePlaying = false;
+        let campfireMasterGain = null;
+        let campfireRoarNode = null;
+        let campfireCrackleTimer = null;
+
+        function createPinkNoiseBuffer(ctx, seconds = 4) {
+            const bufferSize = ctx.sampleRate * seconds;
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                b0 = 0.99886 * b0 + white * 0.0555179;
+                b1 = 0.99332 * b1 + white * 0.0750759;
+                b2 = 0.96900 * b2 + white * 0.1538520;
+                b3 = 0.86650 * b3 + white * 0.3104856;
+                b4 = 0.55000 * b4 + white * 0.5329522;
+                b5 = -0.7616 * b5 - white * 0.0168980;
+                data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.06;
+                b6 = white * 0.115926;
+            }
+            return buffer;
+        }
+
+        function triggerCrackle(ctx, dest) {
+            if (!isCampfirePlaying) return;
+            try {
+                const osc = ctx.createBufferSource();
+                const dur = 0.005 + Math.random() * 0.02; // 5ms ~ 25ms
+                const buffer = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * dur)), ctx.sampleRate);
+                const d = buffer.getChannelData(0);
+                for (let i = 0; i < d.length; i++) {
+                    d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.0035));
+                }
+                osc.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.value = 1200 + Math.random() * 2200;
+
+                const gain = ctx.createGain();
+                const isBigPop = Math.random() < 0.18;
+                gain.gain.value = isBigPop ? (0.28 + Math.random() * 0.35) : (0.04 + Math.random() * 0.12);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(dest);
+
+                osc.start();
+                osc.onended = () => {
+                    try { osc.disconnect(); filter.disconnect(); gain.disconnect(); } catch(e){}
+                };
+            } catch(e) {}
+
+            const nextDelay = 35 + Math.random() * 240;
+            campfireCrackleTimer = setTimeout(() => triggerCrackle(ctx, dest), nextDelay);
+        }
+
+        function updateCampfireUI(playing) {
+            const btn = document.getElementById('btn-campfire');
+            const btnM = document.getElementById('btn-campfire-m');
+            const txt = document.getElementById('campfire-text');
+            const txtM = document.getElementById('campfire-text-m');
+            const menuTxt = document.getElementById('campfire-menu-text');
+
+            if (playing) {
+                if (btn) btn.className = "ml-1 px-3.5 py-1.5 bg-amber-500 text-white border border-amber-600 font-bold rounded-full shadow-md transition-all flex items-center gap-1.5 text-xs hover:-translate-y-0.5 ring-2 ring-amber-300 animate-pulse";
+                if (btnM) btnM.className = "px-2.5 py-1.5 bg-amber-500 text-white border border-amber-600 rounded-full text-xs font-bold shadow-md ring-2 ring-amber-300 flex items-center gap-1 animate-pulse";
+                if (txt) txt.innerText = "타닥타닥... 끄기";
+                if (txtM) txtM.innerText = "끄기";
+                if (menuTxt) menuTxt.innerText = "🔥 모닥불 ASMR 끄기";
+            } else {
+                if (btn) btn.className = "ml-1 px-3.5 py-1.5 bg-white text-camping-text border border-camping-beige hover:border-amber-400 font-bold rounded-full shadow-xs transition-all flex items-center gap-1.5 text-xs hover:-translate-y-0.5 cursor-pointer";
+                if (btnM) btnM.className = "px-2.5 py-1.5 bg-white text-camping-text border border-camping-beige rounded-full text-xs font-bold shadow-xs flex items-center gap-1";
+                if (txt) txt.innerText = "모닥불 ASMR";
+                if (txtM) txtM.innerText = "ASMR";
+                if (menuTxt) menuTxt.innerText = "🔥 모닥불 ASMR 켜기";
+            }
+        }
+
+        let currentCampfireVol = 0.45;
+
+        window.setCampfireVolume = (val) => {
+            currentCampfireVol = parseFloat(val);
+            const pct = Math.round(currentCampfireVol * 100) + '%';
+            const label = document.getElementById('campfire-vol-label');
+            const labelM = document.getElementById('campfire-vol-label-m');
+            const slider = document.getElementById('campfire-volume');
+            const sliderM = document.getElementById('campfire-volume-m');
+            if (label) label.innerText = pct;
+            if (labelM) labelM.innerText = pct;
+            if (slider && slider.value !== String(val)) slider.value = val;
+            if (sliderM && sliderM.value !== String(val)) sliderM.value = val;
+
+            if (isCampfirePlaying && campfireMasterGain && campfireAudioCtx) {
+                try {
+                    campfireMasterGain.gain.setValueAtTime(campfireMasterGain.gain.value, campfireAudioCtx.currentTime);
+                    campfireMasterGain.gain.linearRampToValueAtTime(Math.max(0.0001, currentCampfireVol), campfireAudioCtx.currentTime + 0.08);
+                } catch(e) {}
+            }
+        };
+
+        window.toggleCampfire = () => {
+            if (!isCampfirePlaying) {
+                try {
+                    if (!campfireAudioCtx) {
+                        campfireAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    if (campfireAudioCtx.state === 'suspended') {
+                        campfireAudioCtx.resume();
+                    }
+
+                    campfireMasterGain = campfireAudioCtx.createGain();
+                    campfireMasterGain.gain.setValueAtTime(0.001, campfireAudioCtx.currentTime);
+                    campfireMasterGain.gain.exponentialRampToValueAtTime(Math.max(0.01, currentCampfireVol), campfireAudioCtx.currentTime + 1.0);
+                    campfireMasterGain.connect(campfireAudioCtx.destination);
+
+                    // 1. 따스한 불길 저음 럼블
+                    const pinkBuf = createPinkNoiseBuffer(campfireAudioCtx, 4);
+                    campfireRoarNode = campfireAudioCtx.createBufferSource();
+                    campfireRoarNode.buffer = pinkBuf;
+                    campfireRoarNode.loop = true;
+
+                    const roarFilter = campfireAudioCtx.createBiquadFilter();
+                    roarFilter.type = 'lowpass';
+                    roarFilter.frequency.value = 380;
+
+                    const roarGain = campfireAudioCtx.createGain();
+                    roarGain.gain.value = 0.22;
+
+                    campfireRoarNode.connect(roarFilter);
+                    roarFilter.connect(roarGain);
+                    roarGain.connect(campfireMasterGain);
+                    campfireRoarNode.start();
+
+                    // 2. 타닥타닥 장작 튀는 소리
+                    isCampfirePlaying = true;
+                    triggerCrackle(campfireAudioCtx, campfireMasterGain);
+                    updateCampfireUI(true);
+                } catch (e) {
+                    console.error('모닥불 ASMR 재생 오류:', e);
+                }
+            } else {
+                isCampfirePlaying = false;
+                if (campfireCrackleTimer) clearTimeout(campfireCrackleTimer);
+                if (campfireMasterGain && campfireAudioCtx) {
+                    try {
+                        campfireMasterGain.gain.setValueAtTime(campfireMasterGain.gain.value, campfireAudioCtx.currentTime);
+                        campfireMasterGain.gain.exponentialRampToValueAtTime(0.0001, campfireAudioCtx.currentTime + 0.9);
+                        setTimeout(() => {
+                            if (campfireRoarNode) { try { campfireRoarNode.stop(); campfireRoarNode.disconnect(); } catch(e){} }
+                            if (campfireMasterGain) campfireMasterGain.disconnect();
+                        }, 950);
+                    } catch(e){}
+                }
+                updateCampfireUI(false);
+            }
+        };
+
+        // ==================== 나의 비전 & 커리어 로드맵 로직 ====================
+        const renderRoadmap = (rm) => {
+            const data = rm || defaultRoadmap;
+            const elVision = document.getElementById('rm-vision');
+            const elMission = document.getElementById('rm-mission');
+            const elTasks = document.getElementById('rm-tasks');
+            const elMat = document.getElementById('rm-material-res');
+            const elHum = document.getElementById('rm-human-res');
+
+            if (elVision) elVision.innerText = data.vision || defaultRoadmap.vision;
+            if (elMission) elMission.innerText = data.mission || defaultRoadmap.mission;
+            if (elTasks) elTasks.innerText = data.tasks || defaultRoadmap.tasks;
+            if (elMat) elMat.innerText = data.materialRes || defaultRoadmap.materialRes;
+            if (elHum) elHum.innerText = data.humanRes || defaultRoadmap.humanRes;
+
+            // 전략 칩들
+            const strContainer = document.getElementById('rm-strategies');
+            if (strContainer) {
+                strContainer.innerHTML = '';
+                (data.strategies && data.strategies.length ? data.strategies : defaultRoadmap.strategies).forEach(str => {
+                    strContainer.innerHTML += `<span class="px-3 py-1 bg-camping-bg text-camping-text font-bold text-xs rounded-full border border-camping-greenlight/40 shadow-2xs">🗺️ ${str.trim()}</span>`;
+                });
+            }
+
+            // 핵심 가치 칩들
+            const valContainer = document.getElementById('rm-values');
+            if (valContainer) {
+                valContainer.innerHTML = '';
+                (data.values && data.values.length ? data.values : defaultRoadmap.values).forEach(val => {
+                    valContainer.innerHTML += `<div class="p-2.5 bg-white rounded-xl border border-amber-200 text-xs font-bold text-amber-900 shadow-2xs flex items-center gap-1.5"><span class="text-amber-500">✔</span> ${val.trim()}</div>`;
+                });
+            }
+
+            // 4대 세부 과업 카드들
+            const subContainer = document.getElementById('rm-subtasks-container');
+            if (subContainer) {
+                subContainer.innerHTML = '';
+                const subtasks = (data.subtasks && data.subtasks.length) ? data.subtasks : defaultRoadmap.subtasks;
+                subtasks.forEach((st, idx) => {
+                    subContainer.innerHTML += `
+                        <div class="bg-white p-4 rounded-2xl border border-camping-beige shadow-2xs flex flex-col justify-between hover:shadow-sm hover:-translate-y-0.5 transition">
+                            <div>
+                                <div class="flex items-center gap-1 text-[11px] font-extrabold text-camping-green mb-1.5">
+                                    <span>🚩</span> 세부 과업 ${idx + 1}
+                                </div>
+                                <h5 class="text-xs font-extrabold text-camping-text mb-1">${st.title}</h5>
+                                <p class="text-[11px] text-camping-subtext leading-relaxed">${st.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        };
+
+        const roadmapModal = document.getElementById('roadmap-modal');
+        const roadmapModalContent = document.getElementById('roadmap-modal-content');
+
+        window.openRoadmapModal = () => {
+            const data = currentRoadmap || defaultRoadmap;
+            document.getElementById('rm-input-vision').value = data.vision || '';
+            document.getElementById('rm-input-mission').value = data.mission || '';
+            document.getElementById('rm-input-strategies').value = (data.strategies || defaultRoadmap.strategies).join(', ');
+            document.getElementById('rm-input-values').value = (data.values || defaultRoadmap.values).join(', ');
+            document.getElementById('rm-input-mat-res').value = data.materialRes || '';
+            document.getElementById('rm-input-hum-res').value = data.humanRes || '';
+            document.getElementById('rm-input-tasks').value = data.tasks || '';
+
+            const subs = data.subtasks || defaultRoadmap.subtasks;
+            if (subs[0]) { document.getElementById('rm-input-sub1-title').value = subs[0].title || ''; document.getElementById('rm-input-sub1-desc').value = subs[0].desc || ''; }
+            if (subs[1]) { document.getElementById('rm-input-sub2-title').value = subs[1].title || ''; document.getElementById('rm-input-sub2-desc').value = subs[1].desc || ''; }
+            if (subs[2]) { document.getElementById('rm-input-sub3-title').value = subs[2].title || ''; document.getElementById('rm-input-sub3-desc').value = subs[2].desc || ''; }
+            if (subs[3]) { document.getElementById('rm-input-sub4-title').value = subs[3].title || ''; document.getElementById('rm-input-sub4-desc').value = subs[3].desc || ''; }
+
+            roadmapModal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                roadmapModal.classList.remove('opacity-0');
+                roadmapModalContent.classList.remove('scale-95');
+            });
+        };
+
+        window.closeRoadmapModal = () => {
+            roadmapModal.classList.add('opacity-0');
+            roadmapModalContent.classList.add('scale-95');
+            setTimeout(() => roadmapModal.classList.add('hidden'), 300);
+        };
+
+        document.getElementById('roadmap-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const vision = document.getElementById('rm-input-vision').value.trim();
+            const mission = document.getElementById('rm-input-mission').value.trim();
+            const strategies = document.getElementById('rm-input-strategies').value.split(',').map(s => s.trim()).filter(Boolean);
+            const values = document.getElementById('rm-input-values').value.split(',').map(v => v.trim()).filter(Boolean);
+            const materialRes = document.getElementById('rm-input-mat-res').value.trim();
+            const humanRes = document.getElementById('rm-input-hum-res').value.trim();
+            const tasks = document.getElementById('rm-input-tasks').value.trim();
+
+            const subtasks = [
+                { title: document.getElementById('rm-input-sub1-title').value.trim() || '사례관리 전문성 심화', desc: document.getElementById('rm-input-sub1-desc').value.trim() },
+                { title: document.getElementById('rm-input-sub2-title').value.trim() || '전문 자격 및 실무 역량', desc: document.getElementById('rm-input-sub2-desc').value.trim() },
+                { title: document.getElementById('rm-input-sub3-title').value.trim() || '지역사회 자원 연계', desc: document.getElementById('rm-input-sub3-desc').value.trim() },
+                { title: document.getElementById('rm-input-sub4-title').value.trim() || '프로그램 기획 및 평가', desc: document.getElementById('rm-input-sub4-desc').value.trim() }
+            ];
+
+            const updated = { vision, mission, strategies, values, materialRes, humanRes, tasks, subtasks, updatedAt: new Date().toISOString() };
+            currentRoadmap = updated;
+            renderRoadmap(currentRoadmap);
+
+            try {
+                await setDoc(doc(db, roadmapPath, 'main'), updated, { merge: true });
+            } catch (err) {
+                console.error('로드맵 Firestore 저장 오류:', err);
+            }
+            closeRoadmapModal();
+        });
+
         const loadData = () => {
+            onSnapshot(collection(db, roadmapPath), (s) => {
+                s.forEach(d => {
+                    if (d.id === 'main') {
+                        currentRoadmap = { ...defaultRoadmap, ...d.data() };
+                    }
+                });
+                renderRoadmap(currentRoadmap);
+            });
+            onSnapshot(collection(db, mandalartPath), (s) => {
+                s.forEach(d => {
+                    if (d.id === 'main') {
+                        currentMandalart = { ...defaultMandalart, ...d.data() };
+                    }
+                });
+                renderMandalart();
+            });
+            onSnapshot(collection(db, qnaPath), (s) => {
+                s.forEach(d => {
+                    if (d.id === 'main' && d.data().answers) {
+                        qnaData = { ...d.data().answers };
+                    }
+                });
+                renderQnA();
+                renderTodayQuestion();
+            });
             onSnapshot(collection(db, postsPath), (s) => { allPosts = []; s.forEach(d => allPosts.push({id: d.id, ...d.data()})); allPosts.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)); if(!document.getElementById('view-records').classList.contains('hidden')) renderPosts(); renderDashboard(); });
             onSnapshot(collection(db, trailsPath), (s) => { allTrails = []; s.forEach(d => allTrails.push({id: d.id, ...d.data()})); allTrails.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0)); renderTrails(); renderDashboard(); });
             onSnapshot(collection(db, ddaysPath), (s) => { allDDays = []; s.forEach(d => allDDays.push({id: d.id, ...d.data()})); allDDays.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0)); renderDDays(); renderDashboard(); });
@@ -871,14 +1939,736 @@
             onSnapshot(collection(db, archivesPath), (s) => { allArchives = []; s.forEach(d => allArchives.push({id: d.id, ...d.data()})); allArchives.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)); if(!document.getElementById('view-archive').classList.contains('hidden')) renderArchives(); renderDashboard(); });
             onSnapshot(collection(db, jobsPath), (s) => { allJobs = []; s.forEach(d => allJobs.push({id: d.id, ...d.data()})); allJobs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)); if(!document.getElementById('view-jobs').classList.contains('hidden')) renderJobs(); renderDashboard(); });
         };
+        
+                // ==================== 오타니 만다라트 내추럴 파스텔 테마 및 고도화 UI ====================
+        let currentEditingPillarIdx = 0;
+        let currentDetailPillarIdx = 0;
+
+        const pillarThemes = [
+            {
+                name: "sky",
+                cardBg: "bg-sky-50/50 hover:bg-sky-50/90",
+                cardBorder: "border-sky-200/80 hover:border-sky-400",
+                badgeBg: "bg-sky-100 text-sky-800 border-sky-300/80",
+                progressFill: "bg-sky-500",
+                tagBorder: "border-sky-200/70",
+                accentText: "text-sky-700",
+                ringHover: "hover:ring-2 hover:ring-sky-200",
+                matrixBlockBg: "bg-sky-50/40 border-sky-200/80",
+                matrixCenterBg: "bg-sky-600 text-white border border-sky-700",
+                matrixChecked: "bg-sky-100/80 border-sky-300 text-sky-800",
+                matrixHover: "hover:bg-sky-100/70"
+            },
+            {
+                name: "emerald",
+                cardBg: "bg-emerald-50/50 hover:bg-emerald-50/90",
+                cardBorder: "border-emerald-200/80 hover:border-emerald-400",
+                badgeBg: "bg-emerald-100 text-emerald-800 border-emerald-300/80",
+                progressFill: "bg-emerald-500",
+                tagBorder: "border-emerald-200/70",
+                accentText: "text-emerald-700",
+                ringHover: "hover:ring-2 hover:ring-emerald-200",
+                matrixBlockBg: "bg-emerald-50/40 border-emerald-200/80",
+                matrixCenterBg: "bg-emerald-600 text-white border border-emerald-700",
+                matrixChecked: "bg-emerald-100/80 border-emerald-300 text-emerald-800",
+                matrixHover: "hover:bg-emerald-100/70"
+            },
+            {
+                name: "amber",
+                cardBg: "bg-amber-50/50 hover:bg-amber-50/90",
+                cardBorder: "border-amber-200/80 hover:border-amber-400",
+                badgeBg: "bg-amber-100 text-amber-900 border-amber-300/80",
+                progressFill: "bg-amber-500",
+                tagBorder: "border-amber-200/70",
+                accentText: "text-amber-700",
+                ringHover: "hover:ring-2 hover:ring-amber-200",
+                matrixBlockBg: "bg-amber-50/40 border-amber-200/80",
+                matrixCenterBg: "bg-amber-600 text-white border border-amber-700",
+                matrixChecked: "bg-amber-100/80 border-amber-300 text-amber-800",
+                matrixHover: "hover:bg-amber-100/70"
+            },
+            {
+                name: "indigo",
+                cardBg: "bg-indigo-50/50 hover:bg-indigo-50/90",
+                cardBorder: "border-indigo-200/80 hover:border-indigo-400",
+                badgeBg: "bg-indigo-100 text-indigo-900 border-indigo-300/80",
+                progressFill: "bg-indigo-500",
+                tagBorder: "border-indigo-200/70",
+                accentText: "text-indigo-700",
+                ringHover: "hover:ring-2 hover:ring-indigo-200",
+                matrixBlockBg: "bg-indigo-50/40 border-indigo-200/80",
+                matrixCenterBg: "bg-indigo-600 text-white border border-indigo-700",
+                matrixChecked: "bg-indigo-100/80 border-indigo-300 text-indigo-800",
+                matrixHover: "hover:bg-indigo-100/70"
+            },
+            {
+                name: "teal",
+                cardBg: "bg-teal-50/50 hover:bg-teal-50/90",
+                cardBorder: "border-teal-200/80 hover:border-teal-400",
+                badgeBg: "bg-teal-100 text-teal-900 border-teal-300/80",
+                progressFill: "bg-teal-500",
+                tagBorder: "border-teal-200/70",
+                accentText: "text-teal-700",
+                ringHover: "hover:ring-2 hover:ring-teal-200",
+                matrixBlockBg: "bg-teal-50/40 border-teal-200/80",
+                matrixCenterBg: "bg-teal-600 text-white border border-teal-700",
+                matrixChecked: "bg-teal-100/80 border-teal-300 text-teal-800",
+                matrixHover: "hover:bg-teal-100/70"
+            },
+            {
+                name: "purple",
+                cardBg: "bg-purple-50/50 hover:bg-purple-50/90",
+                cardBorder: "border-purple-200/80 hover:border-purple-400",
+                badgeBg: "bg-purple-100 text-purple-900 border-purple-300/80",
+                progressFill: "bg-purple-500",
+                tagBorder: "border-purple-200/70",
+                accentText: "text-purple-700",
+                ringHover: "hover:ring-2 hover:ring-purple-200",
+                matrixBlockBg: "bg-purple-50/40 border-purple-200/80",
+                matrixCenterBg: "bg-purple-600 text-white border border-purple-700",
+                matrixChecked: "bg-purple-100/80 border-purple-300 text-purple-800",
+                matrixHover: "hover:bg-purple-100/70"
+            },
+            {
+                name: "rose",
+                cardBg: "bg-rose-50/50 hover:bg-rose-50/90",
+                cardBorder: "border-rose-200/80 hover:border-rose-400",
+                badgeBg: "bg-rose-100 text-rose-900 border-rose-300/80",
+                progressFill: "bg-rose-500",
+                tagBorder: "border-rose-200/70",
+                accentText: "text-rose-700",
+                ringHover: "hover:ring-2 hover:ring-rose-200",
+                matrixBlockBg: "bg-rose-50/40 border-rose-200/80",
+                matrixCenterBg: "bg-rose-600 text-white border border-rose-700",
+                matrixChecked: "bg-rose-100/80 border-rose-300 text-rose-800",
+                matrixHover: "hover:bg-rose-100/70"
+            },
+            {
+                name: "orange",
+                cardBg: "bg-orange-50/50 hover:bg-orange-50/90",
+                cardBorder: "border-orange-200/80 hover:border-orange-400",
+                badgeBg: "bg-orange-100 text-orange-900 border-orange-300/80",
+                progressFill: "bg-orange-500",
+                tagBorder: "border-orange-200/70",
+                accentText: "text-orange-700",
+                ringHover: "hover:ring-2 hover:ring-orange-200",
+                matrixBlockBg: "bg-orange-50/40 border-orange-200/80",
+                matrixCenterBg: "bg-orange-600 text-white border border-orange-700",
+                matrixChecked: "bg-orange-100/80 border-orange-300 text-orange-800",
+                matrixHover: "hover:bg-orange-100/70"
+            }
+        ];
+
+        window.switchRoadmapSubtab = (tab) => {
+            const btnTree = document.getElementById('subtab-btn-tree');
+            const btnMdl = document.getElementById('subtab-btn-mandalart');
+            const viewTree = document.getElementById('roadmap-subview-tree');
+            const viewMdl = document.getElementById('roadmap-subview-mandalart');
+            
+            if (tab === 'tree') {
+                if (btnTree) btnTree.className = "px-5 py-2 rounded-full font-extrabold text-xs transition-all bg-camping-green text-white shadow-xs flex items-center gap-1.5 cursor-pointer";
+                if (btnMdl) btnMdl.className = "px-5 py-2 rounded-full font-extrabold text-xs transition-all text-camping-subtext hover:text-camping-green flex items-center gap-1.5 cursor-pointer";
+                if (viewTree) viewTree.classList.remove('hidden');
+                if (viewMdl) viewMdl.classList.add('hidden');
+            } else {
+                if (btnTree) btnTree.className = "px-5 py-2 rounded-full font-extrabold text-xs transition-all text-camping-subtext hover:text-camping-green flex items-center gap-1.5 cursor-pointer";
+                if (btnMdl) btnMdl.className = "px-5 py-2 rounded-full font-extrabold text-xs transition-all bg-camping-green text-white shadow-xs flex items-center gap-1.5 cursor-pointer";
+                if (viewTree) viewTree.classList.add('hidden');
+                if (viewMdl) viewMdl.classList.remove('hidden');
+                renderMandalart();
+            }
+        };
+
+        window.switchMandalartView = (mode) => {
+            const focusBtn = document.getElementById('mandalart-view-focus-btn');
+            const matrixBtn = document.getElementById('mandalart-view-matrix-btn');
+            const focusView = document.getElementById('mandalart-focus-view');
+            const matrixView = document.getElementById('mandalart-matrix-view');
+            if (mode === 'focus') {
+                if (focusBtn) focusBtn.className = "px-3 py-1.5 rounded-lg bg-white shadow-2xs text-camping-green transition";
+                if (matrixBtn) matrixBtn.className = "px-3 py-1.5 rounded-lg text-gray-500 hover:text-camping-text transition";
+                if (focusView) focusView.classList.remove('hidden');
+                if (matrixView) matrixView.classList.add('hidden');
+            } else {
+                if (focusBtn) focusBtn.className = "px-3 py-1.5 rounded-lg text-gray-500 hover:text-camping-text transition";
+                if (matrixBtn) matrixBtn.className = "px-3 py-1.5 rounded-lg bg-white shadow-2xs text-camping-green transition";
+                if (focusView) focusView.classList.add('hidden');
+                if (matrixView) matrixView.classList.remove('hidden');
+            }
+        };
+
+        window.highlightMatrix = (pillarIdx) => {
+            const blk = document.getElementById(`matrix-block-${pillarIdx}`);
+            const tile = document.getElementById(`center-tile-${pillarIdx}`);
+            if (blk) blk.classList.add('ring-2', 'ring-offset-1', 'ring-amber-400', 'shadow-md');
+            if (tile) tile.classList.add('ring-2', 'ring-amber-400', 'scale-105');
+        };
+
+        window.unhighlightMatrix = (pillarIdx) => {
+            const blk = document.getElementById(`matrix-block-${pillarIdx}`);
+            const tile = document.getElementById(`center-tile-${pillarIdx}`);
+            if (blk) blk.classList.remove('ring-2', 'ring-offset-1', 'ring-amber-400', 'shadow-md');
+            if (tile) tile.classList.remove('ring-2', 'ring-amber-400', 'scale-105');
+        };
+
+        const mandalart3x3Layout = [0, 1, 2, 7, 'core', 3, 6, 5, 4];
+
+        const renderMandalart = () => {
+            const data = currentMandalart || defaultMandalart;
+            
+            // 1. 전체 목표 및 진행률 계산
+            const coreTitleEl = document.getElementById('mandalart-core-title');
+            if (coreTitleEl) coreTitleEl.innerText = data.title || defaultMandalart.title;
+
+            let totalItems = 0;
+            let doneItems = 0;
+            (data.pillars || []).forEach(p => {
+                (p.items || []).forEach(item => {
+                    totalItems++;
+                    if (item.done) doneItems++;
+                });
+            });
+
+            const pct = totalItems > 0 ? Math.round((doneItems / totalItems) * 100) : 0;
+            const progressCountEl = document.getElementById('mandalart-progress-count');
+            const progressBarEl = document.getElementById('mandalart-progress-bar');
+            if (progressCountEl) progressCountEl.innerText = `${doneItems} / ${totalItems} 달성 (${pct}%)`;
+            if (progressBarEl) progressBarEl.style.width = `${pct}%`;
+
+            // 2. 3x3 풍부한 미리보기형 카드 그리드 렌더링
+            const grid3x3 = document.getElementById('mandalart-3x3-grid');
+            if (grid3x3) {
+                grid3x3.innerHTML = '';
+                mandalart3x3Layout.forEach(pos => {
+                    if (pos === 'core') {
+                        grid3x3.innerHTML += `
+                            <div class="bg-gradient-to-br from-[#2D5A27] via-[#1E3F1A] to-[#142812] text-white p-5 sm:p-6 rounded-3xl shadow-xl border-2 border-amber-300/80 flex flex-col justify-between items-center text-center transform hover:scale-[1.02] transition-all cursor-pointer group relative overflow-hidden" onclick="openMandalartEditModal()" title="클릭하여 중심 목표 편집">
+                                <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-400/10 rounded-full blur-xl pointer-events-none"></div>
+                                <div class="w-full flex justify-between items-center text-[10px] font-extrabold text-amber-200">
+                                    <span class="flex items-center gap-1"><span>👑</span> GRAND GOAL</span>
+                                    <span class="bg-white/20 px-2 py-0.5 rounded-full border border-white/30">${pct}% 달성</span>
+                                </div>
+                                <div class="my-3 flex flex-col items-center">
+                                    <span class="text-3xl block mb-2 transform group-hover:scale-110 transition-transform">🌟</span>
+                                    <h4 class="text-sm sm:text-base font-extrabold leading-snug tracking-tight text-white max-w-[220px]">${data.title}</h4>
+                                </div>
+                                <div class="w-full flex items-center justify-center gap-1 text-[11px] text-amber-200 font-bold bg-white/10 hover:bg-white/20 py-1.5 rounded-xl border border-white/20 transition">
+                                    <span>✏️</span> <span>중심 목표 편집</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        const p = data.pillars[pos];
+                        if (!p) return;
+                        const theme = pillarThemes[pos] || pillarThemes[0];
+                        const pDone = (p.items || []).filter(i => i.done).length;
+                        const pTotal = (p.items || []).length;
+                        const pPct = pTotal > 0 ? Math.round((pDone / pTotal) * 100) : 0;
+                        const isAllDone = pDone === pTotal && pTotal > 0;
+
+                        // 대표 실천 항목 2개 미리보기
+                        const item1 = p.items && p.items[0] ? p.items[0] : null;
+                        const item2 = p.items && p.items[1] ? p.items[1] : null;
+
+                        grid3x3.innerHTML += `
+                            <div onclick="openPillarDetail(${pos})" class="${theme.cardBg} p-4 sm:p-5 rounded-3xl border-2 ${isAllDone ? 'border-emerald-400 bg-emerald-50/70' : theme.cardBorder} shadow-2xs hover:shadow-lg transition-all flex flex-col justify-between cursor-pointer group hover:-translate-y-1 ${theme.ringHover}">
+                                <div>
+                                    <!-- 상단 헤더: 아이콘 + 기둥명 + 달성 뱃지 -->
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-2xl p-1.5 bg-white rounded-xl shadow-2xs border ${theme.tagBorder} group-hover:scale-110 transition-transform">${p.icon || '📌'}</span>
+                                            <div>
+                                                <h5 class="text-xs sm:text-sm font-extrabold text-camping-text group-hover:text-camping-green transition-colors leading-tight">${p.name}</h5>
+                                                <span class="text-[10px] text-camping-subtext font-medium">기둥 ${pos + 1}</span>
+                                            </div>
+                                        </div>
+                                        <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border shadow-2xs ${isAllDone ? 'bg-emerald-500 text-white border-emerald-600' : theme.badgeBg}">
+                                            ${pDone}/${pTotal} (${pPct}%)
+                                        </span>
+                                    </div>
+
+                                    <!-- 한줄 모토 -->
+                                    <p class="text-[11px] text-gray-600 font-medium mb-2.5 line-clamp-1">${p.desc || '8가지 세부 실천 수칙'}</p>
+
+                                    <!-- 미니 컬러 게이지 바 -->
+                                    <div class="w-full bg-gray-200/70 h-1.5 rounded-full overflow-hidden mb-3">
+                                        <div class="${theme.progressFill} h-full rounded-full transition-all duration-300" style="width: ${pPct}%"></div>
+                                    </div>
+
+                                    <!-- 대표 실천 수칙 2개 미리보기 칩 -->
+                                    <div class="flex flex-col gap-1.5 mb-2">
+                                        ${item1 ? `
+                                            <div class="flex items-center gap-1.5 text-[10px] ${item1.done ? 'text-gray-400 line-through bg-white/40' : 'text-gray-700 font-medium bg-white/80'} px-2 py-1 rounded-lg border ${theme.tagBorder} truncate shadow-2xs">
+                                                <span>${item1.done ? '✅' : '▫️'}</span>
+                                                <span class="truncate">${item1.text}</span>
+                                            </div>
+                                        ` : ''}
+                                        ${item2 ? `
+                                            <div class="flex items-center gap-1.5 text-[10px] ${item2.done ? 'text-gray-400 line-through bg-white/40' : 'text-gray-700 font-medium bg-white/80'} px-2 py-1 rounded-lg border ${theme.tagBorder} truncate shadow-2xs">
+                                                <span>${item2.done ? '✅' : '▫️'}</span>
+                                                <span class="truncate">${item2.text}</span>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+
+                                <!-- 하단 열람 링크 -->
+                                <div class="pt-2 border-t border-gray-200/60 flex items-center justify-between text-[11px] ${theme.accentText} font-bold">
+                                    <span>8개 전체 수칙 열람 & 체크</span>
+                                    <span class="group-hover:translate-x-1 transition-transform">➔</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+            // 3. 9x9 전체 매트릭스 테마 렌더링
+            const matrix9x9 = document.getElementById('mandalart-9x9-matrix');
+            if (matrix9x9) {
+                matrix9x9.innerHTML = '';
+                mandalart3x3Layout.forEach(blockPos => {
+                    if (blockPos === 'core') {
+                        // 중앙 3x3 블록
+                        let blockHtml = `<div class="grid grid-cols-3 gap-1.5 p-2 bg-gradient-to-br from-amber-50 to-[#FAF9F5] rounded-2xl border-2 border-amber-300/80 shadow-xs" id="matrix-block-core">`;
+                        mandalart3x3Layout.forEach(innerPos => {
+                            if (innerPos === 'core') {
+                                blockHtml += `
+                                    <div class="bg-gradient-to-br from-[#2D5A27] to-[#122810] text-white p-2 rounded-xl text-center flex flex-col justify-center items-center h-20 border border-amber-300 font-extrabold text-[10px] leading-tight shadow-xs cursor-pointer hover:scale-105 transition-transform" onclick="openMandalartEditModal()" title="중심 목표 편집">
+                                        <span class="text-sm">👑</span>
+                                        <span class="line-clamp-2 mt-0.5 text-amber-100">${data.title}</span>
+                                    </div>
+                                `;
+                            } else {
+                                const pil = data.pillars[innerPos];
+                                const theme = pillarThemes[innerPos] || pillarThemes[0];
+                                blockHtml += `
+                                    <div id="center-tile-${innerPos}" onclick="openPillarDetail(${innerPos})" onmouseenter="highlightMatrix(${innerPos})" onmouseleave="unhighlightMatrix(${innerPos})" class="${theme.cardBg} ${theme.matrixHover} p-1.5 rounded-xl text-center flex flex-col justify-center items-center h-20 border-2 ${theme.cardBorder} cursor-pointer transition-all shadow-2xs">
+                                        <span class="text-base">${pil?.icon || '📌'}</span>
+                                        <span class="text-[10px] font-extrabold ${theme.accentText} line-clamp-2 mt-0.5 leading-tight">${pil?.name || ''}</span>
+                                    </div>
+                                `;
+                            }
+                        });
+                        blockHtml += `</div>`;
+                        matrix9x9.innerHTML += blockHtml;
+                    } else {
+                        // 외곽 블록
+                        const pil = data.pillars[blockPos];
+                        const theme = pillarThemes[blockPos] || pillarThemes[0];
+                        const items = pil ? pil.items : [];
+
+                        let blockHtml = `<div id="matrix-block-${blockPos}" onmouseenter="highlightMatrix(${blockPos})" onmouseleave="unhighlightMatrix(${blockPos})" class="grid grid-cols-3 gap-1.5 p-2 rounded-2xl border-2 ${theme.matrixBlockBg} transition-all duration-200">`;
+
+                        let itemIdx = 0;
+                        mandalart3x3Layout.forEach(innerPos => {
+                            if (innerPos === 'core') {
+                                // 블록 중심 셀
+                                blockHtml += `
+                                    <div onclick="openPillarDetail(${blockPos})" class="${theme.matrixCenterBg} p-1.5 rounded-xl text-center flex flex-col justify-center items-center h-20 shadow-xs cursor-pointer hover:scale-105 transition-transform">
+                                        <span class="text-base">${pil?.icon || '📌'}</span>
+                                        <span class="text-[10px] font-extrabold line-clamp-2 mt-0.5 leading-tight">${pil?.name || ''}</span>
+                                    </div>
+                                `;
+                            } else {
+                                const it = items[itemIdx];
+                                const curIdx = itemIdx;
+                                itemIdx++;
+                                const isChecked = it && it.done;
+                                blockHtml += `
+                                    <div onclick="toggleMandalartItem(${blockPos}, ${curIdx})" class="p-1 rounded-xl text-center flex flex-col justify-between items-center h-20 border ${isChecked ? theme.matrixChecked : 'bg-white/95 border-gray-200/70 hover:bg-white'} cursor-pointer transition shadow-2xs text-[9px] leading-tight">
+                                        <span class="${isChecked ? 'text-emerald-600 font-bold' : 'text-gray-300'}">${isChecked ? '✅' : '▫️'}</span>
+                                        <span class="line-clamp-3 ${isChecked ? 'line-through text-gray-400 font-medium' : 'text-gray-700 font-medium'}">${it?.text || ''}</span>
+                                        <span></span>
+                                    </div>
+                                `;
+                            }
+                        });
+
+                        blockHtml += `</div>`;
+                        matrix9x9.innerHTML += blockHtml;
+                    }
+                });
+            }
+        };
+
+        // 세부 수칙 모달 열기
+        window.openPillarDetail = (pillarIdx) => {
+            currentDetailPillarIdx = pillarIdx;
+            const pil = currentMandalart.pillars[pillarIdx];
+            if (!pil) return;
+            const theme = pillarThemes[pillarIdx] || pillarThemes[0];
+
+            document.getElementById('mdl-detail-title').innerHTML = `<span class="p-1.5 bg-white rounded-xl shadow-2xs border border-gray-200">${pil.icon || '🎯'}</span> <span>${pil.name}</span>`;
+            document.getElementById('mdl-detail-desc').innerText = pil.desc || '8가지 세부 실천 수칙입니다.';
+            
+            renderPillarDetailChecklist();
+
+            const modal = document.getElementById('mandalart-detail-modal');
+            const content = document.getElementById('mandalart-detail-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        };
+
+        const renderPillarDetailChecklist = () => {
+            const pil = currentMandalart.pillars[currentDetailPillarIdx];
+            if (!pil) return;
+            const theme = pillarThemes[currentDetailPillarIdx] || pillarThemes[0];
+
+            const pDone = (pil.items || []).filter(i => i.done).length;
+            const pTotal = (pil.items || []).length;
+            const pPct = pTotal > 0 ? Math.round((pDone / pTotal) * 100) : 0;
+            const badge = document.getElementById('mdl-detail-progress-badge');
+            if (badge) {
+                badge.innerText = `${pDone} / ${pTotal} 완료 (${pPct}%)`;
+                badge.className = `font-extrabold px-3 py-1 rounded-full border shadow-2xs ${pDone === pTotal && pTotal > 0 ? 'bg-emerald-500 text-white border-emerald-600' : theme.badgeBg}`;
+            }
+
+            const listEl = document.getElementById('mdl-detail-checklist');
+            if (listEl) {
+                listEl.innerHTML = '';
+                (pil.items || []).forEach((it, idx) => {
+                    listEl.innerHTML += `
+                        <label class="flex items-center gap-3 p-3 sm:p-3.5 rounded-2xl border ${it.done ? 'bg-emerald-50/60 border-emerald-200/80 text-gray-500' : 'bg-white border-gray-200/80 text-camping-text'} hover:border-camping-green transition cursor-pointer shadow-2xs group">
+                            <input type="checkbox" ${it.done ? 'checked' : ''} onchange="toggleMandalartItem(${currentDetailPillarIdx}, ${idx})" class="w-4 h-4 rounded text-camping-green accent-camping-green cursor-pointer">
+                            <span class="text-xs font-bold flex-1 ${it.done ? 'line-through text-gray-400' : 'text-gray-800'}">${it.text}</span>
+                        </label>
+                    `;
+                });
+            }
+        };
+
+        window.closePillarDetail = () => {
+            const modal = document.getElementById('mandalart-detail-modal');
+            const content = document.getElementById('mandalart-detail-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 250);
+        };
+
+        // 개별 항목 토글 & Firestore 실시간 저장
+        window.toggleMandalartItem = async (pillarIdx, itemIdx) => {
+            if (!currentMandalart.pillars[pillarIdx] || !currentMandalart.pillars[pillarIdx].items[itemIdx]) return;
+            
+            currentMandalart.pillars[pillarIdx].items[itemIdx].done = !currentMandalart.pillars[pillarIdx].items[itemIdx].done;
+            renderMandalart();
+            renderPillarDetailChecklist();
+
+            try {
+                await setDoc(doc(db, mandalartPath, 'main'), currentMandalart, { merge: true });
+            } catch (e) {
+                console.error('만다라트 저장 오류:', e);
+            }
+        };
+
+        // 편집 모달
+        window.openMandalartEditModal = () => {
+            document.getElementById('mdl-edit-core-title').value = currentMandalart.title || defaultMandalart.title;
+            const sel = document.getElementById('mdl-edit-pillar-select');
+            if (sel) sel.value = "0";
+            loadPillarForEdit(0);
+
+            const modal = document.getElementById('mandalart-edit-modal');
+            const content = document.getElementById('mandalart-edit-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); }, 10);
+        };
+
+        window.closeMandalartEditModal = () => {
+            const modal = document.getElementById('mandalart-edit-modal');
+            const content = document.getElementById('mandalart-edit-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 250);
+        };
+
+        window.loadPillarForEdit = (pillarIdx) => {
+            currentEditingPillarIdx = pillarIdx;
+            const pil = currentMandalart.pillars[pillarIdx] || defaultMandalart.pillars[pillarIdx];
+            if (!pil) return;
+
+            document.getElementById('mdl-edit-pillar-name').value = pil.name || '';
+            document.getElementById('mdl-edit-pillar-icon').value = pil.icon || '📌';
+            document.getElementById('mdl-edit-pillar-desc').value = pil.desc || '';
+
+            const container = document.getElementById('mdl-edit-items-container');
+            if (container) {
+                container.innerHTML = '';
+                (pil.items || []).forEach((it, idx) => {
+                    container.innerHTML += `
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold text-gray-400 w-4">${idx + 1}</span>
+                            <input type="text" id="mdl-input-item-${idx}" value="${it.text.replace(/"/g, '&quot;')}" required class="flex-1 p-2 rounded-lg border border-camping-beige text-xs bg-white">
+                        </div>
+                    `;
+                });
+            }
+        };
+
+        document.getElementById('mandalart-edit-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newCore = document.getElementById('mdl-edit-core-title').value.trim();
+            if (newCore) currentMandalart.title = newCore;
+
+            const pil = currentMandalart.pillars[currentEditingPillarIdx];
+            if (pil) {
+                pil.name = document.getElementById('mdl-edit-pillar-name').value.trim();
+                pil.icon = document.getElementById('mdl-edit-pillar-icon').value.trim();
+                pil.desc = document.getElementById('mdl-edit-pillar-desc').value.trim();
+
+                for (let i = 0; i < 8; i++) {
+                    const el = document.getElementById(`mdl-input-item-${i}`);
+                    if (el && pil.items[i]) {
+                        pil.items[i].text = el.value.trim();
+                    }
+                }
+            }
+
+            renderMandalart();
+            try {
+                await setDoc(doc(db, mandalartPath, 'main'), currentMandalart, { merge: true });
+            } catch (err) {
+                console.error('만다라트 저장 실패:', err);
+            }
+            closeMandalartEditModal();
+        });
+
+        
+        // ==================== 나를 알아가는 셀프 100문 100답 로직 ====================
+        window.qnaQuestions = [{"id": 1, "cat": "나라는 사람", "icon": "🌱", "q": "나를 가장 잘 표현하는 단어 세 가지는 무엇인가요?"}, {"id": 2, "cat": "나라는 사람", "icon": "🌱", "q": "어릴 적 기억 중 지금도 마음을 따뜻하게 만드는 순간은 언제인가요?"}, {"id": 3, "cat": "나라는 사람", "icon": "🌱", "q": "내가 생각하는 나의 가장 큰 강점과 매력은 무엇인가요?"}, {"id": 4, "cat": "나라는 사람", "icon": "🌱", "q": "남들은 잘 모르지만 나만 아는 나의 특별한 습관이나 버릇이 있나요?"}, {"id": 5, "cat": "나라는 사람", "icon": "🌱", "q": "내가 나를 가장 자랑스럽게 여겼던 순간은 언제였나요?"}, {"id": 6, "cat": "나라는 사람", "icon": "🌱", "q": "나에게 콤플렉스나 약점이 있다면, 그것을 어떻게 받아들이고 있나요?"}, {"id": 7, "cat": "나라는 사람", "icon": "🌱", "q": "최근 1년 동안 내 안에서 가장 크게 달라진 점은 무엇인가요?"}, {"id": 8, "cat": "나라는 사람", "icon": "🌱", "q": "혼자 있을 때 나는 주로 어떤 생각이나 행동을 하나요?"}, {"id": 9, "cat": "나라는 사람", "icon": "🌱", "q": "내가 온전하게 '나답다'고 느끼는 순간은 언제인가요?"}, {"id": 10, "cat": "나라는 사람", "icon": "🌱", "q": "내 삶에서 가장 큰 영향을 준 결정적인 사건은 무엇이었나요?"}, {"id": 11, "cat": "나라는 사람", "icon": "🌱", "q": "내가 가장 쉽게 지치거나 에너지를 뺏기는 상황은 어떤 때인가요?"}, {"id": 12, "cat": "나라는 사람", "icon": "🌱", "q": "반대로 나에게 가장 큰 활력과 에너지를 채워주는 것은 무엇인가요?"}, {"id": 13, "cat": "나라는 사람", "icon": "🌱", "q": "화가 나거나 속상할 때 나는 보통 어떻게 감정을 다스리나요?"}, {"id": 14, "cat": "나라는 사람", "icon": "🌱", "q": "어린 시절의 내가 지금의 나를 본다면 뭐라고 말해줄까요?"}, {"id": 15, "cat": "나라는 사람", "icon": "🌱", "q": "다른 사람들에게 주로 어떤 칭찬이나 평가를 자주 듣나요?"}, {"id": 16, "cat": "나라는 사람", "icon": "🌱", "q": "내가 진심으로 눈물을 흘렸던 가장 최근의 기억은 무엇인가요?"}, {"id": 17, "cat": "나라는 사람", "icon": "🌱", "q": "나의 성격을 사계절(봄, 여름, 가을, 겨울) 중 하나에 비유한다면?"}, {"id": 18, "cat": "나라는 사람", "icon": "🌱", "q": "내가 가장 몰입할 때 내 표정이나 마음 상태는 어떤가요?"}, {"id": 19, "cat": "나라는 사람", "icon": "🌱", "q": "나를 한 편의 영화나 노래 제목으로 표현한다면 무엇일까요?"}, {"id": 20, "cat": "나라는 사람", "icon": "🌱", "q": "지금 이 순간, 나 자신에게 꼭 해주고 싶은 따뜻한 한마디는?"}, {"id": 21, "cat": "취향과 일상", "icon": "☕", "q": "하루 중 내가 가장 좋아하는 시간대는 언제인가요?"}, {"id": 22, "cat": "취향과 일상", "icon": "☕", "q": "몸과 마음이 지친 날, 나를 포근하게 안아주는 소울푸드는 무엇인가요?"}, {"id": 23, "cat": "취향과 일상", "icon": "☕", "q": "계절이 바뀔 때면 생각나서 꼭 찾아 듣는 나만의 인생 곡이 있나요?"}, {"id": 24, "cat": "취향과 일상", "icon": "☕", "q": "방이나 책상 위에서 내가 가장 아끼고 소중히 여기는 물건은?"}, {"id": 25, "cat": "취향과 일상", "icon": "☕", "q": "맑은 날과 비 오는 날 중, 내 마음에 더 위로가 되는 날씨는?"}, {"id": 26, "cat": "취향과 일상", "icon": "☕", "q": "나만의 스트레스 해소 루틴이나 '멍 때리는' 장소가 있나요?"}, {"id": 27, "cat": "취향과 일상", "icon": "☕", "q": "요즘 나를 가장 설레게 하거나 미소 짓게 만드는 소소한 행복은?"}, {"id": 28, "cat": "취향과 일상", "icon": "☕", "q": "나를 울게 하거나 깊은 여운을 남긴 인생 영화나 드라마는?"}, {"id": 29, "cat": "취향과 일상", "icon": "☕", "q": "지금까지 가본 여행지 중 마음속에 가장 깊이 남아있는 곳은?"}, {"id": 30, "cat": "취향과 일상", "icon": "☕", "q": "지친 일상 속에서 온전히 나만을 위해 쓰는 1시간은 어떻게 채우나요?"}, {"id": 31, "cat": "취향과 일상", "icon": "☕", "q": "좋아하는 옷 스타일이나 나에게 가장 편안한 옷차림은 무엇인가요?"}, {"id": 32, "cat": "취향과 일상", "icon": "☕", "q": "책을 읽다가 마음에 콕 박혀 수첩에 적어둔 문장이 있다면?"}, {"id": 33, "cat": "취향과 일상", "icon": "☕", "q": "아침에 눈을 떠서 가장 먼저 하는 나만의 모닝 루틴은?"}, {"id": 34, "cat": "취향과 일상", "icon": "☕", "q": "밤에 잠들기 전 머릿속에 떠오르는 생각이나 습관은 무엇인가요?"}, {"id": 35, "cat": "취향과 일상", "icon": "☕", "q": "스마트폰 없이 하루를 온전히 보낸다면 무엇을 하고 싶나요?"}, {"id": 36, "cat": "취향과 일상", "icon": "☕", "q": "내가 좋아하는 향기나 냄새(풀냄새, 비 냄새, 커피 향 등)는?"}, {"id": 37, "cat": "취향과 일상", "icon": "☕", "q": "나에게 가장 편안함을 주는 공간(방, 카페, 공원 등)은 어디인가요?"}, {"id": 38, "cat": "취향과 일상", "icon": "☕", "q": "돈을 쓸 때 '정말 잘 썼다'고 느껴지는 순간은 어떤 소비인가요?"}, {"id": 39, "cat": "취향과 일상", "icon": "☕", "q": "계절 중 내가 가장 사랑하는 계절과 그 이유는 무엇인가요?"}, {"id": 40, "cat": "취향과 일상", "icon": "☕", "q": "소소하지만 확실한 나만의 '재충전 비법'이 있다면 무엇인가요?"}, {"id": 41, "cat": "관계와 사랑", "icon": "🤝", "q": "내 인생에서 존재만으로도 가장 감사한 사람은 누구인가요?"}, {"id": 42, "cat": "관계와 사랑", "icon": "🤝", "q": "사람과 관계를 맺을 때 내가 가장 중요하게 생각하는 가치는?"}, {"id": 43, "cat": "관계와 사랑", "icon": "🤝", "q": "내가 사람에게 가장 큰 매력을 느끼는 순간이나 태도는 무엇인가요?"}, {"id": 44, "cat": "관계와 사랑", "icon": "🤝", "q": "인간관계에서 내가 지키고자 하는 건강한 '선'이나 기준은?"}, {"id": 45, "cat": "관계와 사랑", "icon": "🤝", "q": "친구에게 주로 고민을 털어놓는 편인가요, 들어주는 편인가요?"}, {"id": 46, "cat": "관계와 사랑", "icon": "🤝", "q": "누군가에게 받았던 말 중 지금까지도 마음에 남은 가장 따뜻한 말은?"}, {"id": 47, "cat": "관계와 사랑", "icon": "🤝", "q": "반대로 내가 누군가에게 건넸던 말 중 가장 뿌듯했던 순간은?"}, {"id": 48, "cat": "관계와 사랑", "icon": "🤝", "q": "고마운 마음을 표현할 때 나는 주로 어떤 방식으로 마음을 전하나요?"}, {"id": 49, "cat": "관계와 사랑", "icon": "🤝", "q": "사람에게 실망하거나 상처를 받았을 때 나는 어떻게 대처하나요?"}, {"id": 50, "cat": "관계와 사랑", "icon": "🤝", "q": "'좋은 사람'이란 어떤 사람이라고 생각하나요?"}, {"id": 51, "cat": "관계와 사랑", "icon": "🤝", "q": "내가 생각하는 진정한 '사랑'의 정의는 무엇인가요?"}, {"id": 52, "cat": "관계와 사랑", "icon": "🤝", "q": "가족이라는 존재는 나에게 어떤 의미와 감정으로 다가오나요?"}, {"id": 53, "cat": "관계와 사랑", "icon": "🤝", "q": "나를 조건 없이 지지해주는 사람들에게 어떻게 보답하고 싶나요?"}, {"id": 54, "cat": "관계와 사랑", "icon": "🤝", "q": "서운함이나 섭섭함을 느낄 때 솔직하게 표현하는 편인가요?"}, {"id": 55, "cat": "관계와 사랑", "icon": "🤝", "q": "오래도록 곁에 두고 함께 늙어가고 싶은 사람은 어떤 사람인가요?"}, {"id": 56, "cat": "관계와 사랑", "icon": "🤝", "q": "타인의 성공이나 행복을 진심으로 축하해줄 수 있는 여유가 있나요?"}, {"id": 57, "cat": "관계와 사랑", "icon": "🤝", "q": "내가 누군가에게 베풀었던 가장 다정했던 배려는 무엇이었나요?"}, {"id": 58, "cat": "관계와 사랑", "icon": "🤝", "q": "학창 시절 친구들과 지금의 나를 이어주는 연결고리는 무엇인가요?"}, {"id": 59, "cat": "관계와 사랑", "icon": "🤝", "q": "누군가 나를 기억할 때 어떤 사람으로 떠올려주길 바라나요?"}, {"id": 60, "cat": "관계와 사랑", "icon": "🤝", "q": "지금 마음속으로 가장 안부를 묻고 싶은 사람은 누구인가요?"}, {"id": 61, "cat": "가치관과 철학", "icon": "🧭", "q": "내가 사회복지와 소셜임팩트 분야를 걷기로 결심한 결정적 순간은?"}, {"id": 62, "cat": "가치관과 철학", "icon": "🧭", "q": "세상에서 가장 불의하거나 바뀌어야 한다고 느끼는 사회 문제는?"}, {"id": 63, "cat": "가치관과 철학", "icon": "🧭", "q": "나에게 '행복'이란 구체적으로 어떤 상태나 순간을 의미하나요?"}, {"id": 64, "cat": "가치관과 철학", "icon": "🧭", "q": "인생에서 성공이란 무엇이라고 정의하고 싶나요?"}, {"id": 65, "cat": "가치관과 철학", "icon": "🧭", "q": "돈과 명예, 그리고 의미 있는 가치 중 내가 가장 우선시하는 것은?"}, {"id": 66, "cat": "가치관과 철학", "icon": "🧭", "q": "다른 사람들의 시선이나 평가보다 내 신념을 우선할 수 있나요?"}, {"id": 67, "cat": "가치관과 철학", "icon": "🧭", "q": "내가 당사자를 마주할 때 가슴속에 품고 싶은 실천 철학은?"}, {"id": 68, "cat": "가치관과 철학", "icon": "🧭", "q": "'인간의 존엄성'이라는 단어를 들으면 어떤 마음이 드나요?"}, {"id": 69, "cat": "가치관과 철학", "icon": "🧭", "q": "인생의 큰 갈림길이나 선택의 순간에 나를 이끄는 기준은 무엇인가요?"}, {"id": 70, "cat": "가치관과 철학", "icon": "🧭", "q": "실패와 좌절을 마주했을 때 그것을 어떻게 의미 부여하나요?"}, {"id": 71, "cat": "가치관과 철학", "icon": "🧭", "q": "나에게 '연대(連帶)'란 무엇이며 왜 필요하다고 생각하나요?"}, {"id": 72, "cat": "가치관과 철학", "icon": "🧭", "q": "바쁘게 돌아가는 현대 사회에서 내가 잃어버리고 싶지 않은 순수함은?"}, {"id": 73, "cat": "가치관과 철학", "icon": "🧭", "q": "'용기'란 두려움이 없는 것일까요, 두려워도 나아가는 것일까요?"}, {"id": 74, "cat": "가치관과 철학", "icon": "🧭", "q": "살아가면서 절대 타협하고 싶지 않은 나만의 도덕적 마지노선은?"}, {"id": 75, "cat": "가치관과 철학", "icon": "🧭", "q": "나와 의견이나 신념이 다른 사람을 마주했을 때 어떻게 대하나요?"}, {"id": 76, "cat": "가치관과 철학", "icon": "🧭", "q": "나에게 주어진 재능이나 에너지를 사회에 어떻게 나누고 싶나요?"}, {"id": 77, "cat": "가치관과 철학", "icon": "🧭", "q": "오늘 하루를 충실하게 살았다는 기준은 무엇인가요?"}, {"id": 78, "cat": "가치관과 철학", "icon": "🧭", "q": "'어른이 된다는 것'은 나에게 어떤 의미인가요?"}, {"id": 79, "cat": "가치관과 철학", "icon": "🧭", "q": "나에게 주어진 시간(젊음)을 가장 가치 있게 쓰는 방법은 무엇일까요?"}, {"id": 80, "cat": "가치관과 철학", "icon": "🧭", "q": "훗날 나의 묘비명이나 마지막 한 줄에 남기고 싶은 문장은?"}, {"id": 81, "cat": "꿈과 미래", "icon": "🌟", "q": "10년 뒤 나는 어떤 표정과 마음으로 아침을 맞이하고 있을까요?"}, {"id": 82, "cat": "꿈과 미래", "icon": "🌟", "q": "죽기 전에 꼭 이루고 싶은 버킷리스트 1순위는 무엇인가요?"}, {"id": 83, "cat": "꿈과 미래", "icon": "🌟", "q": "내가 꿈꾸는 이상적인 '나의 하루'는 어떤 모습인가요?"}, {"id": 84, "cat": "꿈과 미래", "icon": "🌟", "q": "사회복지 현장에서 내가 반드시 기획하거나 실현해보고 싶은 사업은?"}, {"id": 85, "cat": "꿈과 미래", "icon": "🌟", "q": "30대의 나에게 미리 건네고 싶은 응원과 격려의 편지는?"}, {"id": 86, "cat": "꿈과 미래", "icon": "🌟", "q": "어떤 공간에서 누구와 함께 살아가고 싶은지 미래의 보금자리를 상상한다면?"}, {"id": 87, "cat": "꿈과 미래", "icon": "🌟", "q": "경제적 자유를 이룬다면 내 삶의 방식은 어떻게 달라질까요?"}, {"id": 88, "cat": "꿈과 미래", "icon": "🌟", "q": "나이가 들어도 절대 잃고 싶지 않은 나의 열정이나 호기심은?"}, {"id": 89, "cat": "꿈과 미래", "icon": "🌟", "q": "세상에 어떤 선한 영향력이나 변화의 씨앗을 남기고 싶나요?"}, {"id": 90, "cat": "꿈과 미래", "icon": "🌟", "q": "지금까지 이룬 것 중 내 미래의 밑거름이 될 가장 귀한 자산은?"}, {"id": 91, "cat": "꿈과 미래", "icon": "🌟", "q": "앞으로 3년 안에 꼭 마스터하거나 도전해보고 싶은 새로운 분야는?"}, {"id": 92, "cat": "꿈과 미래", "icon": "🌟", "q": "내가 롤모델로 삼고 닮아가고 싶은 인물과 그 이유는?"}, {"id": 93, "cat": "꿈과 미래", "icon": "🌟", "q": "인생의 마지막 날, 내 삶을 돌아보며 '참 잘 살았다'고 말할 수 있는 조건은?"}, {"id": 94, "cat": "꿈과 미래", "icon": "🌟", "q": "나를 진정으로 가슴 뛰게 만드는 꿈의 프로젝트는 무엇인가요?"}, {"id": 95, "cat": "꿈과 미래", "icon": "🌟", "q": "사회적으로 소외된 이들에게 내가 건넬 수 있는 가장 따뜻한 손길은?"}, {"id": 96, "cat": "꿈과 미래", "icon": "🌟", "q": "미래의 내가 길을 잃었을 때 나침반이 되어줄 오늘날의 다짐은?"}, {"id": 97, "cat": "꿈과 미래", "icon": "🌟", "q": "내가 만든 결과물이나 발자취가 누군가의 삶을 바꾼다면 어떨까요?"}, {"id": 98, "cat": "꿈과 미래", "icon": "🌟", "q": "5년 뒤의 나에게 물어보고 싶은 가장 궁금한 질문 하나는?"}, {"id": 99, "cat": "꿈과 미래", "icon": "🌟", "q": "나라는 존재가 이 세상에 태어난 이유를 굳이 찾아본다면?"}, {"id": 100, "cat": "꿈과 미래", "icon": "🌟", "q": "100번째 질문에 도달한 나 자신에게 전하는 축하와 사랑의 고백은?"}];
+        window.qnaData = {}; const qnaQuestions = window.qnaQuestions; let qnaData = window.qnaData;
+        let currentQnACat = '전체';
+        
+        // 오늘 날짜 기반 기본 질문 계산 (1~100)
+        const getDayOfYear = () => {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const day = Math.floor(diff / oneDay);
+            return (day % 100) + 1;
+        };
+        let currentTodayQId = getDayOfYear();
+
+        // 1. 홈 화면: 오늘의 질문 렌더링
+        window.renderTodayQuestion = () => {
+            const q = qnaQuestions.find(item => item.id === currentTodayQId) || qnaQuestions[0];
+            const catEl = document.getElementById('home-qna-cat');
+            const titleEl = document.getElementById('home-qna-title');
+            const boxEl = document.getElementById('home-qna-box');
+
+            if (catEl) catEl.innerText = `${q.icon} ${q.cat} (Q.${q.id})`;
+            if (titleEl) titleEl.innerText = q.q;
+
+            const existing = qnaData[q.id];
+            if (boxEl) {
+                if (existing && existing.answer) {
+                    boxEl.innerHTML = `
+                        <div class="bg-white/90 p-3 rounded-2xl border border-amber-200/70 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 shadow-2xs">
+                            <div class="flex-1">
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 mr-1.5">작성 완료 (${existing.updatedAt || '최근'})</span>
+                                <p class="text-xs text-camping-text font-medium mt-1 leading-relaxed line-clamp-2">“${existing.answer}”</p>
+                            </div>
+                            <button onclick="openQnAModal(${q.id})" class="shrink-0 px-3 py-1.5 bg-camping-bg text-camping-green font-bold text-xs rounded-xl border border-camping-greenlight hover:bg-camping-green hover:text-white transition cursor-pointer">
+                                ✏️ 수정하기
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    boxEl.innerHTML = `
+                        <div class="flex items-center justify-between gap-3 bg-white/70 p-2.5 rounded-2xl border border-amber-200/50">
+                            <span class="text-xs text-camping-subtext font-medium pl-1">아직 나의 생각을 남기지 않았어요. 솔직한 마음을 적어볼까요?</span>
+                            <button onclick="openQnAModal(${q.id})" class="px-3.5 py-1.5 bg-camping-green text-white font-bold text-xs rounded-xl shadow-xs hover:bg-[#3f5a3b] transition shrink-0 cursor-pointer">
+                                ✍️ 생각 기록하기
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        };
+
+        // 질문 랜덤 셔플
+        window.shuffleTodayQuestion = () => {
+            let newId = Math.floor(Math.random() * 100) + 1;
+            while (newId === currentTodayQId) {
+                newId = Math.floor(Math.random() * 100) + 1;
+            }
+            currentTodayQId = newId;
+            renderTodayQuestion();
+        };
+
+        // 2. 100문 100답 전용 뷰 렌더링
+        window.renderQnA = () => {
+            const total = qnaQuestions.length;
+            const answeredCount = Object.keys(qnaData).filter(k => qnaData[k] && qnaData[k].answer && qnaData[k].answer.trim()).length;
+            const pct = Math.round((answeredCount / total) * 100);
+
+            // 진행률 게이지 갱신
+            const badgeEl = document.getElementById('qna-progress-badge');
+            const barEl = document.getElementById('qna-progress-bar');
+            if (badgeEl) badgeEl.innerText = `${answeredCount} / ${total}개 완료 (${pct}%)`;
+            if (barEl) barEl.style.width = `${pct}%`;
+
+            // 카테고리 필터 버튼 스타일 갱신
+            document.querySelectorAll('.qna-cat-btn').forEach(btn => {
+                const cat = btn.getAttribute('data-cat');
+                if (cat === currentQnACat) {
+                    btn.className = "qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-xs bg-camping-green text-white cursor-pointer";
+                } else {
+                    btn.className = "qna-cat-btn px-4 py-2 rounded-full text-xs font-bold transition shadow-2xs bg-white text-camping-subtext border border-camping-beige hover:border-camping-green cursor-pointer";
+                }
+            });
+
+            // 필터링 적용
+            let filtered = qnaQuestions;
+            if (currentQnACat === 'completed') {
+                filtered = qnaQuestions.filter(q => qnaData[q.id] && qnaData[q.id].answer && qnaData[q.id].answer.trim());
+            } else if (currentQnACat !== '전체') {
+                filtered = qnaQuestions.filter(q => q.cat === currentQnACat);
+            }
+
+            const grid = document.getElementById('qna-grid-container');
+            if (!grid) return;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-camping-subtext">
+                        <span class="text-4xl block mb-2">🍃</span>
+                        <p class="font-bold text-sm">아직 답변한 질문이 없습니다.</p>
+                        <p class="text-xs mt-1">오늘의 질문이나 마음에 드는 질문을 골라 첫 답변을 남겨보세요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = '';
+            filtered.forEach(q => {
+                const record = qnaData[q.id];
+                const isAnswered = record && record.answer && record.answer.trim();
+
+                if (isAnswered) {
+                    grid.innerHTML += `
+                        <div class="bg-white p-5 rounded-3xl border-2 border-emerald-200/90 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group hover:-translate-y-0.5">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded-full border border-emerald-200">Q.${String(q.id).padStart(2, '0')}</span>
+                                        <span class="text-[10px] text-gray-500 font-bold">${q.icon} ${q.cat}</span>
+                                    </div>
+                                    <span class="text-[9px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">${record.updatedAt || '최근'}</span>
+                                </div>
+                                <h4 class="text-xs sm:text-sm font-extrabold text-camping-text mb-3 leading-snug">${q.q}</h4>
+                                <div class="bg-[#FAF9F5] p-3 rounded-2xl border border-camping-beige/70 text-xs text-gray-700 leading-relaxed max-h-36 overflow-y-auto mb-3 whitespace-pre-wrap">“${record.answer}”</div>
+                            </div>
+                            <div class="pt-2 border-t border-gray-100 flex justify-end">
+                                <button onclick="openQnAModal(${q.id})" class="px-3 py-1.5 bg-camping-bg hover:bg-camping-green hover:text-white text-camping-green text-xs font-bold rounded-xl border border-camping-greenlight transition cursor-pointer flex items-center gap-1">
+                                    <span>✏️</span> 수정하기
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    grid.innerHTML += `
+                        <div class="bg-white p-5 rounded-3xl border-2 border-dashed border-camping-beige hover:border-camping-green/70 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group hover:-translate-y-0.5">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[10px] font-extrabold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">Q.${String(q.id).padStart(2, '0')}</span>
+                                        <span class="text-[10px] text-gray-400 font-bold">${q.icon} ${q.cat}</span>
+                                    </div>
+                                    <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">미답변</span>
+                                </div>
+                                <h4 class="text-xs sm:text-sm font-extrabold text-camping-text mb-3 leading-snug">${q.q}</h4>
+                                <p class="text-[11px] text-gray-400 italic mb-4">아직 기록이 없습니다. 생각을 남겨보세요.</p>
+                            </div>
+                            <div class="pt-2 border-t border-gray-100 flex justify-end">
+                                <button onclick="openQnAModal(${q.id})" class="w-full py-2 bg-camping-bg hover:bg-camping-green hover:text-white text-camping-green text-xs font-bold rounded-xl border border-camping-greenlight transition cursor-pointer flex items-center justify-center gap-1">
+                                    <span>✍️</span> 답변 남기기
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        };
+
+        window.setQnACategory = (cat) => {
+            currentQnACat = cat;
+            renderQnA();
+        };
+
+        // 모달 열기/닫기
+        window.openQnAModal = (qId) => {
+            const q = qnaQuestions.find(item => item.id === qId);
+            if (!q) return;
+
+            document.getElementById('modal-qna-id').value = q.id;
+            document.getElementById('modal-qna-num').innerText = `Q.${String(q.id).padStart(2, '0')}`;
+            document.getElementById('modal-qna-cat').innerText = `${q.icon} ${q.cat}`;
+            document.getElementById('modal-qna-text').innerText = q.q;
+
+            const existing = qnaData[q.id];
+            const answerInput = document.getElementById('modal-qna-answer');
+            const dateLabel = document.getElementById('modal-qna-date');
+
+            if (existing && existing.answer) {
+                answerInput.value = existing.answer;
+                dateLabel.innerText = `최근 기록: ${existing.updatedAt || '오늘'}`;
+            } else {
+                answerInput.value = '';
+                const todayStr = new Date().toISOString().split('T')[0];
+                dateLabel.innerText = `오늘 날짜: ${todayStr}`;
+            }
+
+            const modal = document.getElementById('qna-modal');
+            const content = document.getElementById('qna-modal-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); answerInput.focus(); }, 10);
+        };
+
+        window.closeQnAModal = () => {
+            const modal = document.getElementById('qna-modal');
+            const content = document.getElementById('qna-modal-content');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 250);
+        };
+
+        // 100문 100답 폼 저장 핸들러
+        document.getElementById('qna-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const qId = parseInt(document.getElementById('modal-qna-id').value);
+            const answer = document.getElementById('modal-qna-answer').value.trim();
+            if (!answer) return;
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            qnaData[qId] = {
+                answer: answer,
+                updatedAt: todayStr
+            };
+
+            renderQnA();
+            renderTodayQuestion();
+
+            try {
+                await setDoc(doc(db, qnaPath, 'main'), { answers: qnaData }, { merge: true });
+            } catch (err) {
+                console.error('100문 100답 Firestore 저장 오류:', err);
+            }
+
+            closeQnAModal();
+        });
+
         const initApp = async () => {
             try {
                 showView('home');
+                renderRoadmap(currentRoadmap);
                 await signInAnonymously(auth);
                 currentUser = auth.currentUser;
                 loadData();
             } catch (e) {
                 console.error('초기화 오류:', e);
+                renderRoadmap(currentRoadmap);
                 loadData();
             }
         };
